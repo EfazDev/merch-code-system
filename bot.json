@@ -1,0 +1,8 @@
+{
+    "Token": "",
+    "OwnerId": 0,
+    "MainChannelId": 0,
+    "ServerID": 0,
+    "SlashCommandsOnly": true,
+    "BlacklistedUsers": {}
+}
