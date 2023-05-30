@@ -62,6 +62,8 @@ with open("bot.json") as f:
 with open("economy.json") as f:
     economy = json.load(f)
 
+StoreItems = economy["StoreInventory"]
+
 print("Loaded Saved Data in JSONs")
 print("Loading Functions and Commands")
 
@@ -78,8 +80,8 @@ def loadLists():
     with open("economy.json") as f:
         global economy
         economy = json.load(f)
-
-StoreItems = economy["StoreInventory"]
+        global StoreItems
+        StoreItems = economy["StoreInventory"]
 
 def testIfVariableExists(tablee, variablee):
     if tablee is dict:
@@ -108,7 +110,7 @@ if botToken["SlashCommandsOnly"] == False:
             color=decimal, title="Merch Code System", description=message
         )
         embed.set_footer(
-            text="Made by EfazDev#0220",
+            text="Made by EfazDev#0220 - v1.0.0",
             icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
         )
         await ctx.reply(embed=embed)
@@ -130,7 +132,7 @@ if botToken["SlashCommandsOnly"] == False:
             description="Thanks for using Efaz's Merch Code System! Please put a star in our GitHub to support for newer updates!",
         )
         embed.set_footer(
-            text="Made by EfazDev#0220",
+            text="Made by EfazDev#0220 - v1.0.0",
             icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
         )
         channel = bot.get_channel(botToken["MainChannelId"])
@@ -1064,7 +1066,7 @@ else:
             description="Thanks for using Efaz's Merch Code System! Please put a star in our GitHub to support for newer updates!",
         )
         embed.set_footer(
-            text="Made by EfazDev#0220",
+            text="Made by EfazDev#0220 - v1.0.0",
             icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
         )
         channel = bot.get_channel(botToken["MainChannelId"])
@@ -1105,7 +1107,7 @@ else:
             color=decimal, title="Merch Code System", description=message
         )
         embed.set_footer(
-            text="Made by EfazDev#0220",
+            text="Made by EfazDev#0220 - v1.0.0",
             icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
         )
         await ctx.response.send_message(embed=embed)
