@@ -825,6 +825,9 @@ if botToken["SlashCommandsOnly"] == False:
                 if testIfVariableExists(StoreItems, itemname):
                     item = StoreItems[itemname]
                     if item["stock"] > 0:
+                        if len(economy["UserData"][str(ctx.message.author.id)]["Inventory"]) + 1 > economy["InventoryLimit"]:
+                            await sendEmbed(ctx, "Failed to buy item: No storage left, use an item in your inventory and try again!", 3)
+                            return
                         if takeCurrency(ctx.message.author.id, item["price"]):
                             StoreItems[itemname]["stock"] = StoreItems[itemname]["stock"] - 1
                             economy["UserData"][str(ctx.message.author.id)]["Inventory"].append(itemname)
@@ -1836,6 +1839,9 @@ else:
                 if testIfVariableExists(StoreItems, itemname):
                     item = StoreItems[itemname]
                     if item["stock"] > 0:
+                        if len(economy["UserData"][str(ctx.user.id)]["Inventory"]) + 1 > economy["InventoryLimit"]:
+                            await sendEmbed(ctx, "Failed to buy item: No storage left, use an item in your inventory and try again!", 3)
+                            return
                         if takeCurrency(ctx.user.id, item["price"]):
                             economy["StoreInventory"][itemname]["stock"] = economy["StoreInventory"][itemname]["stock"] - 1
                             economy["UserData"][str(ctx.user.id)]["Inventory"].append(itemname)

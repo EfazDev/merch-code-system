@@ -24,5 +24,6 @@
             "name": "Teacher",
             "amount": 100
         }
-    ]
+    ],
+    "InventoryLimit": 20
 }

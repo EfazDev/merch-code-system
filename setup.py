@@ -152,6 +152,11 @@ else:
             economy4 = int(economy4)
         else:
             economy4 = 100
+        economy5 = input("Inventory Limit?")
+        if int(economy5):
+            economy5 = int(economy5)
+        else:
+            economy5 = 20
     else:
         economy1 = False
 
@@ -175,6 +180,7 @@ else:
             "Commands": {
                 "Daily": economy4
             },
+            "InventoryLimit": economy5
         }
         with open("economy.json", "w") as outfile:
             outfile.write(json.dumps(economyJSON))
