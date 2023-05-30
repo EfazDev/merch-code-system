@@ -959,7 +959,7 @@ if botToken["SlashCommandsOnly"] == False:
                         await sendEmbed(ctx, "Robbing Success! You have earned " + str(amount) + " " + economy["EconomyName"] + "!", 2)
                     else:
                         amount = checkCurrencyAmount(ctx.message.author.id) * 0.5
-                        response = takeCurrency(user.id, amount)
+                        response = takeCurrency(ctx.message.author.id, amount)
                         await sendEmbed(ctx, "Robbing Failed! You have been charged " + str(amount) + " " + economy["EconomyName"] + "!", 3)
                 else:
                     await sendEmbed(ctx, "Robbing Failed! You have no money to use for this command!", 3)
@@ -1984,7 +1984,7 @@ else:
                         await sendEmbedTree(ctx, "Robbing Success! You have earned " + str(amount) + " " + economy["EconomyName"] + "!", 2)
                     else:
                         amount = checkCurrencyAmount(ctx.user.id) * 0.5
-                        response = takeCurrency(user.id, amount)
+                        response = takeCurrency(ctx.user.id, amount)
                         await sendEmbedTree(ctx, "Robbing Failed! You have been charged " + str(amount) + " " + economy["EconomyName"] + "!", 3)
                 else:
                     await sendEmbedTree(ctx, "Robbing Failed! You have no money to use for this command!", 3)
