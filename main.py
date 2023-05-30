@@ -257,7 +257,7 @@ if botToken["SlashCommandsOnly"] == False:
                                 embed = discord.Embed(
                                     color=decimal,
                                     title="Merch Code System",
-                                    description="User " + "<@" + str(ctx.user.id) + ">" + " has redeemed a merch code: " + arg + " for reward: " + codeInfo["reward"],
+                                    description="User " + "<@" + str(ctx.message.author.id) + ">" + " has redeemed a merch code: " + arg + " for reward: " + codeInfo["reward"],
                                 )
                                 embed.set_footer(
                                     text="Made by EfazDev#0220",
@@ -291,7 +291,7 @@ if botToken["SlashCommandsOnly"] == False:
                             embed = discord.Embed(
                                 color=decimal,
                                 title="Merch Code System",
-                                description="User " + "<@" + str(ctx.user.id) + ">" + " has redeemed a perm code: " + arg + " for reward: " + codeInfo["reward"],
+                                description="User " + "<@" + str(ctx.message.author.id) + ">" + " has redeemed a perm code: " + arg + " for reward: " + codeInfo["reward"],
                             )
                             embed.set_footer(
                                 text="Made by EfazDev#0220",
@@ -334,7 +334,7 @@ if botToken["SlashCommandsOnly"] == False:
                                 embed = discord.Embed(
                                     color=decimal,
                                     title="Merch Code System",
-                                    description="User " + "<@" + str(ctx.user.id) + ">" + " has redeemed a merch code: " + arg + " for reward: " + codeInfo["reward"],
+                                    description="User " + "<@" + str(ctx.message.author.id) + ">" + " has redeemed a merch code: " + arg + " for reward: " + codeInfo["reward"],
                                 )
                                 embed.set_footer(
                                     text="Made by EfazDev#0220",
@@ -368,7 +368,7 @@ if botToken["SlashCommandsOnly"] == False:
                             embed = discord.Embed(
                                 color=decimal,
                                 title="Merch Code System",
-                                description="User " + "<@" + str(ctx.user.id) + ">" + " has redeemed a perm code: " + arg + " for reward: " + codeInfo["reward"],
+                                description="User " + "<@" + str(ctx.message.author.id) + ">" + " has redeemed a perm code: " + arg + " for reward: " + codeInfo["reward"],
                             )
                             embed.set_footer(
                                 text="Made by EfazDev#0220",
@@ -673,11 +673,11 @@ if botToken["SlashCommandsOnly"] == False:
                 return False
         @bot.command()
         async def flipCoin(ctx, amount, guess):
-            if cooldownCommand(ctx.user.id):
+            if cooldownCommand(ctx.message.author.id):
                 await sendEmbed(ctx, "Access Denied: Still on 2 minute cooldown, try again later!", 3)
                 return
             else:
-                setCooldown(ctx.user.id)
+                setCooldown(ctx.message.author.id)
             amount = int(amount)
             if amount < 0:
                 amount = amount * -1
@@ -685,27 +685,27 @@ if botToken["SlashCommandsOnly"] == False:
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
                 if guess == "Tails" or guess == "Heads":
-                    if takeCurrency(ctx.user.id, amount):
+                    if takeCurrency(ctx.message.author.id, amount):
                         randomized = random.randint(1, 2)
                         if randomized == 1:
                             await sendEmbed(ctx, "🪙 Heads!", 2)
                             if guess == "Heads":
-                                createCurrency(ctx.user.id, amount * 2)
+                                createCurrency(ctx.message.author.id, amount * 2)
                         else:
                             await sendEmbed(ctx, "🪙 Tails!", 2)
                             if guess == "Tails":
-                                createCurrency(ctx.user.id, amount * 2)
+                                createCurrency(ctx.message.author.id, amount * 2)
                     else:    
                         await sendEmbed(ctx, "Failed to take money: Insufficent Balance", 3)
                 else:
                     await sendEmbed(ctx, "Failed, guess must be either `Heads` or `Tails`", 3)
         @bot.command()
         async def gamble(ctx, estimate, max, amount):
-            if cooldownCommand(ctx.user.id):
+            if cooldownCommand(ctx.message.author.id):
                 await sendEmbed(ctx, "Access Denied: Still on 2 minute cooldown, try again later!", 3)
                 return
             else:
-                setCooldown(ctx.user.id)
+                setCooldown(ctx.message.author.id)
             estimate = int(estimate)
             max = int(max)
             amount = int(amount)
@@ -720,11 +720,11 @@ if botToken["SlashCommandsOnly"] == False:
             if blacklisted(ctx) == True:
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
-                if takeCurrency(ctx.user.id, amount):
+                if takeCurrency(ctx.message.author.id, amount):
                     randomized = random.randint(1, max)
                     if randomized == estimate:
                         await sendEmbed(ctx, "Success! You got it! Chances: " + str(round(1 / max * 100)) + "%", 2)
-                        createCurrency(ctx.user.id, amount * max)
+                        createCurrency(ctx.message.author.id, amount * max)
                     else:
                         await sendEmbed(ctx, "Failed! R.I.P. Chances: " + str(round(1 / max * 100)) + "%", 2)
                 else:
@@ -734,16 +734,16 @@ if botToken["SlashCommandsOnly"] == False:
         async def createcurrency(ctx, user: discord.Member, amount: int):
             if amount < 0:
                 amount = amount * -1
-            if cooldownCommand(ctx.user.id):
+            if cooldownCommand(ctx.message.author.id):
                 await sendEmbed(ctx, "Access Denied: Still on 2 minute cooldown, try again later!", 3)
                 return
             else:
-                setCooldown(ctx.user.id)
+                setCooldown(ctx.message.author.id)
             if predicate(ctx) == False or blacklisted(ctx) == True:
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
-                if not testIfVariableExists(economy["UserData"], str(ctx.user.id)):
-                    economy["UserData"][str(ctx.user.id)] = {
+                if not testIfVariableExists(economy["UserData"], str(ctx.message.author.id)):
+                    economy["UserData"][str(ctx.message.author.id)] = {
                         "Balance": 0,
                         "Inventory": [],
                         "LatestDate": 0,
@@ -758,16 +758,16 @@ if botToken["SlashCommandsOnly"] == False:
         async def removecurrency(ctx, user: discord.Member, amount: int):
             if amount < 0:
                 amount = amount * -1
-            if cooldownCommand(ctx.user.id):
+            if cooldownCommand(ctx.message.author.id):
                 await sendEmbed(ctx, "Access Denied: Still on 2 minute cooldown, try again later!", 3)
                 return
             else:
-                setCooldown(ctx.user.id)
+                setCooldown(ctx.message.author.id)
             if predicate(ctx) == False or blacklisted(ctx) == True:
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
-                if not testIfVariableExists(economy["UserData"], str(ctx.user.id)):
-                    economy["UserData"][str(ctx.user.id)] = {
+                if not testIfVariableExists(economy["UserData"], str(ctx.message.author.id)):
+                    economy["UserData"][str(ctx.message.author.id)] = {
                         "Balance": 0,
                         "Inventory": [],
                         "LatestDate": 0,
@@ -789,22 +789,22 @@ if botToken["SlashCommandsOnly"] == False:
 
         @bot.command()
         async def daily(ctx):
-            if cooldownCommand(ctx.user.id):
+            if cooldownCommand(ctx.message.author.id):
                 await sendEmbed(ctx, "Access Denied: Still on 2 minute cooldown, try again later!", 3)
                 return
             if blacklisted(ctx) == True:
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
-                if not testIfVariableExists(economy["UserData"], str(ctx.user.id)):
-                    economy["UserData"][str(ctx.user.id)] = {
+                if not testIfVariableExists(economy["UserData"], str(ctx.message.author.id)):
+                    economy["UserData"][str(ctx.message.author.id)] = {
                         "Balance": 0,
                         "Inventory": [],
                         "LatestDate": 0,
                         "Cooldown": 0,
                     }
-                if economy["UserData"][str(ctx.user.id)]["LatestDate"] <= datetime.now().timestamp():
-                    economy["UserData"][str(ctx.user.id)]["LatestDate"] = datetime.now().timestamp() + 86400
-                    response = createCurrency(ctx.user.id, economy["Commands"]["Daily"])
+                if economy["UserData"][str(ctx.message.author.id)]["LatestDate"] <= datetime.now().timestamp():
+                    economy["UserData"][str(ctx.message.author.id)]["LatestDate"] = datetime.now().timestamp() + 86400
+                    response = createCurrency(ctx.message.author.id, economy["Commands"]["Daily"])
                     if response == True:
                         await sendEmbed(ctx, "You've received " + str(economy["Commands"]["Daily"]) + " " + economy["EconomyName"] + "! Come back in 24 hours!", 2)
                 else:
@@ -815,17 +815,17 @@ if botToken["SlashCommandsOnly"] == False:
             if blacklisted(ctx) == True:
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
-                if cooldownCommand(ctx.user.id):
+                if cooldownCommand(ctx.message.author.id):
                     await sendEmbed(ctx, "Access Denied: Still on 2 minute cooldown, try again later!", 3)
                     return
                 else:
-                    setCooldown(ctx.user.id)
+                    setCooldown(ctx.message.author.id)
                 if testIfVariableExists(StoreItems, itemname):
                     item = StoreItems[itemname]
                     if item["stock"] > 0:
-                        if takeCurrency(ctx.user.id, item["price"]):
+                        if takeCurrency(ctx.message.author.id, item["price"]):
                             StoreItems[itemname]["stock"] = StoreItems[itemname]["stock"] - 1
-                            economy["UserData"][str(ctx.user.id)]["Inventory"].append(itemname)
+                            economy["UserData"][str(ctx.message.author.id)]["Inventory"].append(itemname)
                             with open("economy.json", "w") as outfile:
                                 outfile.write(json.dumps(economy))
                             await sendEmbed(ctx, "Bought: " + itemname + "!", 2)
@@ -841,13 +841,13 @@ if botToken["SlashCommandsOnly"] == False:
             if blacklisted(ctx) == True:
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
-                if cooldownCommand(ctx.user.id):
+                if cooldownCommand(ctx.message.author.id):
                     await sendEmbed(ctx, "Access Denied: Still on 2 minute cooldown, try again later!", 3)
                     return
-                if not testIfVariableExists(economy["UserData"], str(ctx.user.id)):
+                if not testIfVariableExists(economy["UserData"], str(ctx.message.author.id)):
                     await sendEmbed(ctx, "No inventory found", 3)
                     return
-                userInventory = economy["UserData"][str(ctx.user.id)]["Inventory"]
+                userInventory = economy["UserData"][str(ctx.message.author.id)]["Inventory"]
                 message = "User's inventory: \n"
                 for i in userInventory:
                     message = message + "`" + i + "` \n"
@@ -858,13 +858,13 @@ if botToken["SlashCommandsOnly"] == False:
             if blacklisted(ctx) == True:
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
-                if cooldownCommand(ctx.user.id):
+                if cooldownCommand(ctx.message.author.id):
                     await sendEmbed(ctx, "Access Denied: Still on 2 minute cooldown, try again later!", 3)
                     return
-                if not testIfVariableExists(economy["UserData"], str(ctx.user.id)):
+                if not testIfVariableExists(economy["UserData"], str(ctx.message.author.id)):
                     await sendEmbed(ctx, "No inventory found", 3)
                     return
-                userInventory = economy["UserData"][str(ctx.user.id)]["Inventory"]
+                userInventory = economy["UserData"][str(ctx.message.author.id)]["Inventory"]
                 itemFromInventory = ""
                 for i in userInventory:
                     if i == item:
@@ -873,7 +873,7 @@ if botToken["SlashCommandsOnly"] == False:
                 if itemFromInventory == "":
                     await sendEmbed(ctx, "Item is not found in your inventory", 3)
                 else:
-                    economy["UserData"][str(ctx.user.id)]["Inventory"].remove(itemFromInventory)
+                    economy["UserData"][str(ctx.message.author.id)]["Inventory"].remove(itemFromInventory)
                     with open("economy.json", "w") as outfile:
                         outfile.write(json.dumps(economy))
 
@@ -881,7 +881,7 @@ if botToken["SlashCommandsOnly"] == False:
                     embed = discord.Embed(
                         color=decimal,
                         title="Merch Code System",
-                        description="User " + "<@" + str(ctx.user.id) + ">" + " has redeemed a item: " + itemFromInventory,
+                        description="User " + "<@" + str(ctx.message.author.id) + ">" + " has redeemed a item: " + itemFromInventory,
                     )
                     embed.set_footer(
                         text="Made by EfazDev#0220",
@@ -894,11 +894,11 @@ if botToken["SlashCommandsOnly"] == False:
 
         @bot.command()
         async def createItem(ctx, item: str, stock: int, price: int):
-            if cooldownCommand(ctx.user.id):
+            if cooldownCommand(ctx.message.author.id):
                 await sendEmbed(ctx, "Access Denied: Still on 2 minute cooldown, try again later!", 3)
                 return
             else:
-                setCooldown(ctx.user.id)
+                setCooldown(ctx.message.author.id)
             if price < 0:
                 price = price * -1
             if stock < 0:
@@ -918,7 +918,7 @@ if botToken["SlashCommandsOnly"] == False:
 
         @bot.command()
         async def viewstorestock(ctx):
-            if cooldownCommand(ctx.user.id):
+            if cooldownCommand(ctx.message.author.id):
                 await sendEmbed(ctx, "Access Denied: Still on 2 minute cooldown, try again later!", 3)
                 return
             if blacklisted(ctx) == True:
@@ -942,23 +942,23 @@ if botToken["SlashCommandsOnly"] == False:
 
         @bot.command()
         async def rob(ctx, user: discord.Member):
-            if cooldownCommand(ctx.user.id):
+            if cooldownCommand(ctx.message.author.id):
                 await sendEmbed(ctx, "Access Denied: Still on 2 minute cooldown, try again later!", 3)
                 return
             else:
-                setCooldown(ctx.user.id)
+                setCooldown(ctx.message.author.id)
             if blacklisted(ctx) == True:
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
                 randomized = random.randint(1, economy["SuccessRate"])
-                if checkCurrencyAmount(ctx.user.id) >= 1:
+                if checkCurrencyAmount(ctx.message.author.id) >= 1:
                     if randomized == 1:
                         amount = checkCurrencyAmount(user.id) * 0.5
                         response = takeCurrency(user.id, amount)
-                        response2 = createCurrency(ctx.user.id, amount)
+                        response2 = createCurrency(ctx.message.author.id, amount)
                         await sendEmbed(ctx, "Robbing Success! You have earned " + str(amount) + " " + economy["EconomyName"] + "!", 2)
                     else:
-                        amount = checkCurrencyAmount(ctx.user.id) * 0.5
+                        amount = checkCurrencyAmount(ctx.message.author.id) * 0.5
                         response = takeCurrency(user.id, amount)
                         await sendEmbed(ctx, "Robbing Failed! You have been charged " + str(amount) + " " + economy["EconomyName"] + "!", 3)
                 else:
@@ -966,18 +966,18 @@ if botToken["SlashCommandsOnly"] == False:
 
         @bot.command()
         async def sendMoney(ctx, user: discord.Member, amount: int):
-            if cooldownCommand(ctx.user.id):
+            if cooldownCommand(ctx.message.author.id):
                 await sendEmbed(ctx, "Access Denied: Still on 2 minute cooldown, try again later!", 3)
                 return
             else:
-                setCooldown(ctx.user.id)
+                setCooldown(ctx.message.author.id)
             if amount < 0:
                 amount = amount * -1
             if blacklisted(ctx) == True:
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
-                if checkCurrencyAmount(ctx.user.id) >= amount:
-                    response = takeCurrency(ctx.user.id, amount)
+                if checkCurrencyAmount(ctx.message.author.id) >= amount:
+                    response = takeCurrency(ctx.message.author.id, amount)
                     response2 = createCurrency(user.id, amount)
                     await sendEmbed(ctx, "You have gave " + str(amount) + " " + economy["EconomyName"] + " to " + user.name + "!", 2)
                 else:
@@ -985,17 +985,17 @@ if botToken["SlashCommandsOnly"] == False:
         
         @bot.command()
         async def work(ctx):
-            if cooldownCommand(ctx.user.id):
+            if cooldownCommand(ctx.message.author.id):
                 await sendEmbed(ctx, "Access Denied: Still on 2 minute cooldown, try again later!", 3)
                 return
             else:
-                setCooldown(ctx.user.id)
+                setCooldown(ctx.message.author.id)
             if blacklisted(ctx) == True:
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
                 jobList = economy["JobList"]
                 randomizedJob = jobList[random.randint(0, len(jobList) - 1)]
-                response = createCurrency(ctx.user.id, randomizedJob["amount"])
+                response = createCurrency(ctx.message.author.id, randomizedJob["amount"])
                 await sendEmbed(ctx, "You have earned " + str(randomizedJob["amount"]) + " from working as a " + randomizedJob["name"] + "!", 2)
 
         @bot.command()
@@ -1003,7 +1003,7 @@ if botToken["SlashCommandsOnly"] == False:
             if blacklisted(ctx) == True:
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
-                await sendEmbed(ctx, "Cooldown ends <t:" + str(round(economy["UserData"][str(ctx.user.id)]["Cooldown"])) + ":R>", 2)
+                await sendEmbed(ctx, "Cooldown ends <t:" + str(round(economy["UserData"][str(ctx.message.author.id)]["Cooldown"])) + ":R>", 2)
 
         @bot.command()
         async def topleaderboard(ctx):
