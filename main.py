@@ -207,7 +207,7 @@ if botToken["SlashCommandsOnly"] == False:
             return
         
         main = "** MAIN ** \n `$!info` - This message \n`$!redeem <code>` - Redeem a code. \n`$!createCode <code> <reward> <tempornot>` - Create code in the system \n`$!refreshLists` - Refresh lists and restart main.py \n`$!deleteCode` - Delete code from system \n`$!viewCodes` - View all codes in system \n`$!createRandomized <prefix> <reward> <tempornot>` - Create a random generated code. \n`$!createMultipleRandomized <prefix> <reward> <tempornot> <count>` - Create multiple random generated codes. \n`$!searchUser <userPing>` - Get codes redeemed by user. \n`$!restartBot` - Restart bot. \n`$!blacklist <user> <reason>` - Blacklist an user from using the bot. \n`$!unblacklist <user>` - Unblacklist an user from the system. \n`$!blacklistyourself <reason>` - Blacklist yourself from using the bot. (WARNING: You can only get unblacklisted if you ask the owner of the server.) (THERE IS NO CONFIRMATION MESSAGE) \n`$!shutdown` - Shutdown bot \n"
-        fun = "** FUN ** \n `$!flipCoin <amount> <guess>` - Flip a coin. \n`$!gamble <estimate> <max>` - Gamble for a chance of currency! \n`$!createcurrency <user> <amount>` - Create currency \n`$!removecurrency <user> <amount>` - Take currency \n`$!balance <user>` - Check your balance! \n`$!daily` - Get daily balance! \n`$!buy <itemname>` - Buy item from the store! \n`$!inventory` - View inventory you bought from the store! \n`$!use <itemname>` - Use item from your inventory \n`$!createItem <itemname> <stock> <price>` - Create an item in the store. \n`$!viewstorestock` - View what's available in the store. \n`$!sendMoney <user> <amount>` - Send an user money!. \n`$!rob <user>` - Rob an user for chance of money!. \n`$!cooldownCheck` - Check your cooldown!. \n`$!work` - Work for money!. \n`$!top10lb` - Get Top 10 leaderboard!. \n`$!multiplierCheck` - See your multiplier on the economy!. \n More coming soon"
+        fun = "** FUN ** \n `$!flipCoin <amount> <guess>` - Flip a coin. \n`$!gamble <estimate> <max>` - Gamble for a chance of currency! \n`$!createcurrency <user> <amount>` - Create currency \n`$!removecurrency <user> <amount>` - Take currency \n`$!balance <user>` - Check your balance! \n`$!daily` - Get daily balance! \n`$!buy <itemname>` - Buy item from the store! \n`$!inventory` - View inventory you bought from the store! \n`$!use <itemname>` - Use item from your inventory \n`$!createItem <itemname> <stock> <price>` - Create an item in the store. \n`$!viewstorestock` - View what's available in the store. \n`$!sendMoney <user> <amount>` - Send an user money!. \n`$!rob <user>` - Rob an user for chance of money!. \n`$!cooldownCheck` - Check your cooldown!. \n`$!work` - Work for money!. \n`$!top10lb` - Get Top 10 leaderboard!. \n`$!multiplierCheck` - See your multiplier on the economy!. \n`$!endItemListing <itemname>` - End listing in the store!. \n More coming soon"
         if economy["Enabled"] == True:
             await sendEmbed(
                 ctx,
@@ -1077,6 +1077,20 @@ if botToken["SlashCommandsOnly"] == False:
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
                 await sendEmbed(ctx, "Multiplier applied on non-gambling / non-user involved commands: " + str(applyRoleMultiplier(ctx.message.author)) + "x Multiplier", 2)
+
+        @bot.command()
+        async def endItemListing(ctx, item: str):
+            if predicate(ctx) == False or blacklisted(ctx) == True:
+                await sendEmbed(ctx, "Access Denied", 3)
+            else:
+                if testIfVariableExists(economy["StoreInventory"], item): 
+                    if economy["StoreInventory"][item]["stock"] == 0:
+                        await sendEmbed(ctx, "Failed to end item: Item is already ended stock", 3)
+                        return
+                    economy["StoreInventory"][item]["stock"] = 0
+                    await sendEmbed(ctx, "Item's stock is finished!", 2)
+                else:
+                    await sendEmbed(ctx, "Failed to end item: Item is not found", 3)
     else:
         print("Economy Commands have not been applied to the bot, switch Enabled variable to True to enable economy commands.")
 
@@ -2008,6 +2022,24 @@ else:
                 with open("economy.json", "w") as outfile:
                     outfile.write(json.dumps(economy))
                 await sendEmbedTree(ctx, "Created item!", 2)
+
+        @tree.command(
+            name="enditemlisting",
+            description="End item listing from the store",
+            guild=discord.Object(id=guildId),
+        )
+        async def endItemListing(ctx, item: str):
+            if predicate(ctx) == False or blacklisted(ctx) == True:
+                await sendEmbedTree(ctx, "Access Denied", 3)
+            else:
+                if testIfVariableExists(economy["StoreInventory"], item): 
+                    if economy["StoreInventory"][item]["stock"] == 0:
+                        await sendEmbedTree(ctx, "Failed to end item: Item is already ended stock", 3)
+                        return
+                    economy["StoreInventory"][item]["stock"] = 0
+                    await sendEmbedTree(ctx, "Item's stock is finished!", 2)
+                else:
+                    await sendEmbedTree(ctx, "Failed to end item: Item is not found", 3)
 
         @tree.command(
             name="viewstorestock",
