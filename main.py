@@ -207,7 +207,7 @@ if botToken["SlashCommandsOnly"] == False:
             return
         
         main = "** MAIN ** \n `$!info` - This message \n`$!redeem <code>` - Redeem a code. \n`$!createCode <code> <reward> <tempornot>` - Create code in the system \n`$!refreshLists` - Refresh lists and restart main.py \n`$!deleteCode` - Delete code from system \n`$!viewCodes` - View all codes in system \n`$!createRandomized <prefix> <reward> <tempornot>` - Create a random generated code. \n`$!createMultipleRandomized <prefix> <reward> <tempornot> <count>` - Create multiple random generated codes. \n`$!searchUser <userPing>` - Get codes redeemed by user. \n`$!restartBot` - Restart bot. \n`$!blacklist <user> <reason>` - Blacklist an user from using the bot. \n`$!unblacklist <user>` - Unblacklist an user from the system. \n`$!blacklistyourself <reason>` - Blacklist yourself from using the bot. (WARNING: You can only get unblacklisted if you ask the owner of the server.) (THERE IS NO CONFIRMATION MESSAGE) \n`$!shutdown` - Shutdown bot \n"
-        fun = "** FUN ** \n `$!flipCoin <amount> <guess>` - Flip a coin. \n`$!gamble <estimate> <max>` - Gamble for a chance of currency! \n`$!createcurrency <user> <amount>` - Create currency \n`$!removecurrency <user> <amount>` - Take currency \n`$!balance <user>` - Check your balance! \n`$!daily` - Get daily balance! \n`$!buy <itemname>` - Buy item from the store! \n`$!inventory` - View inventory you bought from the store! \n`$!use <itemname>` - Use item from your inventory \n`$!createItem <itemname> <stock> <price>` - Create an item in the store. \n`$!viewstorestock` - View what's available in the store. \n`$!sendMoney <user> <amount>` - Send an user money!. \n`$!rob <user>` - Rob an user for chance of money!. \n`$!cooldownCheck` - Check your cooldown!. \n`$!work` - Work for money!. \n`$!top10lb` - Get Top 10 leaderboard!. \n More coming soon"
+        fun = "** FUN ** \n `$!flipCoin <amount> <guess>` - Flip a coin. \n`$!gamble <estimate> <max>` - Gamble for a chance of currency! \n`$!createcurrency <user> <amount>` - Create currency \n`$!removecurrency <user> <amount>` - Take currency \n`$!balance <user>` - Check your balance! \n`$!daily` - Get daily balance! \n`$!buy <itemname>` - Buy item from the store! \n`$!inventory` - View inventory you bought from the store! \n`$!use <itemname>` - Use item from your inventory \n`$!createItem <itemname> <stock> <price>` - Create an item in the store. \n`$!viewstorestock` - View what's available in the store. \n`$!sendMoney <user> <amount>` - Send an user money!. \n`$!rob <user>` - Rob an user for chance of money!. \n`$!cooldownCheck` - Check your cooldown!. \n`$!work` - Work for money!. \n`$!top10lb` - Get Top 10 leaderboard!. \n`$!multiplierCheck` - See your multiplier on the economy!. \n More coming soon"
         if economy["Enabled"] == True:
             await sendEmbed(
                 ctx,
@@ -640,7 +640,7 @@ if botToken["SlashCommandsOnly"] == False:
                  outfile.write(json.dumps(economy))
         def checkCurrencyAmount(userId):
             if testIfVariableExists(economy["UserData"], str(userId)):
-                return economy["UserData"][str(userId)]["Balance"]
+                return round(economy["UserData"][str(userId)]["Balance"])
             else:
                 return 0
         
@@ -648,7 +648,7 @@ if botToken["SlashCommandsOnly"] == False:
             if amount < 0:
                 amount = amount * -1
             if testIfVariableExists(economy["UserData"], str(userId)):
-                economy["UserData"][str(userId)]["Balance"] = economy["UserData"][str(userId)]["Balance"] + amount
+                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
                 with open("economy.json", "w") as outfile:
                     outfile.write(json.dumps(economy))
                 return True
@@ -658,7 +658,7 @@ if botToken["SlashCommandsOnly"] == False:
                     "Inventory": [],
                     "LatestDate": 0
                 }
-                economy["UserData"][str(userId)]["Balance"] = economy["UserData"][str(userId)]["Balance"] + amount
+                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
                 with open("economy.json", "w") as outfile:
                     outfile.write(json.dumps(economy))
                 return True
@@ -667,12 +667,22 @@ if botToken["SlashCommandsOnly"] == False:
             if amount < 0:
                 amount = amount * -1
             if checkCurrencyAmount(userId) >= amount:
-                economy["UserData"][str(userId)]["Balance"] = economy["UserData"][str(userId)]["Balance"] - amount
+                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] - amount)
                 with open("economy.json", "w") as outfile: 
                     outfile.write(json.dumps(economy))
                 return True
             else:
                 return False
+            
+        def applyRoleMultiplier(user):
+            listOfRolesWithMultipliers = economy["RoleMultiplier"]
+            highestMultiplier = 1
+            for i in listOfRolesWithMultipliers:
+                if bot.get_guild(guildId).get_role(i["roleid"]) in user.roles:
+                    if i["multiplier"] > highestMultiplier:
+                        highestMultiplier = i["multiplier"]
+            return highestMultiplier
+
         @bot.command()
         async def flipCoin(ctx, amount, guess):
             if cooldownCommand(ctx.message.author.id):
@@ -692,11 +702,11 @@ if botToken["SlashCommandsOnly"] == False:
                         if randomized == 1:
                             await sendEmbed(ctx, "🪙 Heads!", 2)
                             if guess == "Heads":
-                                createCurrency(ctx.message.author.id, amount * 2)
+                                createCurrency(ctx.message.author.id, amount * 2 * applyRoleMultiplier(ctx.message.author))
                         else:
                             await sendEmbed(ctx, "🪙 Tails!", 2)
                             if guess == "Tails":
-                                createCurrency(ctx.message.author.id, amount * 2)
+                                createCurrency(ctx.message.author.id, amount * 2 * applyRoleMultiplier(ctx.message.author))
                     else:    
                         await sendEmbed(ctx, "Failed to take money: Insufficent Balance", 3)
                 else:
@@ -726,7 +736,7 @@ if botToken["SlashCommandsOnly"] == False:
                     randomized = random.randint(1, max)
                     if randomized == estimate:
                         await sendEmbed(ctx, "Success! You got it! Chances: " + str(round(1 / max * 100)) + "%", 2)
-                        createCurrency(ctx.message.author.id, amount * max)
+                        createCurrency(ctx.message.author.id, amount * max * applyRoleMultiplier(ctx.message.author))
                     else:
                         await sendEmbed(ctx, "Failed! R.I.P. Chances: " + str(round(1 / max * 100)) + "%", 2)
                 else:
@@ -806,9 +816,9 @@ if botToken["SlashCommandsOnly"] == False:
                     }
                 if economy["UserData"][str(ctx.message.author.id)]["LatestDate"] <= datetime.now().timestamp():
                     economy["UserData"][str(ctx.message.author.id)]["LatestDate"] = datetime.now().timestamp() + 86400
-                    response = createCurrency(ctx.message.author.id, economy["Commands"]["Daily"])
+                    response = createCurrency(ctx.message.author.id, economy["Commands"]["Daily"] * applyRoleMultiplier(ctx.message.author))
                     if response == True:
-                        await sendEmbed(ctx, "You've received " + str(economy["Commands"]["Daily"]) + " " + economy["EconomyName"] + "! Come back in 24 hours!", 2)
+                        await sendEmbed(ctx, "You've received " + str(economy["Commands"]["Daily"] * applyRoleMultiplier(ctx.message.author)) + " " + economy["EconomyName"] + "! Come back in 24 hours!", 2)
                 else:
                     await sendEmbed(ctx, "Time is still remaining. Please wait!", 3)
 
@@ -829,6 +839,9 @@ if botToken["SlashCommandsOnly"] == False:
                             await sendEmbed(ctx, "Failed to buy item: No storage left, use an item in your inventory and try again!", 3)
                             return
                         if takeCurrency(ctx.message.author.id, item["price"]):
+                            if not item["role"] == 0:
+                                if not bot.get_guild(guildId).get_role(item["role"]) in ctx.user.roles:
+                                    ctx.message.author.add_roles(bot.get_guild(guildId).get_role(item["role"]))
                             StoreItems[itemname]["stock"] = StoreItems[itemname]["stock"] - 1
                             economy["UserData"][str(ctx.message.author.id)]["Inventory"].append(itemname)
                             with open("economy.json", "w") as outfile:
@@ -878,6 +891,12 @@ if botToken["SlashCommandsOnly"] == False:
                 if itemFromInventory == "":
                     await sendEmbed(ctx, "Item is not found in your inventory", 3)
                 else:
+                    itemLookUp = StoreItems[item]
+                    if not itemLookUp["role"] == 0:
+                        if bot.get_guild(guildId).get_role(itemLookUp["role"]) in ctx.user.roles:
+                            print("User already has role, ignored.")
+                        else:
+                            await ctx.message.author.add_roles(bot.get_guild(guildId).get_role(itemLookUp["role"]))
                     economy["UserData"][str(ctx.message.author.id)]["Inventory"].remove(itemFromInventory)
                     with open("economy.json", "w") as outfile:
                         outfile.write(json.dumps(economy))
@@ -889,7 +908,7 @@ if botToken["SlashCommandsOnly"] == False:
                         description="User " + "<@" + str(ctx.message.author.id) + ">" + " has redeemed a item: " + itemFromInventory,
                     )
                     embed.set_footer(
-                        text="Made by EfazDev#0220",
+                        text="Made by EfazDev#0220 - v1.0.0",
                         icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
                     )
                     channel = bot.get_channel(botToken["MainChannelId"])
@@ -898,7 +917,7 @@ if botToken["SlashCommandsOnly"] == False:
                     await sendEmbed(ctx, "Item used!", 2)
 
         @bot.command()
-        async def createItem(ctx, item: str, stock: int, price: int):
+        async def createItem(ctx, item: str, stock: int, price: int, roleId: str="0"):
             if cooldownCommand(ctx.message.author.id):
                 await sendEmbed(ctx, "Access Denied: Still on 2 minute cooldown, try again later!", 3)
                 return
@@ -909,13 +928,21 @@ if botToken["SlashCommandsOnly"] == False:
             if stock < 0:
                 stock = stock * -1
 
+            roleId = int(roleId)
+            if not roleId:
+                roleId = 0
+
+            if roleId < 0:
+                roleId = roleId * -1
+
             if predicate(ctx) == False or blacklisted(ctx) == True:
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
                 economy["StoreInventory"][item] = {
                     "stock": stock,
                     "price": price,
-                    "name": item
+                    "name": item,
+                    "role": roleId
                 }
                 with open("economy.json", "w") as outfile:
                     outfile.write(json.dumps(economy))
@@ -1000,8 +1027,8 @@ if botToken["SlashCommandsOnly"] == False:
             else:
                 jobList = economy["JobList"]
                 randomizedJob = jobList[random.randint(0, len(jobList) - 1)]
-                response = createCurrency(ctx.message.author.id, randomizedJob["amount"])
-                await sendEmbed(ctx, "You have earned " + str(randomizedJob["amount"]) + " from working as a " + randomizedJob["name"] + "!", 2)
+                response = createCurrency(ctx.message.author.id, randomizedJob["amount"] * applyRoleMultiplier(ctx.message.author))
+                await sendEmbed(ctx, "You have earned " + str(randomizedJob["amount"] * applyRoleMultiplier(ctx.message.author)) + " from working as a " + randomizedJob["name"] + "!", 2)
 
         @bot.command()
         async def cooldownCheck(ctx):
@@ -1043,6 +1070,13 @@ if botToken["SlashCommandsOnly"] == False:
 
 
                 await sendEmbed(ctx, message, 2)
+
+        @bot.command()
+        async def multiplierCheck(ctx):
+            if blacklisted(ctx) == True:
+                await sendEmbed(ctx, "Access Denied", 3)
+            else:
+                await sendEmbed(ctx, "Multiplier applied on non-gambling / non-user involved commands: " + str(applyRoleMultiplier(ctx.message.author)) + "x Multiplier", 2)
     else:
         print("Economy Commands have not been applied to the bot, switch Enabled variable to True to enable economy commands.")
 
@@ -1610,7 +1644,7 @@ else:
     if economy["Enabled"] == True:
         def checkCurrencyAmount(userId):
             if testIfVariableExists(economy["UserData"], str(userId)):
-                return economy["UserData"][str(userId)]["Balance"]
+                return round(economy["UserData"][str(userId)]["Balance"])
             else:
                 return 0
             
@@ -1618,7 +1652,7 @@ else:
             if amount < 0:
                 amount = amount * -1
             if testIfVariableExists(economy["UserData"], str(userId)):
-                economy["UserData"][str(userId)]["Balance"] = economy["UserData"][str(userId)]["Balance"] + amount
+                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
                 with open("economy.json", "w") as outfile:
                     outfile.write(json.dumps(economy))
                 return True
@@ -1628,7 +1662,7 @@ else:
                     "Inventory": [],
                     "LatestDate": 0
                 }
-                economy["UserData"][str(userId)]["Balance"] = economy["UserData"][str(userId)]["Balance"] + amount
+                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
                 with open("economy.json", "w") as outfile:
                     outfile.write(json.dumps(economy))
                 return True
@@ -1637,12 +1671,21 @@ else:
             if amount < 0:
                 amount = amount * -1
             if checkCurrencyAmount(userId) >= amount:
-                economy["UserData"][str(userId)]["Balance"] = economy["UserData"][str(userId)]["Balance"] - amount
+                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] - amount)
                 with open("economy.json", "w") as outfile: 
                     outfile.write(json.dumps(economy))
                 return True
             else:
                 return False
+            
+        def applyRoleMultiplier(user):
+            listOfRolesWithMultipliers = economy["RoleMultiplier"]
+            highestMultiplier = 1
+            for i in listOfRolesWithMultipliers:
+                if bot.get_guild(guildId).get_role(i["roleid"]) in user.roles:
+                    if i["multiplier"] > highestMultiplier:
+                        highestMultiplier = i["multiplier"]
+            return highestMultiplier
             
         def cooldownCommand(userId):
             if testIfVariableExists(economy["UserData"], str(userId)):
@@ -1687,11 +1730,11 @@ else:
                         if randomized == 1:
                             await sendEmbedTree(ctx, "🪙 Heads!", 2)
                             if guess == "Heads":
-                                createCurrency(ctx.user.id, amount * 2)
+                                createCurrency(ctx.user.id, amount * 2 * applyRoleMultiplier(ctx.user))
                         else:
                             await sendEmbedTree(ctx, "🪙 Tails!", 2)
                             if guess == "Tails":
-                                createCurrency(ctx.user.id, amount * 2)
+                                createCurrency(ctx.user.id, amount * 2 * applyRoleMultiplier(ctx.user))
                     else:
                         await sendEmbedTree(ctx, "Failed to take money: Insufficent Balance", 3)
                 else:
@@ -1721,7 +1764,7 @@ else:
                     randomized = random.randint(1, max)
                     if randomized == estimate:
                         await sendEmbedTree(ctx, "Success! You got it! Chances: " + str(round(1 / max * 100)) + "%", 2)
-                        createCurrency(ctx.user.id, amount * max)
+                        createCurrency(ctx.user.id, amount * max * applyRoleMultiplier(ctx.user))
                     else:
                         await sendEmbedTree(ctx, "Failed! R.I.P. Chances: " + str(round(1 / max * 100)) + "%", 2)
                 else:
@@ -1818,9 +1861,9 @@ else:
                     }
                 if economy["UserData"][str(ctx.user.id)]["LatestDate"] <= datetime.now().timestamp():
                     economy["UserData"][str(ctx.user.id)]["LatestDate"] = datetime.now().timestamp() + 86400
-                    response = createCurrency(ctx.user.id, economy["Commands"]["Daily"])
+                    response = createCurrency(ctx.user.id, economy["Commands"]["Daily"] * applyRoleMultiplier(ctx.user))
                     if response == True:
-                        await sendEmbedTree(ctx, "You've received " + str(economy["Commands"]["Daily"]) + " " + economy["EconomyName"] + "! Come back in 24 hours!", 2)
+                        await sendEmbedTree(ctx, "You've received " + str(economy["Commands"]["Daily"] * applyRoleMultiplier(ctx.user)) + " " + economy["EconomyName"] + "! Come back in 24 hours!", 2)
                 else:
                     await sendEmbedTree(ctx, "Time is still remaining. Please wait!", 3)
 
@@ -1843,6 +1886,9 @@ else:
                             await sendEmbedTree(ctx, "Failed to buy item: No storage left, use an item in your inventory and try again!", 3)
                             return
                         if takeCurrency(ctx.user.id, item["price"]):
+                            if not item["role"] == 0:
+                                if not bot.get_guild(guildId).get_role(item["role"]) in ctx.user.roles:
+                                    ctx.user.add_roles(bot.get_guild(guildId).get_role(item["role"]))
                             economy["StoreInventory"][itemname]["stock"] = economy["StoreInventory"][itemname]["stock"] - 1
                             economy["UserData"][str(ctx.user.id)]["Inventory"].append(itemname)
                             with open("economy.json", "w") as outfile:
@@ -1900,6 +1946,12 @@ else:
                 if itemFromInventory == "":
                     await sendEmbedTree(ctx, "Item is not found in your inventory", 3)
                 else:
+                    itemLookUp = StoreItems[itemFromInventory]
+                    if not itemLookUp["role"] == 0:
+                        if bot.get_guild(guildId).get_role(itemLookUp["role"]) in ctx.user.roles:
+                            print("User already has role, ignored.")
+                        else:
+                            await ctx.user.add_roles(bot.get_guild(guildId).get_role(itemLookUp["role"]))
                     economy["UserData"][str(ctx.user.id)]["Inventory"].remove(itemFromInventory)
                     with open("economy.json", "w") as outfile:
                         outfile.write(json.dumps(economy))
@@ -1911,7 +1963,7 @@ else:
                         description="User " + "<@" + str(ctx.user.id) + ">" + " has redeemed a item: " + itemFromInventory,
                     )
                     embed.set_footer(
-                        text="Made by EfazDev#0220",
+                        text="Made by EfazDev#0220 - v1.0.0",
                         icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
                     )
                     channel = bot.get_channel(botToken["MainChannelId"])
@@ -1924,19 +1976,35 @@ else:
             description="Create an item in the store.",
             guild=discord.Object(id=guildId),
         )
-        async def createItem(ctx, item: str, stock: int, price: int):
+        async def createItem(ctx, item: str, stock: int, price: int, roleid: str="0"):
             if price < 0:
                 price = price * -1
             if stock < 0:
                 stock = stock * -1
+
+            roleId = int(roleid)
+            if not roleId:
+                roleId =  0
+
+            if roleId < 0:
+                roleId = roleId * -1
             if predicate(ctx) == False or blacklisted(ctx) == True:
                 await sendEmbedTree(ctx, "Access Denied", 3)
             else:
-                economy["StoreInventory"][item] = {
-                    "stock": stock,
-                    "price": price,
-                    "name": item
-                }
+                if not roleId == 0: 
+                    economy["StoreInventory"][item] = {
+                        "stock": stock,
+                        "price": price,
+                        "name": item,
+                        "role": roleId
+                    }
+                else:
+                    economy["StoreInventory"][item] = {
+                        "stock": stock,
+                        "price": price,
+                        "name": item,
+                        "role": 0
+                    }
                 with open("economy.json", "w") as outfile:
                     outfile.write(json.dumps(economy))
                 await sendEmbedTree(ctx, "Created item!", 2)
@@ -2036,8 +2104,8 @@ else:
             else:
                 jobList = economy["JobList"]
                 randomizedJob = jobList[random.randint(0, len(jobList) - 1)]
-                response = createCurrency(ctx.user.id, randomizedJob["amount"])
-                await sendEmbedTree(ctx, "You have earned " + str(randomizedJob["amount"]) + " from working as a " + randomizedJob["name"] + "!", 2)
+                response = createCurrency(ctx.user.id, randomizedJob["amount"] * applyRoleMultiplier(ctx.user))
+                await sendEmbedTree(ctx, "You have earned " + str(randomizedJob["amount"] * applyRoleMultiplier(ctx.user)) + " from working as a " + randomizedJob["name"] + "!", 2)
         @tree.command(
             name="cooldowncheck",
             description="Check your cooldown",
@@ -2084,6 +2152,17 @@ else:
                         message = message + "<@" + str(keys[i]) + "> | " + str(len(economy["UserData"][keys[i]]["Inventory"])) + " \n"
 
                 await sendEmbedTree(ctx, message, 2)
+        @tree.command(
+            name="multipliercheck",
+            description="Check your Multiplier",
+            guild=discord.Object(id=guildId),
+        )
+        async def multiplierCheck(ctx):
+            if blacklisted(ctx) == True:
+                await sendEmbedTree(ctx, "Access Denied", 3)
+            else:
+                await sendEmbedTree(ctx, "Multiplier applied on non-gambling / non-user involved commands: " + str(applyRoleMultiplier(ctx.user)) + "x Multiplier", 2)
+
     else:
         print("Economy Commands have not been applied to the bot, switch Enabled variable to True to enable economy commands.")
 

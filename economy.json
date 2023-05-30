@@ -25,5 +25,6 @@
             "amount": 100
         }
     ],
+    "RoleMultiplier": [],
     "InventoryLimit": 20
 }
