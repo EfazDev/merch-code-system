@@ -1838,7 +1838,7 @@ else:
                     }
                 response = takeCurrency(user.id, amount)
                 if response == True:
-                    await sendEmbedTree(ctx, "Gave " + str(amount) + " currency to " + user.name + "!", 2)
+                    await sendEmbedTree(ctx, "Removed " + str(amount) + " currency from " + user.name + "!", 2)
                 else:
                     await sendEmbedTree(ctx, "Failed to take money: Insufficent Balance", 3)
 
