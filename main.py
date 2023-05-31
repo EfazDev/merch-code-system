@@ -841,7 +841,7 @@ if botToken["SlashCommandsOnly"] == False:
                         if takeCurrency(ctx.message.author.id, item["price"]):
                             if not item["role"] == 0:
                                 if not bot.get_guild(guildId).get_role(item["role"]) in ctx.user.roles:
-                                    ctx.message.author.add_roles(bot.get_guild(guildId).get_role(item["role"]))
+                                    await ctx.message.author.add_roles(bot.get_guild(guildId).get_role(item["role"]))
                             StoreItems[itemname]["stock"] = StoreItems[itemname]["stock"] - 1
                             economy["UserData"][str(ctx.message.author.id)]["Inventory"].append(itemname)
                             with open("economy.json", "w") as outfile:
@@ -1902,7 +1902,7 @@ else:
                         if takeCurrency(ctx.user.id, item["price"]):
                             if not item["role"] == 0:
                                 if not bot.get_guild(guildId).get_role(item["role"]) in ctx.user.roles:
-                                    ctx.user.add_roles(bot.get_guild(guildId).get_role(item["role"]))
+                                   await ctx.user.add_roles(bot.get_guild(guildId).get_role(item["role"]))
                             economy["StoreInventory"][itemname]["stock"] = economy["StoreInventory"][itemname]["stock"] - 1
                             economy["UserData"][str(ctx.user.id)]["Inventory"].append(itemname)
                             with open("economy.json", "w") as outfile:
