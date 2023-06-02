@@ -181,23 +181,23 @@ else:
                 "Daily": economy4
             },
             "JobList": [
-        {
-            "name": "Mayor",
-            "amount": 5000
-        },
-        {
-            "name": "District Worker",
-            "amount": 1000
-        },
-        {
-            "name": "Principal",
-            "amount": 500
-        },
-        {
-            "name": "Teacher",
-            "amount": 100
-        },
-    ],
+                {
+                    "name": "Mayor",
+                    "amount": 5000
+                },
+                {
+                    "name": "District Worker",
+                    "amount": 1000
+                },
+                {
+                    "name": "Principal",
+                    "amount": 500
+                },
+                {
+                    "name": "Teacher",
+                    "amount": 100
+                },
+            ],
             "InventoryLimit": economy5,
             "RoleMultiplier": []
         }
