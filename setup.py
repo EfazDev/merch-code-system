@@ -196,9 +196,10 @@ else:
         {
             "name": "Teacher",
             "amount": 100
-        }
+        },
     ],
-            "InventoryLimit": economy5
+            "InventoryLimit": economy5,
+            "RoleMultiplier": []
         }
         with open("economy.json", "w") as outfile:
             outfile.write(json.dumps(economyJSON))
