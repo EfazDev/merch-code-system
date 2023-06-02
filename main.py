@@ -1076,7 +1076,7 @@ if botToken["SlashCommandsOnly"] == False:
             if blacklisted(ctx) == True:
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
-                await sendEmbed(ctx, "Multiplier applied on non-gambling / non-user involved commands: " + str(applyRoleMultiplier(ctx.message.author)) + "x Multiplier", 2)
+                await sendEmbed(ctx, "Multiplier applied on non-user involved commands: " + str(applyRoleMultiplier(ctx.message.author)) + "x Multiplier", 2)
 
         @bot.command()
         async def endItemListing(ctx, item: str):
@@ -2193,7 +2193,7 @@ else:
             if blacklisted(ctx) == True:
                 await sendEmbedTree(ctx, "Access Denied", 3)
             else:
-                await sendEmbedTree(ctx, "Multiplier applied on non-gambling / non-user involved commands: " + str(applyRoleMultiplier(ctx.user)) + "x Multiplier", 2)
+                await sendEmbedTree(ctx, "Multiplier applied on non-user involved commands: " + str(applyRoleMultiplier(ctx.user)) + "x Multiplier", 2)
 
     else:
         print("Economy Commands have not been applied to the bot, switch Enabled variable to True to enable economy commands.")
