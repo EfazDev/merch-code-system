@@ -667,10 +667,13 @@ if botToken["SlashCommandsOnly"] == False:
             if amount < 0:
                 amount = amount * -1
             if checkCurrencyAmount(userId) >= amount:
-                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] - amount)
-                with open("economy.json", "w") as outfile: 
-                    outfile.write(json.dumps(economy))
-                return True
+                if testIfVariableExists(economy["UserData"], str(userId)):
+                    economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] - amount)
+                    with open("economy.json", "w") as outfile: 
+                        outfile.write(json.dumps(economy))
+                    return True
+                else:
+                    return False
             else:
                 return False
             
@@ -702,11 +705,11 @@ if botToken["SlashCommandsOnly"] == False:
                         if randomized == 1:
                             await sendEmbed(ctx, "🪙 Heads!", 2)
                             if guess == "Heads":
-                                createCurrency(ctx.message.author.id, amount * 2 * applyRoleMultiplier(ctx.message.author))
+                                createCurrency(ctx.message.author.id, amount * 2)
                         else:
                             await sendEmbed(ctx, "🪙 Tails!", 2)
                             if guess == "Tails":
-                                createCurrency(ctx.message.author.id, amount * 2 * applyRoleMultiplier(ctx.message.author))
+                                createCurrency(ctx.message.author.id, amount * 2)
                     else:    
                         await sendEmbed(ctx, "Failed to take money: Insufficent Balance", 3)
                 else:
@@ -736,7 +739,7 @@ if botToken["SlashCommandsOnly"] == False:
                     randomized = random.randint(1, max)
                     if randomized == estimate:
                         await sendEmbed(ctx, "Success! You got it! Chances: " + str(round(1 / max * 100)) + "%", 2)
-                        createCurrency(ctx.message.author.id, amount * max * applyRoleMultiplier(ctx.message.author))
+                        createCurrency(ctx.message.author.id, amount * max)
                     else:
                         await sendEmbed(ctx, "Failed! R.I.P. Chances: " + str(round(1 / max * 100)) + "%", 2)
                 else:
@@ -1685,10 +1688,13 @@ else:
             if amount < 0:
                 amount = amount * -1
             if checkCurrencyAmount(userId) >= amount:
-                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] - amount)
-                with open("economy.json", "w") as outfile: 
-                    outfile.write(json.dumps(economy))
-                return True
+                if testIfVariableExists(economy["UserData"], str(userId)):
+                    economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] - amount)
+                    with open("economy.json", "w") as outfile: 
+                        outfile.write(json.dumps(economy))
+                    return True
+                else:
+                    return False
             else:
                 return False
             
