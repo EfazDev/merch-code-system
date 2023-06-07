@@ -32,8 +32,8 @@ resp = requests.get(url)
 if resp.status_code == 200:
     print("Finished GET Request, saving script...")
     content = resp.text
-    f = open("main.py", "w")
-    f.write(content)
+    with open("main.py", "w", encoding="utf-8") as f:
+        f.write(content)
     print("Finished Writing Script")
     print("Running Script...")
     subprocess.Popen([whichPythonCommand(), 'main.py'])
