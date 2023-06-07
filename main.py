@@ -985,6 +985,9 @@ if botToken["SlashCommandsOnly"] == False:
             if blacklisted(ctx) == True:
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
+                if user.id == botToken["OwnerId"]:
+                    await sendEmbed(ctx, "Failed! You can't rob the guild owner!", 3)
+                    return
                 randomized = random.randint(1, economy["SuccessRate"])
                 if checkCurrencyAmount(ctx.message.author.id) >= 1:
                     if randomized == 1:
@@ -2089,6 +2092,9 @@ else:
             if blacklisted(ctx) == True:
                 await sendEmbedTree(ctx, "Access Denied", 3)
             else:
+                if user.id == botToken["OwnerId"]:
+                    await sendEmbedTree(ctx, "Failed! You can't rob the guild owner!", 3)
+                    return
                 randomized = random.randint(1, economy["SuccessRate"])
                 if checkCurrencyAmount(ctx.user.id) >= 1:
                     if randomized == 1:
