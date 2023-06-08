@@ -656,7 +656,8 @@ if botToken["SlashCommandsOnly"] == False:
                 economy["UserData"][str(userId)] = {
                     "Balance": 0,
                     "Inventory": [],
-                    "LatestDate": 0
+                    "LatestDate": 0,
+                    "Cooldown": 0,
                 }
                 economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
                 with open("economy.json", "w") as outfile:
@@ -1680,7 +1681,8 @@ else:
                 economy["UserData"][str(userId)] = {
                     "Balance": 0,
                     "Inventory": [],
-                    "LatestDate": 0
+                    "LatestDate": 0,
+                    "Cooldown": 0,
                 }
                 economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
                 with open("economy.json", "w") as outfile:
