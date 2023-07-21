@@ -127,7 +127,7 @@ if alreadyexists.lower() == "y":
                 codes[code]["Role"] = 0
             if not testIfVariableExists(code, "Reward"):
                 codes[code]["Reward"] = real_code["reward"]
-                codes[code]["reward"] = ""
+                codes[code].pop('reward', None)
         codesNew = codes
 
         # users

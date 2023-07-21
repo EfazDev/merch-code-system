@@ -591,11 +591,38 @@ if __name__ == "__main__":
                     if codes[i]["OneUserOnly"] == True:
                         if codes[i]["Redeemed"] == False:
                             string = string + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                            if not codes[i]["Role"] == 0:
+                                string = string + "Includes Role : <@&" + str(codes[i]["Role"]) + "> "
                         else:
                             listNotAvailable = listNotAvailable + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                            if not codes[i]["Role"] == 0:
+                                listNotAvailable = listNotAvailable + "Includes Role : <@&" + str(codes[i]["Role"]) + "> "
                     else:
                         string = string + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                        if not codes[i]["Role"] == 0:
+                            string = string + "Includes Role : <@&" + str(codes[i]["Role"]) + "> "
                 await sendEmbed(ctx, string + " \n\n" + listNotAvailable, 2)
+
+        @bot.command()
+        async def clearAlreadyRedeemed(ctx):
+            if predicate(ctx) == False or blacklisted(ctx) == True:
+                print("returns False")
+                await sendEmbed(ctx, "Access Denied", 3)
+            else:
+                print("returns True")
+                ListOfCodes = list(codes.keys())
+                listNotAvailable = "List of **cleared** codes: "
+                for i in ListOfCodes:
+                    if codes[i]["OneUserOnly"] == True:
+                        if codes[i]["Redeemed"] == True:
+                            try:
+                                codes.pop(codes[i], None)
+                                listNotAvailable = listNotAvailable + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                                if not codes[i]["Role"] == 0:
+                                    listNotAvailable = listNotAvailable + "Includes Role : <@&" + str(codes[i]["Role"]) + "> "
+                            except Exception as e:
+                                print("Failed to remove code: " + str(e))
+                await sendEmbed(ctx, listNotAvailable, 2)
 
         @bot.command()
         async def deleteCode(ctx, arg1):
@@ -1455,11 +1482,42 @@ if __name__ == "__main__":
                     if codes[i]["OneUserOnly"] == True:
                         if codes[i]["Redeemed"] == False:
                             string = string + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                            if not codes[i]["Role"] == 0:
+                                string = string + "Includes Role : <@&" + str(codes[i]["Role"]) + "> "
                         else:
                             listNotAvailable = listNotAvailable + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                            if not codes[i]["Role"] == 0:
+                                listNotAvailable = listNotAvailable + "Includes Role : <@&" + str(codes[i]["Role"]) + "> "
                     else:
                         string = string + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                        if not codes[i]["Role"] == 0:
+                            string = string + "Includes Role : <@&" + str(codes[i]["Role"]) + "> "
                 await sendEmbedTree(ctx, string + " \n\n" + listNotAvailable, 2)
+
+        @tree.command(
+            name="clearalreadyredeemedcodes",
+            description="Clears and Deletes all already redeemed codes.",
+            guild=discord.Object(id=guildId),
+        )
+        async def clearAlreadyRedeemed(ctx: discord.Interaction):
+            if predicate(ctx) == False or blacklisted(ctx) == True:
+                print("returns False")
+                await sendEmbedTree(ctx, "Access Denied", 3)
+            else:
+                print("returns True")
+                ListOfCodes = list(codes.keys())
+                listNotAvailable = "List of **cleared** codes: "
+                for i in ListOfCodes:
+                    if codes[i]["OneUserOnly"] == True:
+                        if codes[i]["Redeemed"] == True:
+                            try:
+                                codes.pop(codes[i], None)
+                                listNotAvailable = listNotAvailable + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                                if not codes[i]["Role"] == 0:
+                                    listNotAvailable = listNotAvailable + "Includes Role : <@&" + str(codes[i]["Role"]) + "> "
+                            except Exception as e:
+                                print("Failed to remove code: " + str(e))
+                await sendEmbedTree(ctx, listNotAvailable, 2)
 
         @tree.command(
             name="redeem",
