@@ -88,7 +88,7 @@ if alreadyexists.lower() == "y":
         with open("economy.json") as f:
             economyNew = json.load(f)
         with open("main.py") as f:
-            mainNew = json.load(f)
+            mainNew = f.read()
 
         # exchange conversion center
 
