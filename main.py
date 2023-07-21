@@ -616,7 +616,7 @@ if __name__ == "__main__":
                     if codes[i]["OneUserOnly"] == True:
                         if codes[i]["Redeemed"] == True:
                             try:
-                                codes.pop(codes[i], None)
+                                codes.pop(i, None)
                                 listNotAvailable = listNotAvailable + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
                                 if not codes[i]["Role"] == 0:
                                     listNotAvailable = listNotAvailable + "Includes Role : <@&" + str(codes[i]["Role"]) + "> "
@@ -1511,7 +1511,7 @@ if __name__ == "__main__":
                     if codes[i]["OneUserOnly"] == True:
                         if codes[i]["Redeemed"] == True:
                             try:
-                                codes.pop(codes[i], None)
+                                codes.pop(i, None)
                                 listNotAvailable = listNotAvailable + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
                                 if not codes[i]["Role"] == 0:
                                     listNotAvailable = listNotAvailable + "Includes Role : <@&" + str(codes[i]["Role"]) + "> "
