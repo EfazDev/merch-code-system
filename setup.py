@@ -164,7 +164,7 @@ if alreadyexists.lower() == "y":
         with open("codes.json", "w") as outfile:
             outfile.write(json.dumps(codesNew))
         with open("economy.json", "w") as outfile:
-            outfile.write(json.dumps(economy))
+            outfile.write(json.dumps(economyNew))
         enter = input("Press Enter to finish setup: ")
     else:
         print("Ending process..")
