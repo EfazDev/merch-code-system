@@ -1,7 +1,7 @@
 {
     "Token": "",
-    "OwnerId": 0,
-    "MainChannelId": 0,
+    "Admins": [0],
+    "NotificationChannelId": 0,
     "ServerID": 0,
     "SlashCommandsOnly": true,
     "BlacklistedUsers": {}

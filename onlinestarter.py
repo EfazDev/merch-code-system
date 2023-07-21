@@ -1,26 +1,15 @@
 import requests
 import platform
 import subprocess
+import sys
 import os
 import time
-
-def whichPythonCommand():
-    LocalMachineOS = platform.system()
-    if LocalMachineOS == "Darwin" or LocalMachineOS == "Linux":
-        return "python3"
-    elif LocalMachineOS == "win32" or LocalMachineOS == "win64" or LocalMachineOS == "Windows":
-        return "python"
-    else:
-        return "python3"
     
-if whichPythonCommand() == "python3":
-    os.system("clear")
-else:
-    os.system("cls")
+os.system("cls" if os.name == "nt" else "clear")
     
 print("Welcome to Efaz's Merch Code System Launcher!")
 print("")
-print("Launcher Made by EfazDev#0220")
+print("Launcher Made by Efaz at efaz.dev")
 print("")
 print("Looking for System Device Details...")
 print("Detected: " + platform.system())
@@ -36,7 +25,7 @@ if resp.status_code == 200:
         f.write(content)
     print("Finished Writing Script")
     print("Running Script...")
-    subprocess.Popen([whichPythonCommand(), 'main.py'])
+    subprocess.Popen([sys.executable, 'main.py'])
     print("Finished Running, ending launcher...")
     quit()
 else:

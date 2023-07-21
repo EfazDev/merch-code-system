@@ -1,5 +1,5 @@
 {
-    "Enabled": true,
+    "Enabled": false,
     "UserData": {},
     "StoreInventory": {},
     "EconomyName": "Cash",
@@ -25,6 +25,25 @@
             "amount": 100
         }
     ],
+    "GreatReset": {
+        "Enabled": false,
+        "RolesToReset": [],
+        "SeasonNumber": 1,
+        "DataToReset": {
+            "Cash": true,
+            "Roles": true,
+            "Items": false
+        },
+        "CashKingRoleID": 0,
+        "ItemDataWhenRestock": [
+            {
+                "stock": 1,
+                "price": 10000000,
+                "name": "Cash King",
+                "role": 0
+            }
+        ]
+    },
     "RoleMultiplier": [],
     "InventoryLimit": 20
 }
