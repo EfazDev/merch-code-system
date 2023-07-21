@@ -119,12 +119,13 @@ if alreadyexists.lower() == "y":
 
         # codes
 
-        for code in codes:
-            if not testIfVariableExists(code, "Role"):
-                code["Role"] = 0
+        for code in codes.keys():
+            real_code = codes[code]
+            if not testIfVariableExists(real_code, "Role"):
+                codes[code]["Role"] = 0
             if not testIfVariableExists(code, "Reward"):
-                code["Reward"] = code["reward"]
-                code["reward"] = ""
+                codes[code]["Reward"] = real_code["reward"]
+                codes[code]["reward"] = ""
         codesNew = code
 
         # users
