@@ -87,6 +87,8 @@ if alreadyexists.lower() == "y":
             botTokenNew = json.load(f)
         with open("economy.json") as f:
             economyNew = json.load(f)
+        with open("main.py") as f:
+            mainNew = json.load(f)
 
         # exchange conversion center
 
@@ -157,14 +159,17 @@ if alreadyexists.lower() == "y":
 
         # end of conversion
 
-        with open("bot.json", "w") as outfile:
+        with open(newDirect + "bot.json", "w") as outfile:
             outfile.write(json.dumps(botTokenNew))
-        with open("users.json", "w") as outfile:
+        with open(newDirect + "users.json", "w") as outfile:
             outfile.write(json.dumps(userDataNew))
-        with open("codes.json", "w") as outfile:
+        with open(newDirect + "codes.json", "w") as outfile:
             outfile.write(json.dumps(codesNew))
-        with open("economy.json", "w") as outfile:
+        with open(newDirect + "economy.json", "w") as outfile:
             outfile.write(json.dumps(economyNew))
+        with open(newDirect + "main.py", "w") as outfile:
+            outfile.write(mainNew)
+        print("Successfully updated Merch Code System Directory " + newDirect + "! You may use it!")
         enter = input("Press Enter to finish setup: ")
     else:
         print("Ending process..")
