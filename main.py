@@ -2331,7 +2331,7 @@ if __name__ == "__main__":
 
             @tree.command(
                 name="viewstorestock",
-                description="Create an item in the store.",
+                description="View Current stock inside the store.",
                 guild=discord.Object(id=guildId),
             )
             async def viewstorestock(ctx):
