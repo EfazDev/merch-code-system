@@ -592,17 +592,20 @@ if __name__ == "__main__":
                     add_string_b = ""
                     if codes[i]["OneUserOnly"] == True:
                         if codes[i]["Redeemed"] == False:
-                            add_string_a = "" + i + "` : `" + codes[i]["Reward"] + "` "
-                            if not codes[i]["Role"] == 0:
+                            if codes[i]["Role"] == 0:
+                                add_string_a = "`" + i + "` : `" + codes[i]["Reward"] + "` "
+                            else:
                                 add_string_a = "`" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
                         else:
-                            add_string_b = "`" + i + "` : `" + codes[i]["Reward"] + "` "
-                            if not codes[i]["Role"] == 0:
+                            if codes[i]["Role"] == 0:
+                                add_string_b = "`" + i + "` : `" + codes[i]["Reward"] + "` "
+                            else:
                                 add_string_b = "`" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
                     else:
-                        add_string_a = "`" + i + "` : `" + codes[i]["Reward"] + "` "
-                        if not codes[i]["Role"] == 0:
+                        if codes[i]["Role"] == 0:
                             add_string_a = "`" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
+                        else:
+                            add_string_a = "`" + i + "` : `" + codes[i]["Reward"] + "` "
                     string = string + "\n" + add_string_a
                     listNotAvailable = listNotAvailable + "\n" + add_string_b
 
@@ -630,6 +633,8 @@ if __name__ == "__main__":
                                 listNotAvailable = listNotAvailable + add_string
                             except Exception as e:
                                 print("Failed to remove code: " + str(e))
+                with open("codes.json", "w") as outfile:
+                    outfile.write(json.dumps(codes))
                 await sendEmbed(ctx, listNotAvailable, 2)
 
         @bot.command()
@@ -1491,17 +1496,20 @@ if __name__ == "__main__":
                     add_string_b = ""
                     if codes[i]["OneUserOnly"] == True:
                         if codes[i]["Redeemed"] == False:
-                            add_string_a = "" + i + "` : `" + codes[i]["Reward"] + "` "
-                            if not codes[i]["Role"] == 0:
+                            if codes[i]["Role"] == 0:
+                                add_string_a = "`" + i + "` : `" + codes[i]["Reward"] + "` "
+                            else:
                                 add_string_a = "`" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
                         else:
-                            add_string_b = "`" + i + "` : `" + codes[i]["Reward"] + "` "
-                            if not codes[i]["Role"] == 0:
+                            if codes[i]["Role"] == 0:
+                                add_string_b = "`" + i + "` : `" + codes[i]["Reward"] + "` "
+                            else:
                                 add_string_b = "`" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
                     else:
-                        add_string_a = "`" + i + "` : `" + codes[i]["Reward"] + "` "
-                        if not codes[i]["Role"] == 0:
+                        if codes[i]["Role"] == 0:
                             add_string_a = "`" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
+                        else:
+                            add_string_a = "`" + i + "` : `" + codes[i]["Reward"] + "` "
                     string = string + "\n" + add_string_a
                     listNotAvailable = listNotAvailable + "\n" + add_string_b
 
@@ -1528,11 +1536,13 @@ if __name__ == "__main__":
 
                                 if not codes[i]["Role"] == 0:
                                     add_string = add_string + " : <@&" + str(codes[i]["Role"]) + "> "
-
+                                
                                 codes.pop(i, None)
                                 listNotAvailable = listNotAvailable + add_string
                             except Exception as e:
                                 print("Failed to remove code: " + str(e))
+                with open("codes.json", "w") as outfile:
+                    outfile.write(json.dumps(codes))
                 await sendEmbedTree(ctx, listNotAvailable, 2)
 
         @tree.command(
