@@ -592,19 +592,19 @@ if __name__ == "__main__":
                     add_string_b = ""
                     if codes[i]["OneUserOnly"] == True:
                         if codes[i]["Redeemed"] == False:
-                            add_string_a = "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                            add_string_a = "" + i + "` : `" + codes[i]["Reward"] + "` "
                             if not codes[i]["Role"] == 0:
-                                add_string_a = "\n `" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
+                                add_string_a = "`" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
                         else:
-                            add_string_b = "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                            add_string_b = "`" + i + "` : `" + codes[i]["Reward"] + "` "
                             if not codes[i]["Role"] == 0:
-                                add_string_b = "\n `" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
+                                add_string_b = "`" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
                     else:
-                        add_string_a = "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                        add_string_a = "`" + i + "` : `" + codes[i]["Reward"] + "` "
                         if not codes[i]["Role"] == 0:
-                            add_string_a = "\n `" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
-                    string = string + add_string_a
-                    listNotAvailable = listNotAvailable + add_string_b
+                            add_string_a = "`" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
+                    string = string + "\n" + add_string_a
+                    listNotAvailable = listNotAvailable + "\n" + add_string_b
 
                 await sendEmbed(ctx, string + " \n\n" + listNotAvailable, 2)
 
@@ -1491,20 +1491,20 @@ if __name__ == "__main__":
                     add_string_b = ""
                     if codes[i]["OneUserOnly"] == True:
                         if codes[i]["Redeemed"] == False:
-                            add_string_a = "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                            add_string_a = "" + i + "` : `" + codes[i]["Reward"] + "` "
                             if not codes[i]["Role"] == 0:
-                                add_string_a = "\n `" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
+                                add_string_a = "`" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
                         else:
-                            add_string_b = "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                            add_string_b = "`" + i + "` : `" + codes[i]["Reward"] + "` "
                             if not codes[i]["Role"] == 0:
-                                add_string_b = "\n `" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
+                                add_string_b = "`" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
                     else:
-                        add_string_a = "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                        add_string_a = "`" + i + "` : `" + codes[i]["Reward"] + "` "
                         if not codes[i]["Role"] == 0:
-                            add_string_a = "\n `" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
-                    string = string + add_string_a
-                    listNotAvailable = listNotAvailable + add_string_b
-                    
+                            add_string_a = "`" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
+                    string = string + "\n" + add_string_a
+                    listNotAvailable = listNotAvailable + "\n" + add_string_b
+
                 await sendEmbedTree(ctx, string + " \n\n" + listNotAvailable, 2)
 
         @tree.command(
