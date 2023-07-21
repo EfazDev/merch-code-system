@@ -591,20 +591,20 @@ if __name__ == "__main__":
                     if codes[i]["OneUserOnly"] == True:
                         if codes[i]["Redeemed"] == False:
                             if codes[i]["Role"] == 0:
-                                string = string + "\n `" + i + "` : `" + codes[i]["reward"] + "` "
+                                string = string + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
                             else:
-                                string = string + "\n `" + i + "` : `" + codes[i]["reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
+                                string = string + "\n `" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
                         else:
                             if codes[i]["Role"] == 0:
-                                listNotAvailable = listNotAvailable + "\n `" + i + "` : `" + codes[i]["reward"] + "` "
+                                listNotAvailable = listNotAvailable + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
                             else:
-                                listNotAvailable = listNotAvailable + "\n `" + i + "` : `" + codes[i]["reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
+                                listNotAvailable = listNotAvailable + "\n `" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
                     else:
                         if codes[i]["Role"] == 0:
-                            string = string + "\n `" + i + "` : `" + codes[i]["reward"] + "` "
+                            string = string + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
                         else:
-                            string = string + "\n `" + i + "` : `" + codes[i]["reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
-                            
+                            string = string + "\n `" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
+
                 await sendEmbed(ctx, string + " \n\n" + listNotAvailable, 2)
 
         @bot.command()
@@ -1491,19 +1491,19 @@ if __name__ == "__main__":
                     if codes[i]["OneUserOnly"] == True:
                         if codes[i]["Redeemed"] == False:
                             if codes[i]["Role"] == 0:
-                                string = string + "\n `" + i + "` : `" + codes[i]["reward"] + "` "
+                                string = string + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
                             else:
-                                string = string + "\n `" + i + "` : `" + codes[i]["reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
+                                string = string + "\n `" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
                         else:
                             if codes[i]["Role"] == 0:
-                                listNotAvailable = listNotAvailable + "\n `" + i + "` : `" + codes[i]["reward"] + "` "
+                                listNotAvailable = listNotAvailable + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
                             else:
-                                listNotAvailable = listNotAvailable + "\n `" + i + "` : `" + codes[i]["reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
+                                listNotAvailable = listNotAvailable + "\n `" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
                     else:
                         if codes[i]["Role"] == 0:
-                            string = string + "\n `" + i + "` : `" + codes[i]["reward"] + "` "
+                            string = string + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
                         else:
-                            string = string + "\n `" + i + "` : `" + codes[i]["reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
+                            string = string + "\n `" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
 
                 await sendEmbedTree(ctx, string + " \n\n" + listNotAvailable, 2)
 
