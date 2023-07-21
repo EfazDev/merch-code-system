@@ -997,7 +997,7 @@ if __name__ == "__main__":
                         await sendEmbed(ctx, "Item used!", 2)
 
             @bot.command()
-            async def createItem(ctx, item: str, stock: int, price: int, roleId: str="0"):
+            async def createItem(ctx, item: str, stock: int, price: int, roleid: str="0"):
                 if cooldownCommand(ctx.message.author.id):
                     await sendEmbed(ctx, "Access Denied: Still on 2 minute cooldown, try again later!", 3)
                     return
@@ -1350,7 +1350,7 @@ if __name__ == "__main__":
             guild=discord.Object(id=guildId),
         )
         async def createcode(
-            interaction: discord.Interaction, code: str, reward: str, permornot: bool, roleId: str="0"
+            interaction: discord.Interaction, code: str, reward: str, permornot: bool, roleid: str="0"
         ):
             ctx = interaction
             if predicate(ctx) == False or blacklisted(ctx) == True:
@@ -1361,18 +1361,18 @@ if __name__ == "__main__":
                         if testIfVariableExists(codes, code):
                             await sendEmbedTree(ctx, "Code already exists: " + code, 2)
                         else:
-                            if testIfInt(roleId):
+                            if testIfInt(roleid):
                                 if permornot == False:
-                                    codes[code] = {"Reward": reward, "OneUserOnly": True, "Redeemed": False, "Role": int(roleId)}
+                                    codes[code] = {"Reward": reward, "OneUserOnly": True, "Redeemed": False, "Role": int(roleid)}
                                 else:
-                                    codes[code] = {"Reward": reward, "OneUserOnly": False, "Role": int(roleId)}
+                                    codes[code] = {"Reward": reward, "OneUserOnly": False, "Role": int(roleid)}
 
                                 with open("codes.json", "w") as outfile:
                                     outfile.write(json.dumps(codes))
                                 await sendEmbedTree(ctx, "Created code: " + code, 2)
                                 print("Created code: " + code)
                             else:
-                                await sendEmbedTree(ctx, "Invalid Role ID: " + roleId, 3)
+                                await sendEmbedTree(ctx, "Invalid Role ID: " + roleid, 3)
                     else:
                         await sendEmbedTree(
                             ctx, "No reward Inputted in reward, not created", 3
@@ -1388,7 +1388,7 @@ if __name__ == "__main__":
             guild=discord.Object(id=guildId),
         )
         async def createRandomized(
-            interaction: discord.Interaction, prefix: str, reward: str, permornot: bool, roleId: str="0"
+            interaction: discord.Interaction, prefix: str, reward: str, permornot: bool, roleid: str="0"
         ):
             ctx = interaction
             if predicate(ctx) == False or blacklisted(ctx) == True:
@@ -1401,18 +1401,18 @@ if __name__ == "__main__":
                         if testIfVariableExists(codes, code):
                             await sendEmbedTree(ctx, "Code already exists: " + code, 2)
                         else:
-                            if testIfInt(roleId):
+                            if testIfInt(roleid):
                                 if permornot == False:
-                                    codes[code] = {"Reward": reward, "OneUserOnly": True, "Redeemed": False, "Role": int(roleId)}
+                                    codes[code] = {"Reward": reward, "OneUserOnly": True, "Redeemed": False, "Role": int(roleid)}
                                 else:
-                                    codes[code] = {"Reward": reward, "OneUserOnly": False, "Role": int(roleId)}
+                                    codes[code] = {"Reward": reward, "OneUserOnly": False, "Role": int(roleid)}
 
                                 with open("codes.json", "w") as outfile:
                                     outfile.write(json.dumps(codes))
                                 await sendEmbedTree(ctx, "Created code: " + code, 2)
                                 print("Created code: " + code)
                             else:
-                                await sendEmbedTree(ctx, "Invalid Role ID: " + roleId, 3)
+                                await sendEmbedTree(ctx, "Invalid Role ID: " + roleid, 3)
                     else:
                         await sendEmbedTree(
                             ctx, "No reward Inputted in reward, not created", 3
@@ -1712,7 +1712,7 @@ if __name__ == "__main__":
             description="Create multiple randomized codes for the system.",
             guild=discord.Object(id=guildId),
         )
-        async def createMultipleRandomized(ctx, prefix: str, reward: str, permornot: bool, count: int, roleId: str="0"):
+        async def createMultipleRandomized(ctx, prefix: str, reward: str, permornot: bool, count: int, roleid: str="0"):
             if count < 0:
                 count = count * -1
             if predicate(ctx) == False or blacklisted(ctx) == True:
@@ -1732,17 +1732,17 @@ if __name__ == "__main__":
                             if testIfVariableExists(codes, args1):
                                 await sendEmbedTree(ctx, "Code already exists: " + args1, 2)
                             else:
-                                if testIfInt(roleId):
+                                if testIfInt(roleid):
                                     if permornot == True:
-                                        codes[args1] = {"Reward": reward, "OneUserOnly": False, "Role": int(roleId)}
+                                        codes[args1] = {"Reward": reward, "OneUserOnly": False, "Role": int(roleid)}
                                     else:
-                                        codes[args1] = {"Reward": reward, "OneUserOnly": True, "Redeemed": False, "Role": int(roleId)}
+                                        codes[args1] = {"Reward": reward, "OneUserOnly": True, "Redeemed": False, "Role": int(roleid)}
                                     with open("codes.json", "w") as outfile:
                                         outfile.write(json.dumps(codes))
                                     list.append(args1)
                                     print("Created code: " + args1)
                                 else:
-                                    await sendEmbedTree(ctx, "Invalid Role ID: " + roleId, 3)
+                                    await sendEmbedTree(ctx, "Invalid Role ID: " + roleid, 3)
                         else:
                             print("No reward Inputted in args2, not created")
                     else:
