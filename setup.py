@@ -87,7 +87,7 @@ if alreadyexists.lower() == "y":
             botTokenNew = json.load(f)
         with open("economy.json") as f:
             economyNew = json.load(f)
-        with open("main.py") as f:
+        with open('main.py') as f: 
             mainNew = f.read()
 
         # exchange conversion center
