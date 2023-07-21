@@ -1499,15 +1499,15 @@ if __name__ == "__main__":
                             if codes[i]["Role"] == 0:
                                 add_string_a = "`" + i + "` : `" + codes[i]["Reward"] + "` "
                             else:
-                                add_string_a = "`" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
+                                add_string_a = "`" + i + "` : `" + codes[i]["Reward"] + "` "
                         else:
                             if codes[i]["Role"] == 0:
                                 add_string_b = "`" + i + "` : `" + codes[i]["Reward"] + "` "
                             else:
-                                add_string_b = "`" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
+                                add_string_b = "`" + i + "` : `" + codes[i]["Reward"] + "` "
                     else:
                         if codes[i]["Role"] == 0:
-                            add_string_a = "`" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
+                            add_string_a = "`" + i + "` : `" + codes[i]["Reward"] + "` "
                         else:
                             add_string_a = "`" + i + "` : `" + codes[i]["Reward"] + "` "
                     string = string + "\n" + add_string_a
