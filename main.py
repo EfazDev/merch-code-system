@@ -588,19 +588,24 @@ if __name__ == "__main__":
                 string = "List of **available** codes: "
                 listNotAvailable = "List of not **available** codes: "
                 for i in ListOfCodes:
+                    add_string_a = ""
+                    add_string_b = ""
                     if codes[i]["OneUserOnly"] == True:
                         if codes[i]["Redeemed"] == False:
-                            string = string + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                            add_string_a = "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
                             if not codes[i]["Role"] == 0:
-                                string = string + "Includes Role : <@&" + str(codes[i]["Role"]) + "> "
+                                add_string_a = "\n `" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
                         else:
-                            listNotAvailable = listNotAvailable + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                            add_string_b = "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
                             if not codes[i]["Role"] == 0:
-                                listNotAvailable = listNotAvailable + "Includes Role : <@&" + str(codes[i]["Role"]) + "> "
+                                add_string_b = "\n `" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
                     else:
-                        string = string + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                        add_string_a = "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
                         if not codes[i]["Role"] == 0:
-                            string = string + "Includes Role : <@&" + str(codes[i]["Role"]) + "> "
+                            add_string_a = "\n `" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
+                    string = string + add_string_a
+                    listNotAvailable = listNotAvailable + add_string_b
+
                 await sendEmbed(ctx, string + " \n\n" + listNotAvailable, 2)
 
         @bot.command()
@@ -616,10 +621,13 @@ if __name__ == "__main__":
                     if codes[i]["OneUserOnly"] == True:
                         if codes[i]["Redeemed"] == True:
                             try:
-                                codes.pop(i, None)
-                                listNotAvailable = listNotAvailable + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                                add_string = "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                                
                                 if not codes[i]["Role"] == 0:
-                                    listNotAvailable = listNotAvailable + "Includes Role : <@&" + str(codes[i]["Role"]) + "> "
+                                    add_string = add_string + " : <@&" + str(codes[i]["Role"]) + "> "
+
+                                codes.pop(i, None)
+                                listNotAvailable = listNotAvailable + add_string
                             except Exception as e:
                                 print("Failed to remove code: " + str(e))
                 await sendEmbed(ctx, listNotAvailable, 2)
@@ -1479,19 +1487,24 @@ if __name__ == "__main__":
                 string = "List of **available** codes: "
                 listNotAvailable = "List of **not available** codes: "
                 for i in ListOfCodes:
+                    add_string_a = ""
+                    add_string_b = ""
                     if codes[i]["OneUserOnly"] == True:
                         if codes[i]["Redeemed"] == False:
-                            string = string + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                            add_string_a = "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
                             if not codes[i]["Role"] == 0:
-                                string = string + "Includes Role : <@&" + str(codes[i]["Role"]) + "> "
+                                add_string_a = "\n `" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
                         else:
-                            listNotAvailable = listNotAvailable + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                            add_string_b = "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
                             if not codes[i]["Role"] == 0:
-                                listNotAvailable = listNotAvailable + "Includes Role : <@&" + str(codes[i]["Role"]) + "> "
+                                add_string_b = "\n `" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
                     else:
-                        string = string + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                        add_string_a = "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
                         if not codes[i]["Role"] == 0:
-                            string = string + "Includes Role : <@&" + str(codes[i]["Role"]) + "> "
+                            add_string_a = "\n `" + i + "` : `" + codes[i]["Reward"] + "` : <@&" + str(codes[i]["Role"]) + "> "
+                    string = string + add_string_a
+                    listNotAvailable = listNotAvailable + add_string_b
+                    
                 await sendEmbedTree(ctx, string + " \n\n" + listNotAvailable, 2)
 
         @tree.command(
@@ -1511,10 +1524,13 @@ if __name__ == "__main__":
                     if codes[i]["OneUserOnly"] == True:
                         if codes[i]["Redeemed"] == True:
                             try:
-                                codes.pop(i, None)
-                                listNotAvailable = listNotAvailable + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+                                add_string = "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
+
                                 if not codes[i]["Role"] == 0:
-                                    listNotAvailable = listNotAvailable + "Includes Role : <@&" + str(codes[i]["Role"]) + "> "
+                                    add_string = add_string + " : <@&" + str(codes[i]["Role"]) + "> "
+
+                                codes.pop(i, None)
+                                listNotAvailable = listNotAvailable + add_string
                             except Exception as e:
                                 print("Failed to remove code: " + str(e))
                 await sendEmbedTree(ctx, listNotAvailable, 2)
