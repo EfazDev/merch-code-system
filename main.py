@@ -538,15 +538,15 @@ if __name__ == "__main__":
             if blacklisted(ctx) == True:
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
-                main_about_string = f"**Efaz's Merch Code System** \n\nScript Version: v{version} \nSystem OS: {platform.system()} "
+                main_about_string = f"**Efaz's Merch Code System** \nScript Version: `v{version}` \nSystem OS: `{platform.system()}` "
                 main_about_string = main_about_string + "\n Admins: "
                 for admin in botToken["Admins"]:
                     main_about_string = main_about_string + "<@" + str(admin) + "> "
 
                 if economy['Enabled'] == True:
-                    main_about_string = main_about_string + f"\n**Economy** \nEnabled: {str(economy['Enabled'])} \nCurrency Name: {economy['EconomyName']} "
+                    main_about_string = main_about_string + f"\n\n**Economy** \nEnabled: `{str(economy['Enabled'])}` \nCurrency Name: `{economy['EconomyName']}` "
                     if economy["GreatReset"]["Enabled"] == True:
-                        main_about_string = main_about_string + f"\nGreat Resets Enabled: {str(economy['GreatReset']['Enabled'])} \nSeason Number: {str(economy['GreatReset']['SeasonNumber'])}"
+                        main_about_string = main_about_string + f"\nGreat Resets Enabled: `{str(economy['GreatReset']['Enabled'])}` \nSeason Number: `{str(economy['GreatReset']['SeasonNumber'])}`"
 
                 await sendEmbed(ctx, main_about_string, 2)
 
@@ -2474,15 +2474,15 @@ if __name__ == "__main__":
                 if blacklisted(ctx) == True:
                     await sendEmbedTree(ctx, "Access Denied", 3)
                 else:
-                    main_about_string = f"**Efaz's Merch Code System** \n\nScript Version: v{version} \nSystem OS: {platform.system()} "
+                    main_about_string = f"**Efaz's Merch Code System** \nScript Version: `v{version}` \nSystem OS: `{platform.system()}` "
                     main_about_string = main_about_string + "\n Admins: "
                     for admin in botToken["Admins"]:
                         main_about_string = main_about_string + "<@" + str(admin) + "> "
 
                     if economy['Enabled'] == True:
-                        main_about_string = main_about_string + f"\n**Economy** \nEnabled: {str(economy['Enabled'])} \nCurrency Name: {economy['EconomyName']} "
+                        main_about_string = main_about_string + f"\n\n**Economy** \nEnabled: `{str(economy['Enabled'])}` \nCurrency Name: `{economy['EconomyName']}` "
                         if economy["GreatReset"]["Enabled"] == True:
-                            main_about_string = main_about_string + f"\nGreat Resets Enabled: {str(economy['GreatReset']['Enabled'])} \nSeason Number: {str(economy['GreatReset']['SeasonNumber'])}"
+                            main_about_string = main_about_string + f"\nGreat Resets Enabled: `{str(economy['GreatReset']['Enabled'])}` \nSeason Number: `{str(economy['GreatReset']['SeasonNumber'])}`"
 
                     await sendEmbedTree(ctx, main_about_string, 2)
 
