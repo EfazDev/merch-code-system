@@ -42,26 +42,29 @@ version = "1.5.1"
 for _ in range(50):
     print()
 
+def printSystemMessage(message):
+    print(f"\033[38;5;208m{message}\033[0;0m")
+
 # load saved data
 print()
-print("\033[38;5;208m███████╗███████╗░█████╗░███████╗██╗░██████╗  ███╗░░░███╗███████╗██████╗░░█████╗░██╗░░██╗\033[0;0m")
-print("\033[38;5;208m██╔════╝██╔════╝██╔══██╗╚════██║╚█║██╔════╝  ████╗░████║██╔════╝██╔══██╗██╔══██╗██║░░██║\033[0;0m")
-print("\033[38;5;208m█████╗░░█████╗░░███████║░░███╔═╝░╚╝╚█████╗░  ██╔████╔██║█████╗░░██████╔╝██║░░╚═╝███████║\033[0;0m")
-print("\033[38;5;208m██╔══╝░░██╔══╝░░██╔══██║██╔══╝░░░░░░╚═══██╗  ██║╚██╔╝██║██╔══╝░░██╔══██╗██║░░██╗██╔══██║\033[0;0m")
-print("\033[38;5;208m███████╗██║░░░░░██║░░██║███████╗░░░██████╔╝  ██║░╚═╝░██║███████╗██║░░██║╚█████╔╝██║░░██║\033[0;0m")
-print("\033[38;5;208m╚══════╝╚═╝░░░░░╚═╝░░╚═╝╚══════╝░░░╚═════╝░  ╚═╝░░░░░╚═╝╚══════╝╚═╝░░╚═╝░╚════╝░╚═╝░░╚═╝\033[0;0m")
+printSystemMessage("███████╗███████╗░█████╗░███████╗██╗░██████╗  ███╗░░░███╗███████╗██████╗░░█████╗░██╗░░██╗")
+printSystemMessage("██╔════╝██╔════╝██╔══██╗╚════██║╚█║██╔════╝  ████╗░████║██╔════╝██╔══██╗██╔══██╗██║░░██║")
+printSystemMessage("█████╗░░█████╗░░███████║░░███╔═╝░╚╝╚█████╗░  ██╔████╔██║█████╗░░██████╔╝██║░░╚═╝███████║")
+printSystemMessage("██╔══╝░░██╔══╝░░██╔══██║██╔══╝░░░░░░╚═══██╗  ██║╚██╔╝██║██╔══╝░░██╔══██╗██║░░██╗██╔══██║")
+printSystemMessage("███████╗██║░░░░░██║░░██║███████╗░░░██████╔╝  ██║░╚═╝░██║███████╗██║░░██║╚█████╔╝██║░░██║")
+printSystemMessage("╚══════╝╚═╝░░░░░╚═╝░░╚═╝╚══════╝░░░╚═════╝░  ╚═╝░░░░░╚═╝╚══════╝╚═╝░░╚═╝░╚════╝░╚═╝░░╚═╝")
 print("")
-print("\033[38;5;208m░█████╗░░█████╗░██████╗░███████╗  ░██████╗██╗░░░██╗░██████╗████████╗███████╗███╗░░░███╗\033[0;0m")
-print("\033[38;5;208m██╔══██╗██╔══██╗██╔══██╗██╔════╝  ██╔════╝╚██╗░██╔╝██╔════╝╚══██╔══╝██╔════╝████╗░████║\033[0;0m")
-print("\033[38;5;208m██║░░╚═╝██║░░██║██║░░██║█████╗░░  ╚█████╗░░╚████╔╝░╚█████╗░░░░██║░░░█████╗░░██╔████╔██║\033[0;0m")
-print("\033[38;5;208m██║░░██╗██║░░██║██║░░██║██╔══╝░░  ░╚═══██╗░░╚██╔╝░░░╚═══██╗░░░██║░░░██╔══╝░░██║╚██╔╝██║\033[0;0m")
-print("\033[38;5;208m╚█████╔╝╚█████╔╝██████╔╝███████╗  ██████╔╝░░░██║░░░██████╔╝░░░██║░░░███████╗██║░╚═╝░██║\033[0;0m")
-print("\033[38;5;208m░╚════╝░░╚════╝░╚═════╝░╚══════╝  ╚═════╝░░░░╚═╝░░░╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░░░░╚═╝\033[0;0m")
+printSystemMessage("░█████╗░░█████╗░██████╗░███████╗  ░██████╗██╗░░░██╗░██████╗████████╗███████╗███╗░░░███╗")
+printSystemMessage("██╔══██╗██╔══██╗██╔══██╗██╔════╝  ██╔════╝╚██╗░██╔╝██╔════╝╚══██╔══╝██╔════╝████╗░████║")
+printSystemMessage("██║░░╚═╝██║░░██║██║░░██║█████╗░░  ╚█████╗░░╚████╔╝░╚█████╗░░░░██║░░░█████╗░░██╔████╔██║")
+printSystemMessage("██║░░██╗██║░░██║██║░░██║██╔══╝░░  ░╚═══██╗░░╚██╔╝░░░╚═══██╗░░░██║░░░██╔══╝░░██║╚██╔╝██║")
+printSystemMessage("╚█████╔╝╚█████╔╝██████╔╝███████╗  ██████╔╝░░░██║░░░██████╔╝░░░██║░░░███████╗██║░╚═╝░██║")
+printSystemMessage("░╚════╝░░╚════╝░╚═════╝░╚══════╝  ╚═════╝░░░░╚═╝░░░╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░░░░╚═╝")
 print("")
-print("\033[38;5;208mWelcome to Efaz's Merch Code System Bot!\033[0;0m")
-print("\033[38;5;208mPlease use setup.py if you want to setup your bot!\033[0;0m")
-print("\033[38;5;208mLet's get started!\033[0;0m")
-print("\033[38;5;208mSystem Messages:\033[0;0m")
+printSystemMessage("Welcome to Efaz's Merch Code System Bot!")
+printSystemMessage("Please use setup.py if you want to setup your bot!")
+printSystemMessage("Let's get started!")
+printSystemMessage("System Messages:")
 print()
 print("Loaded Script Version: v" + version)
 print("Loading System Data (codes, users, bot, economy)")
@@ -133,6 +136,7 @@ if __name__ == "__main__":
                 text="Made by Efaz from efaz.dev - v" + version,
                 icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
             )
+            print("User " + ctx.message.author.name + " used command and was sent response: " + message)
             await ctx.reply(embed=embed)
 
         # normal
@@ -551,7 +555,7 @@ if __name__ == "__main__":
                         main_about_string = main_about_string + f"\nGreat Resets Enabled: `{str(economy['GreatReset']['Enabled'])}` "
                 else:
                     main_about_string = main_about_string + f"\n\n**Economy** \nEnabled: `{str(economy['Enabled'])}` "
-                    
+
                 await sendEmbed(ctx, main_about_string, 2)
 
         @bot.command()
@@ -743,8 +747,8 @@ if __name__ == "__main__":
                 await sendEmbed(ctx, "Bot is now shutting down. Thanks for using Efaz's Merch Code System, see you next time!", 2)
                 print("Bot is shutting down..")
                 await bot.change_presence(status=discord.Status.offline)
-                print("\033[38;5;208mBot shut down, returning back to Command Prompt.\033[0;0m")
-                print("\033[38;5;208mThanks for using Efaz's Merch Code System, see you next time!\033[0;0m")
+                printSystemMessage("Bot shut down, returning back to Command Prompt.")
+                printSystemMessage("Thanks for using Efaz's Merch Code System, see you next time!")
                 await bot.close()
                 exit()
 
@@ -1387,6 +1391,7 @@ if __name__ == "__main__":
                 text="Made by Efaz from efaz.dev - v" + version,
                 icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
             )
+            print("User " + ctx.user.name + " used command and was sent response: " + message)
             await ctx.response.send_message(embed=embed)
 
         def predicate(ctx):
@@ -1971,8 +1976,8 @@ if __name__ == "__main__":
                 await sendEmbedTree(ctx, "Bot is now shutting down. Thanks for using Efaz's Merch Code System, see you next time!", 2)
                 print("Bot is shutting down..")
                 await bot.change_presence(status=discord.Status.offline)
-                print("\033[38;5;208mBot shut down, returning back to Command Prompt.\033[0;0m")
-                print("\033[38;5;208mThanks for using Efaz's Merch Code System, see you next time!\033[0;0m")
+                printSystemMessage("Bot shut down, returning back to Command Prompt.")
+                printSystemMessage("Thanks for using Efaz's Merch Code System, see you next time!")
                 await bot.close()
                 exit()
 
@@ -2647,6 +2652,6 @@ if __name__ == "__main__":
         print("Loaded, logging into bot...")
         bot.run(botToken["Token"])
 else:
-    print("\033[38;5;208mSystem doesn't support module mode. Sorry!\033[0;0m")
+    printSystemMessage("System doesn't support module mode. Sorry!")
 # End of script
 # Made by Efaz at efaz.dev
