@@ -546,8 +546,12 @@ if __name__ == "__main__":
                 if economy['Enabled'] == True:
                     main_about_string = main_about_string + f"\n\n**Economy** \nEnabled: `{str(economy['Enabled'])}` \nCurrency Name: `{economy['EconomyName']}` "
                     if economy["GreatReset"]["Enabled"] == True:
-                        main_about_string = main_about_string + f"\nGreat Resets Enabled: `{str(economy['GreatReset']['Enabled'])}` \nSeason Number: `{str(economy['GreatReset']['SeasonNumber'])}`"
-
+                        main_about_string = main_about_string + f"\nGreat Resets Enabled: `{str(economy['GreatReset']['Enabled'])}` \nSeason Number: `{str(economy['GreatReset']['SeasonNumber'])}` "
+                    else:
+                        main_about_string = main_about_string + f"\nGreat Resets Enabled: `{str(economy['GreatReset']['Enabled'])}` "
+                else:
+                    main_about_string = main_about_string + f"\n\n**Economy** \nEnabled: `{str(economy['Enabled'])}` "
+                    
                 await sendEmbed(ctx, main_about_string, 2)
 
         @bot.command()
@@ -2482,7 +2486,11 @@ if __name__ == "__main__":
                     if economy['Enabled'] == True:
                         main_about_string = main_about_string + f"\n\n**Economy** \nEnabled: `{str(economy['Enabled'])}` \nCurrency Name: `{economy['EconomyName']}` "
                         if economy["GreatReset"]["Enabled"] == True:
-                            main_about_string = main_about_string + f"\nGreat Resets Enabled: `{str(economy['GreatReset']['Enabled'])}` \nSeason Number: `{str(economy['GreatReset']['SeasonNumber'])}`"
+                            main_about_string = main_about_string + f"\nGreat Resets Enabled: `{str(economy['GreatReset']['Enabled'])}` \nSeason Number: `{str(economy['GreatReset']['SeasonNumber'])}` "
+                        else:
+                            main_about_string = main_about_string + f"\nGreat Resets Enabled: `{str(economy['GreatReset']['Enabled'])}` "
+                    else:
+                        main_about_string = main_about_string + f"\n\n**Economy** \nEnabled: `{str(economy['Enabled'])}` "
 
                     await sendEmbedTree(ctx, main_about_string, 2)
 
