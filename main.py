@@ -538,7 +538,7 @@ if __name__ == "__main__":
             if blacklisted(ctx) == True:
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
-                main_about_string = f"**Efaz's Merch Code System** \nScript Version: `v{version}` \nSystem OS: `{platform.system()}` "
+                main_about_string = f"**Made by Efaz at [efaz.dev](https://www.efaz.dev)** \nScript Version: `v{version}` \nSystem OS: `{platform.system()}` "
                 main_about_string = main_about_string + "\n Admins: "
                 for admin in botToken["Admins"]:
                     main_about_string = main_about_string + "<@" + str(admin) + "> "
@@ -2474,7 +2474,7 @@ if __name__ == "__main__":
                 if blacklisted(ctx) == True:
                     await sendEmbedTree(ctx, "Access Denied", 3)
                 else:
-                    main_about_string = f"**Efaz's Merch Code System** \nScript Version: `v{version}` \nSystem OS: `{platform.system()}` "
+                    main_about_string = f"**Made by Efaz at [efaz.dev](https://www.efaz.dev)** \nScript Version: `v{version}` \nSystem OS: `{platform.system()}` "
                     main_about_string = main_about_string + "\n Admins: "
                     for admin in botToken["Admins"]:
                         main_about_string = main_about_string + "<@" + str(admin) + "> "
