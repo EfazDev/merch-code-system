@@ -1392,8 +1392,8 @@ if __name__ == "__main__":
                 icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
             )
             await ctx.response.send_message(embed=embed)
-            
-            res = await ctx.original_response()
+
+            res = await ctx.original_response().system_content
             print("User " + ctx.user.name + " used command: " + res)
 
         def predicate(ctx):
