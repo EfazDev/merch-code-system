@@ -1393,9 +1393,6 @@ if __name__ == "__main__":
             )
             await ctx.response.send_message(embed=embed)
 
-            res = await ctx.original_response().system_content
-            print("User " + ctx.user.name + " used command: " + res)
-
         def predicate(ctx):
             if ctx.user.id in botToken["Admins"]:
                 return True
