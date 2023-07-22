@@ -136,7 +136,7 @@ if __name__ == "__main__":
                 text="Made by Efaz from efaz.dev - v" + version,
                 icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
             )
-            print("User " + ctx.message.author.name + " used command and was sent response: " + message)
+            print("User " + ctx.message.author.name + " used command: " + ctx.message.content)
             await ctx.reply(embed=embed)
 
         # normal
@@ -1391,7 +1391,7 @@ if __name__ == "__main__":
                 text="Made by Efaz from efaz.dev - v" + version,
                 icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
             )
-            print("User " + ctx.user.name + " used command and was sent response: " + message)
+            print("User " + ctx.user.name + " used command: " + ctx.message)
             await ctx.response.send_message(embed=embed)
 
         def predicate(ctx):
