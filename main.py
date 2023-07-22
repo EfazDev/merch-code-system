@@ -38,7 +38,7 @@ except Exception as e:
 
 LocalMachineOS = platform.system()
 pythonVersion = sys.version_info
-version = "1.5.0"
+version = "1.5.1"
 for _ in range(50):
     print()
 
@@ -532,6 +532,23 @@ if __name__ == "__main__":
                     await sendEmbed(ctx, message, 2)
                 else:
                     await sendEmbed(ctx, "This user has no code data or redeemed any codes.", 3)
+
+        @bot.command()
+        async def about(ctx):
+            if blacklisted(ctx) == True:
+                await sendEmbed(ctx, "Access Denied", 3)
+            else:
+                main_about_string = f"**Efaz's Merch Code System** \n\nScript Version: v{version} \nSystem OS: {platform.system()} "
+                main_about_string = main_about_string + "\n Admins: "
+                for admin in botToken["Admins"]:
+                    main_about_string = main_about_string + "<@" + str(admin) + "> "
+
+                if economy['Enabled'] == True:
+                    main_about_string = main_about_string + f"\n**Economy** \nEnabled: {str(economy['Enabled'])} \nCurrency Name: {economy['EconomyName']} "
+                    if economy["GreatReset"]["Enabled"] == True:
+                        main_about_string = main_about_string + f"\nGreat Resets Enabled: {str(economy['GreatReset']['Enabled'])} \nSeason Number: {str(economy['GreatReset']['SeasonNumber'])}"
+
+                await sendEmbed(ctx, main_about_string, 2)
 
         @bot.command()
         async def createMultipleRandomized(ctx, args1, args2, args3, args4, args5="0"):
@@ -1228,7 +1245,7 @@ if __name__ == "__main__":
                         await sendEmbed(ctx, "Access Denied", 3)
                     else:
                         if confirm.lower() == "Yes":
-                            # Roles
+                            global greatResetCurrently
                             if greatResetCurrently == False:
                                 guild = bot.get_guild(guildId)
                                 await sendEmbed(ctx, "Launched a new Great Reset wave! A new message will appear when the process is finished!", 2)
@@ -2447,6 +2464,28 @@ if __name__ == "__main__":
                     randomizedJob = jobList[random.randint(0, len(jobList) - 1)]
                     response = createCurrency(ctx.user.id, randomizedJob["amount"] * applyRoleMultiplier(ctx.user))
                     await sendEmbedTree(ctx, "You have earned " + str(randomizedJob["amount"] * applyRoleMultiplier(ctx.user)) + " from working as a " + randomizedJob["name"] + "!", 2)
+
+            @tree.command(
+                name="about",
+                description="View information about the bot!",
+                guild=discord.Object(id=guildId),
+            )
+            async def about(ctx):
+                if blacklisted(ctx) == True:
+                    await sendEmbedTree(ctx, "Access Denied", 3)
+                else:
+                    main_about_string = f"**Efaz's Merch Code System** \n\nScript Version: v{version} \nSystem OS: {platform.system()} "
+                    main_about_string = main_about_string + "\n Admins: "
+                    for admin in botToken["Admins"]:
+                        main_about_string = main_about_string + "<@" + str(admin) + "> "
+
+                    if economy['Enabled'] == True:
+                        main_about_string = main_about_string + f"\n**Economy** \nEnabled: {str(economy['Enabled'])} \nCurrency Name: {economy['EconomyName']} "
+                        if economy["GreatReset"]["Enabled"] == True:
+                            main_about_string = main_about_string + f"\nGreat Resets Enabled: {str(economy['GreatReset']['Enabled'])} \nSeason Number: {str(economy['GreatReset']['SeasonNumber'])}"
+
+                    await sendEmbedTree(ctx, main_about_string, 2)
+
             @tree.command(
                 name="cooldowncheck",
                 description="Check your cooldown",
@@ -2525,6 +2564,7 @@ if __name__ == "__main__":
                         await sendEmbedTree(ctx, "Access Denied", 3)
                     else:
                         if confirm == True:
+                            global greatResetCurrently
                             if greatResetCurrently == False:
                                 guild = bot.get_guild(guildId)
                                 greatResetCurrently = True
