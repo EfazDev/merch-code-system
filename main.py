@@ -169,19 +169,19 @@ if __name__ == "__main__":
                 randomized = random.randint(1, 4)
                 if randomized == 1:
                     await bot.change_presence(
-                        activity=discord.Game(name=" Efaz's Merch Code System")
+                        activity=discord.Game(name="Efaz's Merch Code System")
                     )
                 elif randomized == 2:
                     await bot.change_presence(
-                        activity=discord.Activity(type=discord.ActivityType.listening, name=" users redeeming codes")
+                        activity=discord.Activity(type=discord.ActivityType.listening, name="users redeeming codes")
                     )
                 elif randomized == 3:
                     await bot.change_presence(
-                        activity=discord.Streaming(name=" live redeeming codes", url="https://www.youtube.com/watch?v=Yr7txrMWRSs")
+                        activity=discord.Streaming(name="live redeeming codes", url="https://www.youtube.com/watch?v=Yr7txrMWRSs")
                     )
                 else:
                     await bot.change_presence(
-                        activity=discord.Activity(type=discord.ActivityType.watching, name=" giving rewards from codes")
+                        activity=discord.Activity(type=discord.ActivityType.watching, name="giving rewards from codes")
                     )
                 await asyncio.sleep(10)
 
@@ -1330,7 +1330,7 @@ if __name__ == "__main__":
     else:
         # slash commands
 
-        intents = discord.Intents.default()
+        intents = discord.Intents.all()
         bot = discord.Client(intents=intents)
         tree = app_commands.CommandTree(bot)
         guildId = botToken["ServerID"]
@@ -1360,19 +1360,19 @@ if __name__ == "__main__":
                 randomized = random.randint(1, 4)
                 if randomized == 1:
                     await bot.change_presence(
-                        activity=discord.Game(name=" Efaz's Merch Code System")
+                        activity=discord.Game(name="Efaz's Merch Code System")
                     )
                 elif randomized == 2:
                     await bot.change_presence(
-                        activity=discord.Activity(type=discord.ActivityType.listening, name=" users redeeming codes")
+                        activity=discord.Activity(type=discord.ActivityType.listening, name="users redeeming codes")
                     )
                 elif randomized == 3:
                     await bot.change_presence(
-                        activity=discord.Streaming(name=" live redeeming codes", url="https://www.youtube.com/watch?v=Yr7txrMWRSs")
+                        activity=discord.Streaming(name="live redeeming codes", url="https://www.youtube.com/watch?v=Yr7txrMWRSs")
                     )
                 else:
                     await bot.change_presence(
-                        activity=discord.Activity(type=discord.ActivityType.watching, name=" giving rewards from codes")
+                        activity=discord.Activity(type=discord.ActivityType.watching, name="giving rewards from codes")
                     )
                 await asyncio.sleep(10)
 
