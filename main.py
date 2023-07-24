@@ -38,7 +38,7 @@ except Exception as e:
 
 LocalMachineOS = platform.system()
 pythonVersion = sys.version_info
-version = "1.5.1"
+version = "1.6.0"
 for _ in range(50):
     print()
 
@@ -822,7 +822,11 @@ if __name__ == "__main__":
                     if bot.get_guild(guildId).get_role(i["roleid"]) in user.roles:
                         if i["multiplier"] > highestMultiplier:
                             highestMultiplier = i["multiplier"]
-                return highestMultiplier
+
+                if economy["GreatReset"]["Enabled"] == True:
+                    return highestMultiplier * (1 + (0.5*economy["GreatReset"]["SeasonNumber"]))
+                else:
+                    return highestMultiplier
 
             @bot.command()
             async def flipCoin(ctx, amount, guess):
@@ -2030,7 +2034,11 @@ if __name__ == "__main__":
                     if bot.get_guild(guildId).get_role(i["roleid"]) in user.roles:
                         if i["multiplier"] > highestMultiplier:
                             highestMultiplier = i["multiplier"]
-                return highestMultiplier
+                            
+                if economy["GreatReset"]["Enabled"] == True:
+                    return highestMultiplier * (1 + (0.5*economy["GreatReset"]["SeasonNumber"]))
+                else:
+                    return highestMultiplier
                 
             def cooldownCommand(userId):
                 if testIfVariableExists(economy["UserData"], str(userId)):
