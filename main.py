@@ -1227,7 +1227,7 @@ if __name__ == "__main__":
                 if blacklisted(ctx) == True:
                     await sendEmbed(ctx, "Access Denied", 3)
                 else:
-                    await sendEmbed(ctx, f"Multipliers applied on non-user involved commands: \n\n**Role** Multiplier: {str(applyRoleMultiplier(ctx.message.author) / getSeasonMultiplier())}x \n**Season** Multiplier: {str(getSeasonMultiplier())}x \n\n**Total: {str(applyRoleMultiplier(ctx.message.author))}**", 2)
+                    await sendEmbed(ctx,  f"Multipliers applied on non-user involved commands: \n\n**Role Multiplier:** `{str(applyRoleMultiplier(ctx.message.author) / getSeasonMultiplier())}x` (Based on your current roles) \n**Season Multiplier:** `{str(getSeasonMultiplier())}x` \n\n**Total: {str(applyRoleMultiplier(ctx.message.author))}x**", 2)
 
             @bot.command()
             async def endItemListing(ctx, item: str):
@@ -2572,7 +2572,7 @@ if __name__ == "__main__":
                 if blacklisted(ctx) == True:
                     await sendEmbedTree(ctx, "Access Denied", 3)
                 else:
-                    await sendEmbedTree(ctx, f"Multipliers applied on non-user involved commands: \n\n**Role** Multiplier: {str(applyRoleMultiplier(ctx.user) / getSeasonMultiplier())}x \n**Season** Multiplier: {str(getSeasonMultiplier())}x \n\n**Total: {str(applyRoleMultiplier(ctx.user))}**", 2)
+                    await sendEmbedTree(ctx, f"Multipliers applied on non-user involved commands: \n\n**Role Multiplier:** `{str(applyRoleMultiplier(ctx.user) / getSeasonMultiplier())}x` (Based on your current roles) \n**Season Multiplier:** `{str(getSeasonMultiplier())}x` \n\n**Total: {str(applyRoleMultiplier(ctx.user))}x**", 2)
 
             if economy["GreatReset"]["Enabled"] == True:
                 greatResetCurrently = False
