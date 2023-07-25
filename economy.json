@@ -40,7 +40,8 @@
                 "stock": 1,
                 "price": 10000000,
                 "name": "Cash King",
-                "role": 0
+                "role": 0,
+                "multiplierEnabled": true
             }
         ]
     },

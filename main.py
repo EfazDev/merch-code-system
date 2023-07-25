@@ -38,7 +38,7 @@ except Exception as e:
 
 LocalMachineOS = platform.system()
 pythonVersion = sys.version_info
-version = "1.6.0"
+version = "1.6.1"
 for _ in range(50):
     print()
 
@@ -815,6 +815,12 @@ if __name__ == "__main__":
                 else:
                     return False
                 
+            def getSeasonMultiplier():
+                if economy["GreatReset"]["Enabled"] == True:
+                    return (1 + (0.5*(economy["GreatReset"]["SeasonNumber"] - 1)))
+                else:
+                    return 1
+                
             def applyRoleMultiplier(user):
                 listOfRolesWithMultipliers = economy["RoleMultiplier"]
                 highestMultiplier = 1
@@ -823,10 +829,7 @@ if __name__ == "__main__":
                         if i["multiplier"] > highestMultiplier:
                             highestMultiplier = i["multiplier"]
 
-                if economy["GreatReset"]["Enabled"] == True:
-                    return highestMultiplier * (1 + (0.5*economy["GreatReset"]["SeasonNumber"]))
-                else:
-                    return highestMultiplier
+                return highestMultiplier * getSeasonMultiplier()
 
             @bot.command()
             async def flipCoin(ctx, amount, guess):
@@ -1224,7 +1227,7 @@ if __name__ == "__main__":
                 if blacklisted(ctx) == True:
                     await sendEmbed(ctx, "Access Denied", 3)
                 else:
-                    await sendEmbed(ctx, "Multiplier applied on non-user involved commands: " + str(applyRoleMultiplier(ctx.message.author)) + "x Multiplier", 2)
+                    await sendEmbed(ctx, f"Multipliers applied on non-user involved commands: \n\n**Role** Multiplier: {str(applyRoleMultiplier(ctx.message.author) / getSeasonMultiplier())}x \n**Season** Multiplier: {str(getSeasonMultiplier())}x \n\n**Total: {str(applyRoleMultiplier(ctx.message.author))}**", 2)
 
             @bot.command()
             async def endItemListing(ctx, item: str):
@@ -1278,6 +1281,11 @@ if __name__ == "__main__":
                                 if economy["GreatReset"]["DataToReset"]["Items"] == True:
                                     for item in economy["GreatReset"]["ItemDataWhenRestock"]:
                                         economy["StoreInventory"][item["name"]] = item
+
+                                        if economy["StoreInventory"][item["name"]].get("multiplierEnabled"):
+                                            # Multiply Price
+                                            if economy["StoreInventory"][item["name"]]["multiplierEnabled"] == True:
+                                                economy["StoreInventory"][item["name"]]["price"] = economy["StoreInventory"][item["name"]]["price"] * getSeasonMultiplier()
 
                                         global StoreItems
                                         StoreItems = economy["StoreInventory"]
@@ -2027,6 +2035,12 @@ if __name__ == "__main__":
                 else:
                     return False
                 
+            def getSeasonMultiplier():
+                if economy["GreatReset"]["Enabled"] == True:
+                    return (1 + (0.5*(economy["GreatReset"]["SeasonNumber"] - 1)))
+                else:
+                    return 1
+                
             def applyRoleMultiplier(user):
                 listOfRolesWithMultipliers = economy["RoleMultiplier"]
                 highestMultiplier = 1
@@ -2034,11 +2048,8 @@ if __name__ == "__main__":
                     if bot.get_guild(guildId).get_role(i["roleid"]) in user.roles:
                         if i["multiplier"] > highestMultiplier:
                             highestMultiplier = i["multiplier"]
-                            
-                if economy["GreatReset"]["Enabled"] == True:
-                    return highestMultiplier * (1 + (0.5*economy["GreatReset"]["SeasonNumber"]))
-                else:
-                    return highestMultiplier
+
+                return highestMultiplier * getSeasonMultiplier()
                 
             def cooldownCommand(userId):
                 if testIfVariableExists(economy["UserData"], str(userId)):
@@ -2561,7 +2572,7 @@ if __name__ == "__main__":
                 if blacklisted(ctx) == True:
                     await sendEmbedTree(ctx, "Access Denied", 3)
                 else:
-                    await sendEmbedTree(ctx, "Multiplier applied on non-user involved commands: " + str(applyRoleMultiplier(ctx.user)) + "x Multiplier", 2)
+                    await sendEmbedTree(ctx, f"Multipliers applied on non-user involved commands: \n\n**Role** Multiplier: {str(applyRoleMultiplier(ctx.message.author) / getSeasonMultiplier())}x \n**Season** Multiplier: {str(getSeasonMultiplier())}x \n\n**Total: {str(applyRoleMultiplier(ctx.message.author))}**", 2)
 
             if economy["GreatReset"]["Enabled"] == True:
                 greatResetCurrently = False
@@ -2605,6 +2616,11 @@ if __name__ == "__main__":
                                 if economy["GreatReset"]["DataToReset"]["Items"] == True:
                                     for item in economy["GreatReset"]["ItemDataWhenRestock"]:
                                         economy["StoreInventory"][item["name"]] = item
+
+                                        if economy["StoreInventory"][item["name"]].get("multiplierEnabled"):
+                                            # Multiply Price
+                                            if economy["StoreInventory"][item["name"]]["multiplierEnabled"] == True:
+                                                economy["StoreInventory"][item["name"]]["price"] = economy["StoreInventory"][item["name"]]["price"] * getSeasonMultiplier()
 
                                         global StoreItems
                                         StoreItems = economy["StoreInventory"]
