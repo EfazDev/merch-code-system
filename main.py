@@ -848,7 +848,7 @@ if __name__ == "__main__":
                     })
                     listOfMulti["total"] = listOfMulti["total"] * getSeasonMultiplier()
 
-                if datetime.datetime.today().weekday() >= 5:
+                if datetime.today().weekday() >= 5:
                     listOfMulti["data"].append({
                         "name": "Weekend Multiplier",
                         "description": "Based on if its the weekend or not! Multiplies by 2!",
@@ -2102,7 +2102,7 @@ if __name__ == "__main__":
                     })
                     listOfMulti["total"] = listOfMulti["total"] * getSeasonMultiplier()
 
-                if datetime.datetime.today().weekday() >= 5:
+                if datetime.today().weekday() >= 5:
                     listOfMulti["data"].append({
                         "name": "Weekend Multiplier",
                         "description": "Based on if its the weekend or not! Multiplies by 2!",
