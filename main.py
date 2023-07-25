@@ -829,7 +829,34 @@ if __name__ == "__main__":
                         if i["multiplier"] > highestMultiplier:
                             highestMultiplier = i["multiplier"]
 
-                return highestMultiplier * getSeasonMultiplier()
+                return highestMultiplier
+            
+            def listOfMultipliers(user):
+                listOfMulti = {"data": [], "total": 1}
+                listOfMulti["data"].append({
+                    "name": "Role Multiplier",
+                    "description": "Based on your current roles",
+                    "multiplier": applyRoleMultiplier(user)
+                })
+                listOfMulti["total"] = listOfMulti["total"] * applyRoleMultiplier(user)
+
+                if economy["GreatReset"]["Enabled"] == True:
+                    listOfMulti["data"].append({
+                        "name": "Season Multiplier",
+                        "description": "Based on number of seasons the economy is based, stacks on all multipliers",
+                        "multiplier": getSeasonMultiplier()
+                    })
+                    listOfMulti["total"] = listOfMulti["total"] * getSeasonMultiplier()
+
+                if datetime.datetime.today().weekday() >= 5:
+                    listOfMulti["data"].append({
+                        "name": "Weekend Multiplier",
+                        "description": "Based on if its the weekend or not! Multiplies by 2!",
+                        "multiplier": 2
+                    })
+                    listOfMulti["total"] = listOfMulti["total"] * 2
+
+                return listOfMulti
 
             @bot.command()
             async def flipCoin(ctx, amount, guess):
@@ -964,9 +991,9 @@ if __name__ == "__main__":
                         }
                     if economy["UserData"][str(ctx.message.author.id)]["LatestDate"] <= datetime.now().timestamp():
                         economy["UserData"][str(ctx.message.author.id)]["LatestDate"] = datetime.now().timestamp() + 86400
-                        response = createCurrency(ctx.message.author.id, economy["Commands"]["Daily"] * applyRoleMultiplier(ctx.message.author))
+                        response = createCurrency(ctx.message.author.id, economy["Commands"]["Daily"] * listOfMultipliers(ctx.message.author)["total"])
                         if response == True:
-                            await sendEmbed(ctx, "You've received " + str(economy["Commands"]["Daily"] * applyRoleMultiplier(ctx.message.author)) + " " + economy["EconomyName"] + "! Come back in 24 hours!", 2)
+                            await sendEmbed(ctx, "You've received " + str(economy["Commands"]["Daily"] * listOfMultipliers(ctx.message.author)["total"]) + " " + economy["EconomyName"] + "! Come back in 24 hours!", 2)
                     else:
                         await sendEmbed(ctx, "Time is still remaining. Please wait!", 3)
 
@@ -1178,8 +1205,8 @@ if __name__ == "__main__":
                 else:
                     jobList = economy["JobList"]
                     randomizedJob = jobList[random.randint(0, len(jobList) - 1)]
-                    response = createCurrency(ctx.message.author.id, randomizedJob["amount"] * applyRoleMultiplier(ctx.message.author))
-                    await sendEmbed(ctx, "You have earned " + str(randomizedJob["amount"] * applyRoleMultiplier(ctx.message.author)) + " from working as a " + randomizedJob["name"] + "!", 2)
+                    response = createCurrency(ctx.message.author.id, randomizedJob["amount"] * listOfMultipliers(ctx.message.author)["total"])
+                    await sendEmbed(ctx, "You have earned " + str(randomizedJob["amount"] * listOfMultipliers(ctx.message.author)["total"]) + " from working as a " + randomizedJob["name"] + "!", 2)
 
             @bot.command()
             async def cooldownCheck(ctx):
@@ -1228,7 +1255,13 @@ if __name__ == "__main__":
                     await sendEmbed(ctx, "Access Denied", 3)
                 else:
                     user = ctx.message.author
-                    await sendEmbed(ctx,  f"Multipliers applied on non-user involved commands: \n\n**Role Multiplier:** `{str(applyRoleMultiplier(user) / getSeasonMultiplier())}x` (Based on your current roles) \n**Season Multiplier:** `{str(getSeasonMultiplier())}x` (Stacks on all multipliers) \n\nTotal: **{str(applyRoleMultiplier(user))}x**", 2)
+                    list = listOfMultipliers(user)
+                    generatedString = ""
+
+                    for data in list["data"]:
+                        generatedString = generatedString + f"**{str(data['name'])}:** `{str(data['multiplier'])}x` ({str(data['description'])}) "
+                    
+                    await sendEmbed(ctx,  f"Multipliers applied on non-user involved commands: \n\n{generatedString}\n\nTotal: **{str(list['total'])}x**", 2)
 
             @bot.command()
             async def endItemListing(ctx, item: str):
@@ -2050,7 +2083,34 @@ if __name__ == "__main__":
                         if i["multiplier"] > highestMultiplier:
                             highestMultiplier = i["multiplier"]
 
-                return highestMultiplier * getSeasonMultiplier()
+                return highestMultiplier
+            
+            def listOfMultipliers(user):
+                listOfMulti = {"data": [], "total": 1}
+                listOfMulti["data"].append({
+                    "name": "Role Multiplier",
+                    "description": "Based on your current roles",
+                    "multiplier": applyRoleMultiplier(user)
+                })
+                listOfMulti["total"] = listOfMulti["total"] * applyRoleMultiplier(user)
+
+                if economy["GreatReset"]["Enabled"] == True:
+                    listOfMulti["data"].append({
+                        "name": "Season Multiplier",
+                        "description": "Based on number of seasons the economy is based, stacks on all multipliers",
+                        "multiplier": getSeasonMultiplier()
+                    })
+                    listOfMulti["total"] = listOfMulti["total"] * getSeasonMultiplier()
+
+                if datetime.datetime.today().weekday() >= 5:
+                    listOfMulti["data"].append({
+                        "name": "Weekend Multiplier",
+                        "description": "Based on if its the weekend or not! Multiplies by 2!",
+                        "multiplier": 2
+                    })
+                    listOfMulti["total"] = listOfMulti["total"] * 2
+
+                return listOfMulti
                 
             def cooldownCommand(userId):
                 if testIfVariableExists(economy["UserData"], str(userId)):
@@ -2095,11 +2155,11 @@ if __name__ == "__main__":
                             if randomized == 1:
                                 await sendEmbedTree(ctx, "🪙 Heads!", 2)
                                 if guess == "Heads":
-                                    createCurrency(ctx.user.id, amount * 2 * applyRoleMultiplier(ctx.user))
+                                    createCurrency(ctx.user.id, amount * 2 * listOfMultipliers(ctx.user)["total"])
                             else:
                                 await sendEmbedTree(ctx, "🪙 Tails!", 2)
                                 if guess == "Tails":
-                                    createCurrency(ctx.user.id, amount * 2 * applyRoleMultiplier(ctx.user))
+                                    createCurrency(ctx.user.id, amount * 2 * listOfMultipliers(ctx.user)["total"])
                         else:
                             await sendEmbedTree(ctx, "Failed to take money: Insufficent Balance", 3)
                     else:
@@ -2129,7 +2189,7 @@ if __name__ == "__main__":
                         randomized = random.randint(1, max)
                         if randomized == estimate:
                             await sendEmbedTree(ctx, "Success! You got it! Chances: " + str(round(1 / max * 100)) + "%", 2)
-                            createCurrency(ctx.user.id, amount * max * applyRoleMultiplier(ctx.user))
+                            createCurrency(ctx.user.id, amount * max * listOfMultipliers(ctx.user)["total"])
                         else:
                             await sendEmbedTree(ctx, "Failed! R.I.P. Chances: " + str(round(1 / max * 100)) + "%", 2)
                     else:
@@ -2226,9 +2286,9 @@ if __name__ == "__main__":
                         }
                     if economy["UserData"][str(ctx.user.id)]["LatestDate"] <= datetime.now().timestamp():
                         economy["UserData"][str(ctx.user.id)]["LatestDate"] = datetime.now().timestamp() + 86400
-                        response = createCurrency(ctx.user.id, economy["Commands"]["Daily"] * applyRoleMultiplier(ctx.user))
+                        response = createCurrency(ctx.user.id, economy["Commands"]["Daily"] * listOfMultipliers(ctx.user)["total"])
                         if response == True:
-                            await sendEmbedTree(ctx, "You've received " + str(economy["Commands"]["Daily"] * applyRoleMultiplier(ctx.user)) + " " + economy["EconomyName"] + "! Come back in 24 hours!", 2)
+                            await sendEmbedTree(ctx, "You've received " + str(economy["Commands"]["Daily"] * listOfMultipliers(ctx.user)["total"]) + " " + economy["EconomyName"] + "! Come back in 24 hours!", 2)
                     else:
                         await sendEmbedTree(ctx, "Time is still remaining. Please wait!", 3)
 
@@ -2490,8 +2550,8 @@ if __name__ == "__main__":
                 else:
                     jobList = economy["JobList"]
                     randomizedJob = jobList[random.randint(0, len(jobList) - 1)]
-                    response = createCurrency(ctx.user.id, randomizedJob["amount"] * applyRoleMultiplier(ctx.user))
-                    await sendEmbedTree(ctx, "You have earned " + str(randomizedJob["amount"] * applyRoleMultiplier(ctx.user)) + " from working as a " + randomizedJob["name"] + "!", 2)
+                    response = createCurrency(ctx.user.id, randomizedJob["amount"] * listOfMultipliers(ctx.user)["total"])
+                    await sendEmbedTree(ctx, "You have earned " + str(randomizedJob["amount"] * listOfMultipliers(ctx.user)["total"]) + " from working as a " + randomizedJob["name"] + "!", 2)
 
             @tree.command(
                 name="about",
@@ -2574,7 +2634,13 @@ if __name__ == "__main__":
                     await sendEmbedTree(ctx, "Access Denied", 3)
                 else:
                     user = ctx.user
-                    await sendEmbedTree(ctx,  f"Multipliers applied on non-user involved commands: \n\n**Role Multiplier:** `{str(applyRoleMultiplier(user) / getSeasonMultiplier())}x` (Based on your current roles) \n**Season Multiplier:** `{str(getSeasonMultiplier())}x` (Stacks on all multipliers) \n\nTotal: **{str(applyRoleMultiplier(user))}x**", 2)
+                    list = listOfMultipliers(user)
+                    generatedString = ""
+
+                    for data in list["data"]:
+                        generatedString = generatedString + f"**{str(data['name'])}:** `{str(data['multiplier'])}x` ({str(data['description'])}) "
+                    
+                    await sendEmbedTree(ctx,  f"Multipliers applied on non-user involved commands: \n\n{generatedString}\n\nTotal: **{str(list['total'])}x**", 2)
 
             if economy["GreatReset"]["Enabled"] == True:
                 greatResetCurrently = False
