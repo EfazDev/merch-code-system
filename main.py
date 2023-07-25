@@ -817,7 +817,10 @@ if __name__ == "__main__":
                 
             def getSeasonMultiplier():
                 if economy["GreatReset"]["Enabled"] == True:
-                    return (1 + (0.5*(economy["GreatReset"]["SeasonNumber"] - 1)))
+                    if economy["GreatReset"]["SeasonNumber"] < 1:
+                        return 1
+                    else:
+                        return (1 + (0.5*(economy["GreatReset"]["SeasonNumber"] - 1)))
                 else:
                     return 1
                 
@@ -834,27 +837,44 @@ if __name__ == "__main__":
             def listOfMultipliers(user):
                 listOfMulti = {"data": [], "total": 1}
                 listOfMulti["data"].append({
-                    "name": "Role Multiplier",
-                    "description": "Based on your current roles",
-                    "multiplier": applyRoleMultiplier(user)
+                    "name": "Default",
+                    "description": "Default Multiplier Floor",
+                    "multiplier": 1
                 })
-                listOfMulti["total"] = listOfMulti["total"] * applyRoleMultiplier(user)
 
-                if economy["GreatReset"]["Enabled"] == True:
-                    listOfMulti["data"].append({
-                        "name": "Season Multiplier",
-                        "description": "Based on number of seasons the economy is based, stacks on all multipliers",
-                        "multiplier": getSeasonMultiplier()
-                    })
-                    listOfMulti["total"] = listOfMulti["total"] * getSeasonMultiplier()
+                allowed_multipliers = {
+                    "Weekends": True,
+                    "Roles": True,
+                    "Seasons": True
+                }
+                if economy.get("AllowedMultipliers"):
+                    allowed_multipliers = economy["AllowedMultipliers"]
 
-                if datetime.today().weekday() >= 5:
+                if allowed_multipliers["Roles"]:
                     listOfMulti["data"].append({
-                        "name": "Weekend Multiplier",
-                        "description": "Based on if its the weekend or not! Multiplies by 2!",
-                        "multiplier": 2
+                        "name": "Role Multiplier",
+                        "description": "Based on your current roles",
+                        "multiplier": applyRoleMultiplier(user)
                     })
-                    listOfMulti["total"] = listOfMulti["total"] * 2
+                    listOfMulti["total"] = listOfMulti["total"] * applyRoleMultiplier(user)
+
+                if allowed_multipliers["Seasons"]:
+                    if economy["GreatReset"]["Enabled"] == True:
+                        listOfMulti["data"].append({
+                            "name": "Season Multiplier",
+                            "description": "Based on number of seasons the economy is based, stacks on all multipliers",
+                            "multiplier": getSeasonMultiplier()
+                        })
+                        listOfMulti["total"] = listOfMulti["total"] * getSeasonMultiplier()
+
+                if allowed_multipliers["Weekends"]:
+                    if datetime.today().weekday() >= 5:
+                        listOfMulti["data"].append({
+                            "name": "Weekend Multiplier",
+                            "description": "Based on if its the weekend or not! Multiplies by 2!",
+                            "multiplier": 2
+                        })
+                        listOfMulti["total"] = listOfMulti["total"] * 2
 
                 return listOfMulti
 
@@ -1161,7 +1181,8 @@ if __name__ == "__main__":
                         await sendEmbed(ctx, "Failed! You can't rob the admins of this bot!", 3)
                         return
                     randomized = random.randint(1, economy["SuccessRate"])
-                    if checkCurrencyAmount(ctx.message.author.id) >= 1:
+                    needed_requirement = round(listOfMultipliers(ctx.user)["total"] / economy["SuccessRate"])
+                    if checkCurrencyAmount(ctx.message.author.id) >= needed_requirement:
                         if randomized == 1:
                             amount = checkCurrencyAmount(user.id) * 0.5
                             response = takeCurrency(user.id, amount)
@@ -1172,7 +1193,7 @@ if __name__ == "__main__":
                             response = takeCurrency(ctx.message.author.id, amount)
                             await sendEmbed(ctx, "Robbing Failed! You have been charged " + str(amount) + " " + economy["EconomyName"] + "!", 3)
                     else:
-                        await sendEmbed(ctx, "Robbing Failed! You have no money to use for this command!", 3)
+                        await sendEmbed(ctx, f"Robbing Failed! You need {str(needed_requirement)} {economy['EconomyName']} to use for this command!", 3)
 
             @bot.command()
             async def sendMoney(ctx, user: discord.Member, amount: int):
@@ -2042,6 +2063,7 @@ if __name__ == "__main__":
                     economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
                     with open("economy.json", "w") as outfile:
                         outfile.write(json.dumps(economy))
+                    print(f"System created {str(amount)} {economy['EconomyName']} in {str(userId)}'s account.")
                     return True
                 else:
                     economy["UserData"][str(userId)] = {
@@ -2053,6 +2075,7 @@ if __name__ == "__main__":
                     economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
                     with open("economy.json", "w") as outfile:
                         outfile.write(json.dumps(economy))
+                    print(f"System created {str(amount)} {economy['EconomyName']} and generated {str(userId)}'s account.")
                     return True
                 
             def takeCurrency(userId, amount):
@@ -2063,6 +2086,7 @@ if __name__ == "__main__":
                         economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] - amount)
                         with open("economy.json", "w") as outfile: 
                             outfile.write(json.dumps(economy))
+                            print(f"System took out {str(amount)} {economy['EconomyName']} out of {str(userId)}'s account.")
                         return True
                     else:
                         return False
@@ -2088,27 +2112,44 @@ if __name__ == "__main__":
             def listOfMultipliers(user):
                 listOfMulti = {"data": [], "total": 1}
                 listOfMulti["data"].append({
-                    "name": "Role Multiplier",
-                    "description": "Based on your current roles",
-                    "multiplier": applyRoleMultiplier(user)
+                    "name": "Default",
+                    "description": "Default Multiplier Floor",
+                    "multiplier": 1
                 })
-                listOfMulti["total"] = listOfMulti["total"] * applyRoleMultiplier(user)
 
-                if economy["GreatReset"]["Enabled"] == True:
-                    listOfMulti["data"].append({
-                        "name": "Season Multiplier",
-                        "description": "Based on number of seasons the economy is based, stacks on all multipliers",
-                        "multiplier": getSeasonMultiplier()
-                    })
-                    listOfMulti["total"] = listOfMulti["total"] * getSeasonMultiplier()
+                allowed_multipliers = {
+                    "Weekends": True,
+                    "Roles": True,
+                    "Seasons": True
+                }
+                if economy.get("AllowedMultipliers"):
+                    allowed_multipliers = economy["AllowedMultipliers"]
 
-                if datetime.today().weekday() >= 5:
+                if allowed_multipliers["Roles"]:
                     listOfMulti["data"].append({
-                        "name": "Weekend Multiplier",
-                        "description": "Based on if its the weekend or not! Multiplies by 2!",
-                        "multiplier": 2
+                        "name": "Role Multiplier",
+                        "description": "Based on your current roles",
+                        "multiplier": applyRoleMultiplier(user)
                     })
-                    listOfMulti["total"] = listOfMulti["total"] * 2
+                    listOfMulti["total"] = listOfMulti["total"] * applyRoleMultiplier(user)
+
+                if allowed_multipliers["Seasons"]:
+                    if economy["GreatReset"]["Enabled"] == True:
+                        listOfMulti["data"].append({
+                            "name": "Season Multiplier",
+                            "description": "Based on number of seasons the economy is based, stacks on all multipliers",
+                            "multiplier": getSeasonMultiplier()
+                        })
+                        listOfMulti["total"] = listOfMulti["total"] * getSeasonMultiplier()
+
+                if allowed_multipliers["Weekends"]:
+                    if datetime.today().weekday() >= 5:
+                        listOfMulti["data"].append({
+                            "name": "Weekend Multiplier",
+                            "description": "Based on if its the weekend or not! Multiplies by 2!",
+                            "multiplier": 2
+                        })
+                        listOfMulti["total"] = listOfMulti["total"] * 2
 
                 return listOfMulti
                 
@@ -2497,8 +2538,12 @@ if __name__ == "__main__":
                     if user.id in botToken["Admins"]:
                         await sendEmbedTree(ctx, "Failed! You can't rob the admins of this bot!", 3)
                         return
+                    elif user.id == bot.user.id:
+                        await sendEmbedTree(ctx, "Failed! You can't rob the bot!", 3)
+                        return
                     randomized = random.randint(1, economy["SuccessRate"])
-                    if checkCurrencyAmount(ctx.user.id) >= 1:
+                    needed_requirement = round(listOfMultipliers(ctx.user)["total"] / economy["SuccessRate"])
+                    if checkCurrencyAmount(ctx.user.id) >= needed_requirement:
                         if randomized == 1:
                             amount = checkCurrencyAmount(user.id) * 0.5
                             response = takeCurrency(user.id, amount)
@@ -2509,7 +2554,7 @@ if __name__ == "__main__":
                             response = takeCurrency(ctx.user.id, amount)
                             await sendEmbedTree(ctx, "Robbing Failed! You have been charged " + str(amount) + " " + economy["EconomyName"] + "!", 3)
                     else:
-                        await sendEmbedTree(ctx, "Robbing Failed! You have no money to use for this command!", 3)
+                        await sendEmbedTree(ctx, f"Robbing Failed! You need {str(needed_requirement)} {economy['EconomyName']} to use for this command!", 3)
 
             @tree.command(
                 name="sendmoney",

@@ -45,6 +45,11 @@
             }
         ]
     },
+    "AllowedMultipliers": {
+        "Weekends": true,
+        "Roles": true,
+        "Seasons": true
+    },
     "RoleMultiplier": [],
     "InventoryLimit": 20
 }
