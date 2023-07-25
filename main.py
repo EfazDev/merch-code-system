@@ -1261,7 +1261,7 @@ if __name__ == "__main__":
                     for data in list["data"]:
                         generatedString = generatedString + f"**{str(data['name'])}:** `{str(data['multiplier'])}x` ({str(data['description'])}) \n"
                     
-                    await sendEmbed(ctx,  f"Multipliers applied on non-user involved commands: \n\n{generatedString}\n\nTotal: **{str(list['total'])}x**", 2)
+                    await sendEmbed(ctx,  f"Multipliers applied on non-user involved commands: \n\n{generatedString}\nTotal: **{str(list['total'])}x**", 2)
 
             @bot.command()
             async def endItemListing(ctx, item: str):
@@ -2640,7 +2640,7 @@ if __name__ == "__main__":
                     for data in list["data"]:
                         generatedString = generatedString + f"**{str(data['name'])}:** `{str(data['multiplier'])}x` ({str(data['description'])}) \n"
                     
-                    await sendEmbedTree(ctx,  f"Multipliers applied on non-user involved commands: \n\n{generatedString}\n\nTotal: **{str(list['total'])}x**", 2)
+                    await sendEmbedTree(ctx,  f"Multipliers applied on non-user involved commands: \n\n{generatedString}\nTotal: **{str(list['total'])}x**", 2)
 
             if economy["GreatReset"]["Enabled"] == True:
                 greatResetCurrently = False
