@@ -1259,7 +1259,7 @@ if __name__ == "__main__":
                     generatedString = ""
 
                     for data in list["data"]:
-                        generatedString = generatedString + f"**{str(data['name'])}:** `{str(data['multiplier'])}x` ({str(data['description'])}) "
+                        generatedString = generatedString + f"**{str(data['name'])}:** `{str(data['multiplier'])}x` ({str(data['description'])}) \n"
                     
                     await sendEmbed(ctx,  f"Multipliers applied on non-user involved commands: \n\n{generatedString}\n\nTotal: **{str(list['total'])}x**", 2)
 
@@ -2638,7 +2638,7 @@ if __name__ == "__main__":
                     generatedString = ""
 
                     for data in list["data"]:
-                        generatedString = generatedString + f"**{str(data['name'])}:** `{str(data['multiplier'])}x` ({str(data['description'])}) "
+                        generatedString = generatedString + f"**{str(data['name'])}:** `{str(data['multiplier'])}x` ({str(data['description'])}) \n"
                     
                     await sendEmbedTree(ctx,  f"Multipliers applied on non-user involved commands: \n\n{generatedString}\n\nTotal: **{str(list['total'])}x**", 2)
 
