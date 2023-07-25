@@ -2574,7 +2574,7 @@ if __name__ == "__main__":
                     await sendEmbedTree(ctx, "Access Denied", 3)
                 else:
                     user = ctx.user
-                    await sendEmbed(ctx,  f"Multipliers applied on non-user involved commands: \n\n**Role Multiplier:** `{str(applyRoleMultiplier(user) / getSeasonMultiplier())}x` (Based on your current roles) \n**Season Multiplier:** `{str(getSeasonMultiplier())}x` \n\n**Total: {str(applyRoleMultiplier(user))}x**", 2)
+                    await sendEmbedTree(ctx,  f"Multipliers applied on non-user involved commands: \n\n**Role Multiplier:** `{str(applyRoleMultiplier(user) / getSeasonMultiplier())}x` (Based on your current roles) \n**Season Multiplier:** `{str(getSeasonMultiplier())}x` \n\n**Total: {str(applyRoleMultiplier(user))}x**", 2)
 
             if economy["GreatReset"]["Enabled"] == True:
                 greatResetCurrently = False
