@@ -157,6 +157,8 @@ if alreadyexists.lower() == "y":
             economyNew["InventoryLimit"] = economy["InventoryLimit"]
         if testIfVariableExists(economy, "GreatReset"):
             economyNew["GreatReset"] = economy["GreatReset"]
+        if testIfVariableExists(economy, "AllowedMultipliers"):
+            economyNew["AllowedMultipliers"] = economy["AllowedMultipliers"]
 
         # end of conversion
 
@@ -312,9 +314,15 @@ else:
                         "stock": 1,
                         "price": 10000000,
                         "name": "Cash King",
-                        "role": economy7
+                        "role": economy7,
+                        "multiplierEnabled": True
                     }
                 ]
+            },
+            "AllowedMultipliers": {
+                "Weekends": True,
+                "Roles": True,
+                "Seasons": True
             },
             "RoleMultiplier": [],
             "InventoryLimit": economy5
