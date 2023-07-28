@@ -4,5 +4,6 @@
     "NotificationChannelId": 0,
     "ServerID": 0,
     "SlashCommandsOnly": true,
-    "BlacklistedUsers": {}
+    "BlacklistedUsers": {},
+    "DisableDiscordLogging": true
 }

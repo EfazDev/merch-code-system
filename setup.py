@@ -22,33 +22,44 @@ def testIfVariableExists(tablee, variablee):
         return True
     else:
         return False
+    
+def printSystemMessage(message):
+    print(f"\x1b[38;2;255;75;0m{message}\033[38;5;231m")
 
+def printMainMessage(mes):
+    print(f"\x1b[38;2;255;255;255m{mes}\033[38;5;231m")
 
-print()
-print("\033[38;5;208m███████╗███████╗░█████╗░███████╗██╗░██████╗  ███╗░░░███╗███████╗██████╗░░█████╗░██╗░░██╗\033[0;0m")
-print("\033[38;5;208m██╔════╝██╔════╝██╔══██╗╚════██║╚█║██╔════╝  ████╗░████║██╔════╝██╔══██╗██╔══██╗██║░░██║\033[0;0m")
-print("\033[38;5;208m█████╗░░█████╗░░███████║░░███╔═╝░╚╝╚█████╗░  ██╔████╔██║█████╗░░██████╔╝██║░░╚═╝███████║\033[0;0m")
-print("\033[38;5;208m██╔══╝░░██╔══╝░░██╔══██║██╔══╝░░░░░░╚═══██╗  ██║╚██╔╝██║██╔══╝░░██╔══██╗██║░░██╗██╔══██║\033[0;0m")
-print("\033[38;5;208m███████╗██║░░░░░██║░░██║███████╗░░░██████╔╝  ██║░╚═╝░██║███████╗██║░░██║╚█████╔╝██║░░██║\033[0;0m")
-print("\033[38;5;208m╚══════╝╚═╝░░░░░╚═╝░░╚═╝╚══════╝░░░╚═════╝░  ╚═╝░░░░░╚═╝╚══════╝╚═╝░░╚═╝░╚════╝░╚═╝░░╚═╝\033[0;0m")
-print("")
-print("\033[38;5;208m░█████╗░░█████╗░██████╗░███████╗  ░██████╗██╗░░░██╗░██████╗████████╗███████╗███╗░░░███╗\033[0;0m")
-print("\033[38;5;208m██╔══██╗██╔══██╗██╔══██╗██╔════╝  ██╔════╝╚██╗░██╔╝██╔════╝╚══██╔══╝██╔════╝████╗░████║\033[0;0m")
-print("\033[38;5;208m██║░░╚═╝██║░░██║██║░░██║█████╗░░  ╚█████╗░░╚████╔╝░╚█████╗░░░░██║░░░█████╗░░██╔████╔██║\033[0;0m")
-print("\033[38;5;208m██║░░██╗██║░░██║██║░░██║██╔══╝░░  ░╚═══██╗░░╚██╔╝░░░╚═══██╗░░░██║░░░██╔══╝░░██║╚██╔╝██║\033[0;0m")
-print("\033[38;5;208m╚█████╔╝╚█████╔╝██████╔╝███████╗  ██████╔╝░░░██║░░░██████╔╝░░░██║░░░███████╗██║░╚═╝░██║\033[0;0m")
-print("\033[38;5;208m░╚════╝░░╚════╝░╚═════╝░╚══════╝  ╚═════╝░░░░╚═╝░░░╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░░░░╚═╝\033[0;0m")
-print("")
-print("\033[38;5;208mWelcome to Efaz's Discord Merch Code System Setup\033[0;0m")
-print("\033[38;5;208mTo set up your JSONs, please continue from here.\033[0;0m")
+def printErrorMessage(mes):
+    print(f"\x1b[38;2;255;0;0m{mes}\033[38;5;231m")
+
+def printSuccessMessage(mes):
+    print(f"\x1b[38;2;0;255;0m{mes}\033[38;5;231m")
+
+printSystemMessage()
+printSystemMessage("███████╗███████╗░█████╗░███████╗██╗░██████╗  ███╗░░░███╗███████╗██████╗░░█████╗░██╗░░██╗")
+printSystemMessage("██╔════╝██╔════╝██╔══██╗╚════██║╚█║██╔════╝  ████╗░████║██╔════╝██╔══██╗██╔══██╗██║░░██║")
+printSystemMessage("█████╗░░█████╗░░███████║░░███╔═╝░╚╝╚█████╗░  ██╔████╔██║█████╗░░██████╔╝██║░░╚═╝███████║")
+printSystemMessage("██╔══╝░░██╔══╝░░██╔══██║██╔══╝░░░░░░╚═══██╗  ██║╚██╔╝██║██╔══╝░░██╔══██╗██║░░██╗██╔══██║")
+printSystemMessage("███████╗██║░░░░░██║░░██║███████╗░░░██████╔╝  ██║░╚═╝░██║███████╗██║░░██║╚█████╔╝██║░░██║")
+printSystemMessage("╚══════╝╚═╝░░░░░╚═╝░░╚═╝╚══════╝░░░╚═════╝░  ╚═╝░░░░░╚═╝╚══════╝╚═╝░░╚═╝░╚════╝░╚═╝░░╚═╝")
+printSystemMessage("")
+printSystemMessage("░█████╗░░█████╗░██████╗░███████╗  ░██████╗██╗░░░██╗░██████╗████████╗███████╗███╗░░░███╗")
+printSystemMessage("██╔══██╗██╔══██╗██╔══██╗██╔════╝  ██╔════╝╚██╗░██╔╝██╔════╝╚══██╔══╝██╔════╝████╗░████║")
+printSystemMessage("██║░░╚═╝██║░░██║██║░░██║█████╗░░  ╚█████╗░░╚████╔╝░╚█████╗░░░░██║░░░█████╗░░██╔████╔██║")
+printSystemMessage("██║░░██╗██║░░██║██║░░██║██╔══╝░░  ░╚═══██╗░░╚██╔╝░░░╚═══██╗░░░██║░░░██╔══╝░░██║╚██╔╝██║")
+printSystemMessage("╚█████╔╝╚█████╔╝██████╔╝███████╗  ██████╔╝░░░██║░░░██████╔╝░░░██║░░░███████╗██║░╚═╝░██║")
+printSystemMessage("░╚════╝░░╚════╝░╚═════╝░╚══════╝  ╚═════╝░░░░╚═╝░░░╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░░░░╚═╝")
+printSystemMessage("")
+printSystemMessage("Welcome to Efaz's Discord Merch Code System Setup")
+printSystemMessage("To set up your JSONs, please continue from here.")
 
 checkpip = input("Do you want to install modules if haven't already? (y/n):")
 if checkpip.lower() == "y":
-    print("Awaiting pip...")
+    printMainMessage("Awaiting pip...")
     time.sleep(2.1)
     pip.main(['install', "discord.py"])
     pip.main(['install', "asyncio"])
-    print("Finished running pip, continuing setup..")
+    printSuccessMessage("Finished running pip, continuing setup..")
 
 alreadyexists = input(
     "Do you have an existing Merch Code System installation or no? (y/n):"
@@ -66,9 +77,9 @@ if alreadyexists.lower() == "y":
     ):
         if not newDirect.endswith("\\"):
             newDirect = newDirect + "\\"
-    print("Reviewing Directory...")
-    print("New directory:")
-    print(newDirect)
+    printMainMessage("Reviewing Directory...")
+    printMainMessage("New directory:")
+    printMainMessage(newDirect)
     confirm = input("Is this directory correct? (y/n): ")
     if confirm.lower() == "y":
         with open(newDirect + "codes.json") as f:
@@ -114,6 +125,8 @@ if alreadyexists.lower() == "y":
 
         if testIfVariableExists(botToken, "ServerID"):
             botTokenNew["ServerID"] = botToken["ServerID"]
+        if testIfVariableExists(botToken, "DisableDiscordLogging"):
+            botTokenNew["DisableDiscordLogging"] = botToken["DisableDiscordLogging"]
         if testIfVariableExists(botToken, "SlashCommandsOnly"):
             botTokenNew["SlashCommandsOnly"] = botToken["SlashCommandsOnly"]
         if testIfVariableExists(botToken, "BlacklistedUsers"):
@@ -172,13 +185,13 @@ if alreadyexists.lower() == "y":
             outfile.write(json.dumps(economyNew))
         with open(newDirect + "main.py", "w", encoding="utf8") as outfile:
             outfile.write(mainNew)
-        print("Successfully updated Merch Code System Directory " + newDirect + "! You may use it!")
+        printSuccessMessage("Successfully updated Merch Code System Directory " + newDirect + "! You may use it!")
         enter = input("Press Enter to finish setup: ")
     else:
         print("Ending process..")
         exit()
 else:
-    print("-- BOT SECTION --")
+    printMainMessage("-- BOT SECTION --")
     botInfo1 = input(
         "Your Discord Bot token (Get from your Discord Developer Portal): "
     )
@@ -194,14 +207,14 @@ else:
         botInfo5 = True
     else:
         botInfo5 = False
-    print("-- CODES SECTION --")
+    printMainMessage("-- CODES SECTION --")
     codeInfo1 = input("Would you like to add an perm code? (Optional) (y/n)")
     codeInfo2 = None
     if codeInfo1.lower() == "y":
         codeInfo2 = input("Code?")
         codeInfo3 = input("Reward?")
 
-    print("-- ECONOMY SECTION --")
+    printMainMessage("-- ECONOMY SECTION --")
     economy1 = input("Do you want to enable economy commands? (y/n):")
     if economy1.lower() == "y":
         economy1 = True
@@ -261,8 +274,8 @@ else:
     else:
         economy1 = False
 
-    print("-- Finished Questions --")
-    print("Preparing to generate JSONs")
+    printMainMessage("-- Finished Questions --")
+    printMainMessage("Preparing to generate JSONs")
     botJSON = {
         "Token": botInfo1,
         "Admins": [botInfo2],
@@ -339,8 +352,8 @@ else:
         }
         with open("codes.json", "w") as outfile:
             outfile.write(json.dumps(codeJSON))
-    print("JSONs Ready")
+    printSuccessMessage("JSONs Ready")
     enter = input("Press Enter to finish setup: ")
     with open("bot.json", "w") as outfile:
         outfile.write(json.dumps(botJSON))
-print("Setup is finished!")
+printSuccessMessage("Setup is finished!")

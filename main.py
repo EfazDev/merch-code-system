@@ -15,6 +15,7 @@ try:
     import sys # python built-in
     from operator import getitem
     from datetime import datetime
+    import logging
 except Exception as e:
     print("Error while launching modules. This may be an module not found error. Do you want to install all the modules required? (y/n): ")
     if input(">> ").lower() == "y":
@@ -38,36 +39,45 @@ except Exception as e:
 
 LocalMachineOS = platform.system()
 pythonVersion = sys.version_info
-version = "1.6.1"
+version = "1.6.5"
 for _ in range(50):
     print()
 
 def printSystemMessage(message):
-    print(f"\033[38;5;208m{message}\033[0;0m")
+    print(f"\x1b[38;2;255;75;0m{message}\033[38;5;231m")
+
+def printMainMessage(mes):
+    print(f"\x1b[38;2;255;255;255m{mes}\033[38;5;231m")
+
+def printErrorMessage(mes):
+    print(f"\x1b[38;2;255;0;0m{mes}\033[38;5;231m")
+
+def printSuccessMessage(mes):
+    print(f"\x1b[38;2;0;255;0m{mes}\033[38;5;231m")
 
 # load saved data
-print()
+printMainMessage()
 printSystemMessage("███████╗███████╗░█████╗░███████╗██╗░██████╗  ███╗░░░███╗███████╗██████╗░░█████╗░██╗░░██╗")
 printSystemMessage("██╔════╝██╔════╝██╔══██╗╚════██║╚█║██╔════╝  ████╗░████║██╔════╝██╔══██╗██╔══██╗██║░░██║")
 printSystemMessage("█████╗░░█████╗░░███████║░░███╔═╝░╚╝╚█████╗░  ██╔████╔██║█████╗░░██████╔╝██║░░╚═╝███████║")
 printSystemMessage("██╔══╝░░██╔══╝░░██╔══██║██╔══╝░░░░░░╚═══██╗  ██║╚██╔╝██║██╔══╝░░██╔══██╗██║░░██╗██╔══██║")
 printSystemMessage("███████╗██║░░░░░██║░░██║███████╗░░░██████╔╝  ██║░╚═╝░██║███████╗██║░░██║╚█████╔╝██║░░██║")
 printSystemMessage("╚══════╝╚═╝░░░░░╚═╝░░╚═╝╚══════╝░░░╚═════╝░  ╚═╝░░░░░╚═╝╚══════╝╚═╝░░╚═╝░╚════╝░╚═╝░░╚═╝")
-print("")
+printMainMessage("")
 printSystemMessage("░█████╗░░█████╗░██████╗░███████╗  ░██████╗██╗░░░██╗░██████╗████████╗███████╗███╗░░░███╗")
 printSystemMessage("██╔══██╗██╔══██╗██╔══██╗██╔════╝  ██╔════╝╚██╗░██╔╝██╔════╝╚══██╔══╝██╔════╝████╗░████║")
 printSystemMessage("██║░░╚═╝██║░░██║██║░░██║█████╗░░  ╚█████╗░░╚████╔╝░╚█████╗░░░░██║░░░█████╗░░██╔████╔██║")
 printSystemMessage("██║░░██╗██║░░██║██║░░██║██╔══╝░░  ░╚═══██╗░░╚██╔╝░░░╚═══██╗░░░██║░░░██╔══╝░░██║╚██╔╝██║")
 printSystemMessage("╚█████╔╝╚█████╔╝██████╔╝███████╗  ██████╔╝░░░██║░░░██████╔╝░░░██║░░░███████╗██║░╚═╝░██║")
 printSystemMessage("░╚════╝░░╚════╝░╚═════╝░╚══════╝  ╚═════╝░░░░╚═╝░░░╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░░░░╚═╝")
-print("")
+printMainMessage("")
 printSystemMessage("Welcome to Efaz's Merch Code System Bot!")
 printSystemMessage("Please use setup.py if you want to setup your bot!")
 printSystemMessage("Let's get started!")
 printSystemMessage("System Messages:")
-print()
-print("Loaded Script Version: v" + version)
-print("Loading System Data (codes, users, bot, economy)")
+printMainMessage()
+printMainMessage("Loaded Script Version: v" + version)
+printMainMessage("Loading System Data (codes, users, bot, economy)")
 
 with open("codes.json") as f:
     codes = json.load(f)
@@ -80,8 +90,8 @@ with open("economy.json") as f:
 
 StoreItems = economy["StoreInventory"]
 
-print("Loaded Saved Data in JSONs")
-print("Loading Functions and Commands")
+printMainMessage("Loaded Saved Data in JSONs")
+printMainMessage("Loading Functions and Commands")
 
 def loadLists():
     with open("codes.json") as f:
@@ -136,7 +146,7 @@ if __name__ == "__main__":
                 text="Made by Efaz from efaz.dev - v" + version,
                 icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
             )
-            print("User " + ctx.message.author.name + " used command: " + ctx.message.content)
+            printMainMessage("User " + ctx.message.author.name + " used command: " + ctx.message.content)
             await ctx.reply(embed=embed)
 
         # normal
@@ -148,7 +158,7 @@ if __name__ == "__main__":
         @bot.event
         async def on_ready():
             print(f"Logged on the bot: " + bot.user.name)
-            print("System is ready!")
+            printSuccessMessage("System is ready!")
             decimal = 16538115
             embed = discord.Embed(
                 color=decimal,
@@ -203,9 +213,9 @@ if __name__ == "__main__":
             if predicate(ctx) == False or blacklisted(ctx) == True:
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
-                print("Loading System Data (codes, users, bot)")
+                printSuccessMessage("Loading System Data (codes, users, bot)")
                 loadLists()
-                print("Loaded Saved Data in JSONs")
+                printSuccessMessage("Loaded Saved Data in JSONs")
                 await sendEmbed(ctx, "Refreshed List, restarting main.py script.", 2)
 
         @bot.command()
@@ -246,7 +256,7 @@ if __name__ == "__main__":
             if arg:
                 if testIfVariableExists(userData, str(ctx.message.author.id)):
                     usersSavedData = userData[str(ctx.message.author.id)]
-                    print("User requested to look for code: " + arg)
+                    printMainMessage("User requested to look for code: " + arg)
                     if testIfVariableExists(codes, arg):
                         codeInfo = codes[arg]
                         if testIfVariableExists(usersSavedData, arg):
@@ -347,7 +357,7 @@ if __name__ == "__main__":
                 else:
                     usersSavedData = []
                     userData[str(ctx.message.author.id)] = usersSavedData
-                    print("User requested to look for code: " + arg)
+                    printMainMessage("User requested to look for code: " + arg)
                     if testIfVariableExists(codes, arg):
                         codeInfo = codes[arg]
                         if testIfVariableExists(usersSavedData, arg):
@@ -458,10 +468,10 @@ if __name__ == "__main__":
         @bot.command()
         async def createCode(ctx, args1, args2, args3, args4="0"):
             if predicate(ctx) == False or blacklisted(ctx) == True:
-                print("returns False")
+                printErrorMessage("User has no authorization, Access Denied")
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
-                print("returns True")
+                printSuccessMessage("User has authorized permissions. Continuing with command..")
                 if args1:
                     if args2:
                         if testIfVariableExists(codes, args1):
@@ -476,24 +486,24 @@ if __name__ == "__main__":
                                 with open("codes.json", "w") as outfile:
                                     outfile.write(json.dumps(codes))
                                 await sendEmbed(ctx, "Created code: " + args1, 2)
-                                print("Created code: " + args1)
+                                printSuccessMessage("Created code: " + args1)
                             else:
                                 await sendEmbed(ctx, "Invalid Role ID: " + args1, 3)
                     
                     else:
                         await sendEmbed(ctx, "No reward Inputted in args2, not created", 3)
-                        print("No reward Inputted in args2, not created")
+                        printErrorMessage("No reward Inputted in args2, not created")
                 else:
                     await sendEmbed(ctx, "No Code Inputted in args1, not created", 3)
-                    print("No Code Inputted in args1, not created")
+                    printErrorMessage("No Code Inputted in args1, not created")
 
         @bot.command()
         async def createRandomized(ctx, args1, args2, args3, args4="0"):
             if predicate(ctx) == False or blacklisted(ctx) == True:
-                print("returns False")
+                printErrorMessage("User has no authorization, Access Denied")
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
-                print("returns True")
+                printSuccessMessage("User has authorized permissions. Continuing with command..")
                 prefix = args1
                 code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
                 args1 = prefix + code
@@ -511,21 +521,21 @@ if __name__ == "__main__":
                                 with open("codes.json", "w") as outfile:
                                     outfile.write(json.dumps(codes))
                                 await sendEmbed(ctx, "Created code: " + args1, 2)
-                                print("Created code: " + args1)
+                                printSuccessMessage("Created code: " + args1)
                             else:
                                 await sendEmbed(ctx, "Invalid Role ID: " + args1, 3)
                     
                     else:
                         await sendEmbed(ctx, "No reward Inputted in args2, not created", 3)
-                        print("No reward Inputted in args2, not created")
+                        printErrorMessage("No reward Inputted in args2, not created")
                 else:
                     await sendEmbed(ctx, "No Code Inputted in args1, not created", 3)
-                    print("No Code Inputted in args1, not created")
+                    printErrorMessage("No Code Inputted in args1, not created")
 
         @bot.command()
         async def searchUser(ctx, user: discord.Member):
             if predicate(ctx) == False or blacklisted(ctx) == True:
-                print("returns False")
+                printErrorMessage("User has no authorization, Access Denied")
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
                 id = str(user.id)
@@ -563,10 +573,10 @@ if __name__ == "__main__":
             if args4 < 0:
                 args4 = args4 * -1
             if predicate(ctx) == False or blacklisted(ctx) == True:
-                print("returns False")
+                printErrorMessage("User has no authorization, Access Denied")
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
-                print("returns True")
+                printSuccessMessage("User has authorized permissions. Continuing with command..")
 
                 list = []
                 count = args4
@@ -590,13 +600,13 @@ if __name__ == "__main__":
                                     with open("codes.json", "w") as outfile:
                                         outfile.write(json.dumps(codes))
                                     list.append(args1)
-                                    print("Created code: " + args1)
+                                    printSuccessMessage("Created code: " + args1)
                                 else:
                                     await sendEmbed(ctx, "Invalid Role ID: " + args1, 3)
                         else:
-                            print("No reward Inputted in args2, not created")
+                            printErrorMessage("No reward Inputted in args2, not created")
                     else:
-                        print("No Code Inputted in args1, not created")
+                        printErrorMessage("No Code Inputted in args1, not created")
                 for i in list:
                     message = message + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
                 
@@ -605,10 +615,10 @@ if __name__ == "__main__":
         @bot.command()
         async def viewCodes(ctx):
             if predicate(ctx) == False or blacklisted(ctx) == True:
-                print("returns False")
+                printErrorMessage("User has no authorization, Access Denied")
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
-                print("returns True")
+                printSuccessMessage("User has authorized permissions. Continuing with command..")
                 ListOfCodes = list(codes.keys())
                 string = "List of **available** codes: "
                 listNotAvailable = "List of not **available** codes: "
@@ -635,10 +645,10 @@ if __name__ == "__main__":
         @bot.command()
         async def clearAlreadyRedeemed(ctx):
             if predicate(ctx) == False or blacklisted(ctx) == True:
-                print("returns False")
+                printErrorMessage("User has no authorization, Access Denied")
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
-                print("returns True")
+                printSuccessMessage("User has authorized permissions. Continuing with command..")
                 ListOfCodes = list(codes.keys())
                 listNotAvailable = "List of **cleared** codes: "
                 for i in ListOfCodes:
@@ -653,7 +663,7 @@ if __name__ == "__main__":
                                 codes.pop(i, None)
                                 listNotAvailable = listNotAvailable + add_string
                             except Exception as e:
-                                print("Failed to remove code: " + str(e))
+                                printErrorMessage("Failed to remove code: " + str(e))
                 with open("codes.json", "w") as outfile:
                     outfile.write(json.dumps(codes))
                 await sendEmbed(ctx, listNotAvailable, 2)
@@ -661,7 +671,7 @@ if __name__ == "__main__":
         @bot.command()
         async def deleteCode(ctx, arg1):
             if predicate(ctx) == False or blacklisted(ctx) == True:
-                print("returns False")
+                printErrorMessage("User has no authorization, Access Denied")
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
                 if arg1:
@@ -678,7 +688,7 @@ if __name__ == "__main__":
         @bot.command()
         async def blacklist(ctx, user: discord.Member, reason):
             if predicate(ctx) == False or blacklisted(ctx) == True:
-                print("returns False")
+                printErrorMessage("User has no authorization, Access Denied")
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
                 id = str(user.id)
@@ -694,7 +704,7 @@ if __name__ == "__main__":
         @bot.command()
         async def unblacklist(ctx, user: discord.Member):
             if predicate(ctx) == False or blacklisted(ctx) == True:
-                print("returns False")
+                printErrorMessage("User has no authorization, Access Denied")
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
                 id = str(user.id)
@@ -712,7 +722,7 @@ if __name__ == "__main__":
         @bot.command()
         async def blacklistyourself(ctx, reason):
             if blacklisted(ctx) == True:
-                print("returns False")
+                printErrorMessage("User has no authorization, Access Denied")
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
                 user = ctx.message.author
@@ -729,7 +739,7 @@ if __name__ == "__main__":
         @bot.command()
         async def viewBlacklistReason(ctx, user: discord.Member):
             if predicate(ctx) == False or blacklisted(ctx) == True:
-                print("returns False")
+                printErrorMessage("User has no authorization, Access Denied")
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
                 id = str(user.id)
@@ -745,7 +755,7 @@ if __name__ == "__main__":
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
                 await sendEmbed(ctx, "Bot is now shutting down. Thanks for using Efaz's Merch Code System, see you next time!", 2)
-                print("Bot is shutting down..")
+                printMainMessage("Bot is shutting down..")
                 await bot.change_presence(status=discord.Status.offline)
                 printSystemMessage("Bot shut down, returning back to Command Prompt.")
                 printSystemMessage("Thanks for using Efaz's Merch Code System, see you next time!")
@@ -1089,7 +1099,7 @@ if __name__ == "__main__":
                         itemLookUp = StoreItems[item]
                         if not itemLookUp["role"] == 0:
                             if bot.get_guild(guildId).get_role(itemLookUp["role"]) in ctx.user.roles:
-                                print("User already has role, ignored.")
+                                printSystemMessage("User already has role, ignored.")
                             else:
                                 await ctx.message.author.add_roles(bot.get_guild(guildId).get_role(itemLookUp["role"]))
                         economy["UserData"][str(ctx.message.author.id)]["Inventory"].remove(itemFromInventory)
@@ -1328,9 +1338,9 @@ if __name__ == "__main__":
                                         for member in role.members:
                                             try:
                                                 await member.remove_roles(role)
-                                                print("Removed role: " + role.name + " from: " + str(member.id))
+                                                printSuccessMessage("Removed role: " + role.name + " from: " + str(member.id))
                                             except Exception as e:
-                                                print("Error while removing role: " + str(e))
+                                                printErrorMessage("Error while removing role: " + str(e))
 
                                 # Restock Items
                                 if economy["GreatReset"]["DataToReset"]["Items"] == True:
@@ -1357,7 +1367,7 @@ if __name__ == "__main__":
                                         economy["UserData"][userData]["Balance"] = 0
                                         economy["UserData"][userData]["LatestDate"] = 0
                                         economy["UserData"][userData]["Cooldown"] = 0
-                                        print("Reset Data of: " + userData)
+                                        printSuccessMessage("Reset Data of: " + userData)
 
                                 # New Season
                                 if economy["GreatReset"]["SeasonNumber"] < 1:
@@ -1368,7 +1378,7 @@ if __name__ == "__main__":
 
                                 with open("economy.json", "w") as outfile:
                                     outfile.write(json.dumps(economy))
-                                print("Saved Data")
+                                printSuccessMessage("Saved Data")
                                 decimal = 65280
                                 embed = discord.Embed(
                                     color=decimal,
@@ -1383,17 +1393,13 @@ if __name__ == "__main__":
                                 await channel.send(embed=embed)
                                 await ctx.channel.send(embed=embed)
                                 greatResetCurrently = False
-                                print("Finished Great Reset")
+                                printSuccessMessage("Finished Great Reset")
                             else:
                                 await sendEmbed(ctx, "An another great reset is happening. Please wait.", 3)
                         else:
                             await sendEmbed(ctx, "Cash King declined confirmation", 3)
         else:
-            print("Economy Commands have not been applied to the bot, switch Enabled variable to True to enable economy commands.")
-
-        # Login to bot
-        print("Loaded, logging into bot...")
-        bot.run(botToken["Token"])
+            printSystemMessage("Economy Commands have not been applied to the bot, switch Enabled variable to True to enable economy commands.")
     else:
         # slash commands
 
@@ -1405,8 +1411,8 @@ if __name__ == "__main__":
         @bot.event
         async def on_ready():
             await tree.sync(guild=discord.Object(id=guildId))
-            print(f"Logged on the bot: " + bot.user.name)
-            print("System is ready!")
+            printSuccessMessage(f"Logged on the bot: " + bot.user.name)
+            printSuccessMessage("System is ready!")
             decimal = 16538115
             embed = discord.Embed(
                 color=decimal,
@@ -1498,17 +1504,17 @@ if __name__ == "__main__":
                                 with open("codes.json", "w") as outfile:
                                     outfile.write(json.dumps(codes))
                                 await sendEmbedTree(ctx, "Created code: " + code, 2)
-                                print("Created code: " + code)
+                                printSuccessMessage("Created code: " + code)
                             else:
                                 await sendEmbedTree(ctx, "Invalid Role ID: " + roleid, 3)
                     else:
                         await sendEmbedTree(
                             ctx, "No reward Inputted in reward, not created", 3
                         )
-                        print("No reward Inputted in reward, not created")
+                        printErrorMessage("No reward Inputted in reward, not created")
                 else:
                     await sendEmbedTree(ctx, "No Code Inputted in code, not created", 3)
-                    print("No Code Inputted in code, not created")
+                    printErrorMessage("No Code Inputted in code, not created")
 
         @tree.command(
             name="createrandomized",
@@ -1538,17 +1544,17 @@ if __name__ == "__main__":
                                 with open("codes.json", "w") as outfile:
                                     outfile.write(json.dumps(codes))
                                 await sendEmbedTree(ctx, "Created code: " + code, 2)
-                                print("Created code: " + code)
+                                printSuccessMessage("Created code: " + code)
                             else:
                                 await sendEmbedTree(ctx, "Invalid Role ID: " + roleid, 3)
                     else:
                         await sendEmbedTree(
                             ctx, "No reward Inputted in reward, not created", 3
                         )
-                        print("No reward Inputted in reward, not created")
+                        printErrorMessage("No reward Inputted in reward, not created")
                 else:
                     await sendEmbedTree(ctx, "No Code Inputted in code, not created", 3)
-                    print("No Code Inputted in code, not created")
+                    printErrorMessage("No Code Inputted in code, not created")
 
         @tree.command(
             name="refreshlists",
@@ -1559,10 +1565,10 @@ if __name__ == "__main__":
             if predicate(ctx) == False or blacklisted(ctx) == True:
                 await sendEmbedTree(ctx, "Access Denied", 3)
             else:
-                print("Loading System Data (codes, users, bot)")
+                printMainMessage("Loading System Data (codes, users, bot)")
                 loadLists()
                 StoreItems = economy["StoreInventory"]
-                print("Loaded Saved Data in JSONs")
+                printSuccessMessage("Loaded Saved Data in JSONs")
                 await sendEmbedTree(ctx, "Refreshed List, restarting main.py script.", 2)
 
         @tree.command(
@@ -1572,10 +1578,10 @@ if __name__ == "__main__":
         )
         async def viewCodes(ctx: discord.Interaction):
             if predicate(ctx) == False or blacklisted(ctx) == True:
-                print("returns False")
+                printErrorMessage("User has no authorization, Access Denied")
                 await sendEmbedTree(ctx, "Access Denied", 3)
             else:
-                print("returns True")
+                printSuccessMessage("User has authorized permissions. Continuing with command..")
                 ListOfCodes = list(codes.keys())
                 string = "List of **available** codes: "
                 listNotAvailable = "List of **not available** codes: "
@@ -1606,10 +1612,10 @@ if __name__ == "__main__":
         )
         async def clearAlreadyRedeemed(ctx: discord.Interaction):
             if predicate(ctx) == False or blacklisted(ctx) == True:
-                print("returns False")
+                printErrorMessage("User has no authorization, Access Denied")
                 await sendEmbedTree(ctx, "Access Denied", 3)
             else:
-                print("returns True")
+                printSuccessMessage("User has authorized permissions. Continuing with command..")
                 ListOfCodes = list(codes.keys())
                 listNotAvailable = "List of **cleared** codes: "
                 for i in ListOfCodes:
@@ -1624,7 +1630,7 @@ if __name__ == "__main__":
                                 codes.pop(i, None)
                                 listNotAvailable = listNotAvailable + add_string
                             except Exception as e:
-                                print("Failed to remove code: " + str(e))
+                                printErrorMessage("Failed to remove code: " + str(e))
                 with open("codes.json", "w") as outfile:
                     outfile.write(json.dumps(codes))
                 await sendEmbedTree(ctx, listNotAvailable, 2)
@@ -1641,7 +1647,7 @@ if __name__ == "__main__":
                 if code:
                     if testIfVariableExists(userData, str(ctx.user.id)):
                         usersSavedData = userData[str(ctx.user.id)]
-                        print("User requested to look for code: " + code)
+                        printMainMessage("User requested to look for code: " + code)
                         if testIfVariableExists(codes, code):
                             codeInfo = codes[code]
                             if testIfVariableExists(usersSavedData, code):
@@ -1742,7 +1748,7 @@ if __name__ == "__main__":
                     else:
                         usersSavedData = []
                         userData[str(ctx.user.id)] = usersSavedData
-                        print("User requested to look for code: " + code)
+                        printMainMessage("User requested to look for code: " + code)
                         if testIfVariableExists(codes, code):
                             codeInfo = codes[code]
                             if testIfVariableExists(usersSavedData, code):
@@ -1850,7 +1856,7 @@ if __name__ == "__main__":
         )
         async def deleteCode(ctx, code: str):
             if predicate(ctx) == False or blacklisted(ctx) == True:
-                print("returns False")
+                printErrorMessage("User has no authorization, Access Denied")
                 await sendEmbedTree(ctx, "Access Denied", 3)
             else:
                 if code:
@@ -1884,10 +1890,10 @@ if __name__ == "__main__":
             if count < 0:
                 count = count * -1
             if predicate(ctx) == False or blacklisted(ctx) == True:
-                print("returns False")
+                printErrorMessage("User has no authorization, Access Denied")
                 await sendEmbedTree(ctx, "Access Denied", 3)
             else:
-                print("returns True")
+                printSuccessMessage("User has authorized permissions. Continuing with command..")
 
                 list = []
                 message = "New codes: "
@@ -1908,13 +1914,13 @@ if __name__ == "__main__":
                                     with open("codes.json", "w") as outfile:
                                         outfile.write(json.dumps(codes))
                                     list.append(args1)
-                                    print("Created code: " + args1)
+                                    printSuccessMessage("Created code: " + args1)
                                 else:
                                     await sendEmbedTree(ctx, "Invalid Role ID: " + roleid, 3)
                         else:
-                            print("No reward Inputted in args2, not created")
+                            printErrorMessage("No reward Inputted in args2, not created")
                     else:
-                        print("No Code Inputted in args1, not created")
+                        printErrorMessage("No Code Inputted in args1, not created")
                 for i in list:
                     message = message + "\n `" + i + "` : `" + codes[i]["Reward"] + "` "
                 
@@ -1927,7 +1933,7 @@ if __name__ == "__main__":
         )
         async def searchUser(ctx, user: discord.Member):
             if predicate(ctx) == False or blacklisted(ctx) == True:
-                print("returns False")
+                printErrorMessage("User has no authorization, Access Denied")
                 await sendEmbedTree(ctx, "Access Denied", 3)
             else:
                 id = str(user.id)
@@ -1946,7 +1952,7 @@ if __name__ == "__main__":
         )
         async def blacklist(ctx, user: discord.Member, reason: str):
             if predicate(ctx) == False or blacklisted(ctx) == True:
-                print("returns False")
+                printErrorMessage("User has no authorization, Access Denied")
                 await sendEmbedTree(ctx, "Access Denied", 3)
             else:
                 id = str(user.id)
@@ -1966,7 +1972,7 @@ if __name__ == "__main__":
         )
         async def blacklistyourself(ctx, reason: str):
             if blacklisted(ctx) == True:
-                print("returns False")
+                printErrorMessage("User has no authorization, Access Denied")
                 await sendEmbedTree(ctx, "Access Denied", 3)
             else:
                 user = ctx.user
@@ -1987,7 +1993,7 @@ if __name__ == "__main__":
         )
         async def unBlacklist(ctx, user: discord.Member):
             if predicate(ctx) == False or blacklisted(ctx) == True:
-                print("returns False")
+                printErrorMessage("User has no authorization, Access Denied")
                 await sendEmbedTree(ctx, "Access Denied", 3)
             else:
                 id = str(user.id)
@@ -2007,7 +2013,7 @@ if __name__ == "__main__":
         )
         async def viewBlacklistReason(ctx, user: discord.Member):
             if predicate(ctx) == False or blacklisted(ctx) == True:
-                print("returns False")
+                printErrorMessage("User has no authorization, Access Denied")
                 await sendEmbedTree(ctx, "Access Denied", 3)
             else:
                 id = str(user.id)
@@ -2040,7 +2046,7 @@ if __name__ == "__main__":
                 await sendEmbedTree(ctx, "Access Denied", 3)
             else:
                 await sendEmbedTree(ctx, "Bot is now shutting down. Thanks for using Efaz's Merch Code System, see you next time!", 2)
-                print("Bot is shutting down..")
+                printMainMessage("Bot is shutting down..")
                 await bot.change_presence(status=discord.Status.offline)
                 printSystemMessage("Bot shut down, returning back to Command Prompt.")
                 printSystemMessage("Thanks for using Efaz's Merch Code System, see you next time!")
@@ -2415,7 +2421,7 @@ if __name__ == "__main__":
                         itemLookUp = StoreItems[itemFromInventory]
                         if not itemLookUp["role"] == 0:
                             if bot.get_guild(guildId).get_role(itemLookUp["role"]) in ctx.user.roles:
-                                print("User already has role, ignored.")
+                                printSystemMessage("User already has role, ignored.")
                             else:
                                 await ctx.user.add_roles(bot.get_guild(guildId).get_role(itemLookUp["role"]))
                         economy["UserData"][str(ctx.user.id)]["Inventory"].remove(itemFromInventory)
@@ -2721,9 +2727,9 @@ if __name__ == "__main__":
                                         for member in role.members:
                                             try:
                                                 await member.remove_roles(role)
-                                                print("Removed role: " + role.name + " from: " + str(member.id))
+                                                printSuccessMessage("Removed role: " + role.name + " from: " + str(member.id))
                                             except Exception as e:
-                                                print("Error while removing role: " + str(e))
+                                                printErrorMessage("Error while removing role: " + str(e))
 
                                 # Restock Items
                                 if economy["GreatReset"]["DataToReset"]["Items"] == True:
@@ -2750,7 +2756,7 @@ if __name__ == "__main__":
                                         economy["UserData"][userData]["Balance"] = 0
                                         economy["UserData"][userData]["LatestDate"] = 0
                                         economy["UserData"][userData]["Cooldown"] = 0
-                                        print("Reset Data of: " + userData)
+                                        printSuccessMessage("Reset Data of: " + userData)
 
                                 # New Season
                                 if economy["GreatReset"]["SeasonNumber"] < 1:
@@ -2761,7 +2767,7 @@ if __name__ == "__main__":
 
                                 with open("economy.json", "w") as outfile:
                                     outfile.write(json.dumps(economy))
-                                print("Saved Data")
+                                printSuccessMessage("Saved Data")
                                 decimal = 65280
                                 embed = discord.Embed(
                                     color=decimal,
@@ -2775,17 +2781,22 @@ if __name__ == "__main__":
                                 channel = bot.get_channel(botToken["NotificationChannelId"])
                                 await channel.send(embed=embed)
                                 await ctx.channel.send(embed=embed)
-                                print("Finished Great Reset")
+                                printSuccessMessage("Finished Great Reset")
                                 greatResetCurrently = False
                             else:
                                 await sendEmbedTree(ctx, "An another great reset is happening. Please wait.", 3)
                         else:
                             await sendEmbedTree(ctx, "Cash King declined confirmation", 3)
-
         else:
-            print("Economy Commands have not been applied to the bot, switch Enabled variable to True to enable economy commands.")
+            printSystemMessage("Economy Commands have not been applied to the bot, switch Enabled variable to True to enable economy commands.")
 
-        print("Loaded, logging into bot...")
+    # Login to bot
+    if botToken["DisableDiscordLogging"]:
+        handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
+        printSuccessMessage("Loaded, logging into bot...")
+        bot.run(botToken["Token"], log_handler=handler, log_level=logging.DEBUG)
+    else:
+        printSuccessMessage("Loaded, logging into bot...")
         bot.run(botToken["Token"])
 else:
     printSystemMessage("System doesn't support module mode. Sorry!")
