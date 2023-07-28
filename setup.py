@@ -35,7 +35,7 @@ def printErrorMessage(mes):
 def printSuccessMessage(mes):
     print(f"\x1b[38;2;0;255;0m{mes}\033[38;5;231m")
 
-printSystemMessage()
+printSystemMessage("")
 printSystemMessage("███████╗███████╗░█████╗░███████╗██╗░██████╗  ███╗░░░███╗███████╗██████╗░░█████╗░██╗░░██╗")
 printSystemMessage("██╔════╝██╔════╝██╔══██╗╚════██║╚█║██╔════╝  ████╗░████║██╔════╝██╔══██╗██╔══██╗██║░░██║")
 printSystemMessage("█████╗░░█████╗░░███████║░░███╔═╝░╚╝╚█████╗░  ██╔████╔██║█████╗░░██████╔╝██║░░╚═╝███████║")
