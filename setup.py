@@ -207,6 +207,11 @@ else:
         botInfo5 = True
     else:
         botInfo5 = False
+    botInfo6 = input("Disable Discord Bot Logging? (y/n)")
+    if botInfo6.lower() == "y":
+        botInfo6 = True
+    else:
+        botInfo6 = False
     printMainMessage("-- CODES SECTION --")
     codeInfo1 = input("Would you like to add an perm code? (Optional) (y/n)")
     codeInfo2 = None
@@ -282,7 +287,8 @@ else:
         "NotificationChannelId": botInfo3,
         "ServerID": botInfo4,
         "SlashCommandsOnly": botInfo5,
-        "BlacklistedUsers": {}
+        "BlacklistedUsers": {},
+        "DisableDiscordLogging": botInfo6
     }
     if economy1 == True:
         economyJSON = {
