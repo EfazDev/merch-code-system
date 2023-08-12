@@ -113,15 +113,15 @@ def updateDirectory(dir):
 
         # end of conversion
 
-        with open(newDirect + "bot.json", "w") as outfile:
+        with open(dir + "bot.json", "w") as outfile:
             json.dump(botTokenNew, outfile, indent=4)
-        with open(newDirect + "users.json", "w") as outfile:
+        with open(dir + "users.json", "w") as outfile:
             json.dump(userDataNew, outfile, indent=4)
-        with open(newDirect + "codes.json", "w") as outfile:
+        with open(dir + "codes.json", "w") as outfile:
             json.dump(codesNew, outfile, indent=4)
-        with open(newDirect + "economy.json", "w") as outfile:
+        with open(dir + "economy.json", "w") as outfile:
             json.dump(economyNew, outfile, indent=4)
-        with open(newDirect + "main.py", "w", encoding="utf8") as outfile:
+        with open(dir + "main.py", "w", encoding="utf8") as outfile:
             outfile.write(mainNew)
         return {
             "success": True,
