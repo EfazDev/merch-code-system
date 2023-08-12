@@ -10,5 +10,5 @@ Recommended to use Python v3.11.0 or up and latest version of pip.
 Use slash commands to make it easier for users to understand the use of the bot.
 
 Version Sticker:
-## v1.5.0
-## Release Date: July 21st, 2023
+## v1.7.0
+## Release Date: August 12th, 2023
