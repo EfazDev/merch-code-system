@@ -39,7 +39,7 @@ except Exception as e:
 
 LocalMachineOS = platform.system()
 pythonVersion = sys.version_info
-version = "1.6.5"
+version = "1.7.0"
 for _ in range(50):
     print()
 
@@ -233,8 +233,8 @@ if __name__ == "__main__":
                 await sendEmbed(ctx, "Access Denied", 3)
                 return
             
-            main = "** MAIN ** \n `$!info` - This message \n`$!redeem <code>` - Redeem a code. \n`$!createCode <code> <reward> <tempornot>` - Create code in the system \n`$!refreshLists` - Refresh lists and restart main.py \n`$!deleteCode` - Delete code from system \n`$!viewCodes` - View all codes in system \n`$!createRandomized <prefix> <reward> <tempornot>` - Create a random generated code. \n`$!createMultipleRandomized <prefix> <reward> <tempornot> <count>` - Create multiple random generated codes. \n`$!searchUser <userPing>` - Get codes redeemed by user. \n`$!restartBot` - Restart bot. \n`$!blacklist <user> <reason>` - Blacklist an user from using the bot. \n`$!unblacklist <user>` - Unblacklist an user from the system. \n`$!blacklistyourself <reason>` - Blacklist yourself from using the bot. (WARNING: You can only get unblacklisted if you ask the owner of the server.) (THERE IS NO CONFIRMATION MESSAGE) \n`$!shutdown` - Shutdown bot \n"
-            fun = "** FUN ** \n `$!flipCoin <amount> <guess>` - Flip a coin. \n`$!gamble <estimate> <max>` - Gamble for a chance of currency! \n`$!createcurrency <user> <amount>` - Create currency \n`$!removecurrency <user> <amount>` - Take currency \n`$!balance <user>` - Check your balance! \n`$!daily` - Get daily balance! \n`$!buy <itemname>` - Buy item from the store! \n`$!inventory` - View inventory you bought from the store! \n`$!greatReset` - If you have the Cash King role set on this bot, you can reset everyone's cash and items! (WORKS IF THE OWNER ENABLED IT) \n`$!use <itemname>` - Use item from your inventory \n`$!createItem <itemname> <stock> <price>` - Create an item in the store. \n`$!viewstorestock` - View what's available in the store. \n`$!sendMoney <user> <amount>` - Send an user money!. \n`$!rob <user>` - Rob an user for chance of money!. \n`$!cooldownCheck` - Check your cooldown!. \n`$!work` - Work for money!. \n`$!top10lb` - Get Top 10 leaderboard!. \n`$!multiplierCheck` - See your multiplier on the economy!. \n`$!endItemListing <itemname>` - End listing in the store!. \n More coming soon"
+            main = "** MAIN ** \n`$!info` - This message \n`$!redeem <code>` - Redeem a code. \n`$!createCode <code> <reward> <tempornot>` - Create code in the system \n`$!refreshLists` - Refresh lists and restart main.py \n`$!deleteCode` - Delete code from system \n`$!viewCodes` - View all codes in system \n`$!createRandomized <prefix> <reward> <tempornot>` - Create a random generated code. \n`$!createMultipleRandomized <prefix> <reward> <tempornot> <count>` - Create multiple random generated codes. \n`$!searchUser <userPing>` - Get codes redeemed by user. \n`$!restartBot` - Restart bot. \n`$!blacklist <user> <reason>` - Blacklist an user from using the bot. \n`$!unblacklist <user>` - Unblacklist an user from the system. \n`$!blacklistyourself <reason>` - Blacklist yourself from using the bot. (WARNING: You can only get unblacklisted if you ask the owner of the server.) (THERE IS NO CONFIRMATION MESSAGE) \n`$!shutdown` - Shutdown bot \n"
+            fun = "** FUN ** \n`$!flipCoin <amount> <guess>` - Flip a coin. \n`$!gamble <estimate> <max>` - Gamble for a chance of currency! \n`$!crypto <amount>` - Invest in a crypto for a chance of big loss or big win! \n`$!createcurrency <user> <amount>` - Create currency \n`$!removecurrency <user> <amount>` - Take currency \n`$!balance <user>` - Check your balance! \n`$!daily` - Get daily balance! \n`$!buy <itemname>` - Buy item from the store! \n`$!inventory` - View inventory you bought from the store! \n`$!greatReset` - If you have the Cash King role set on this bot, you can reset everyone's cash and items! (WORKS IF THE OWNER ENABLED IT) \n`$!use <itemname>` - Use item from your inventory \n`$!createItem <itemname> <stock> <price>` - Create an item in the store. \n`$!viewstorestock` - View what's available in the store. \n`$!sendMoney <user> <amount>` - Send an user money!. \n`$!rob <user>` - Rob an user for chance of money!. \n`$!cooldownCheck` - Check your cooldown!. \n`$!work` - Work for money!. \n`$!top10lb` - Get Top 10 leaderboard!. \n`$!multiplierCheck` - See your multiplier on the economy!. \n`$!endItemListing <itemname>` - End listing in the store!. \nMore coming soon"
             if economy["Enabled"] == True:
                 await sendEmbed(
                     ctx,
@@ -267,9 +267,9 @@ if __name__ == "__main__":
                                     userData[str(ctx.message.author.id)].append(arg)
                                     codes[arg]["Redeemed"] = True
                                     with open("codes.json", "w") as outfile:
-                                        outfile.write(json.dumps(codes))
+                                        json.dump(codes, outfile, indent=4)
                                     with open("users.json", "w") as outfile:
-                                        outfile.write(json.dumps(userData))
+                                        json.dump(userData, outfile, indent=4)
 
                                     extraString = ""
 
@@ -282,12 +282,31 @@ if __name__ == "__main__":
                                         except Exception as e:
                                             extraString = " | Role Added: (failed due to invalid permissions or error.)"
 
+                                    redeemed_string = "You have redeemed merch code: " + arg + " for reward: " + codeInfo["Reward"] + extraString
+                                    if economy["Enabled"]:
+                                        if codes[arg]["DisputesEconomyCash"] and testIfInt(amount):
+                                            userId = ctx.message.author.id
+                                            amount = codes[arg]["CashAmount"]
+                                            if testIfVariableExists(economy["UserData"], str(userId)):
+                                                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                with open("economy.json", "w") as outfile:
+                                                    json.dump(economy, outfile, indent=4)
+                                            else:
+                                                economy["UserData"][str(userId)] = {
+                                                    "Balance": 0,
+                                                    "Inventory": [],
+                                                    "LatestDate": 0,
+                                                    "Cooldown": 0,
+                                                }
+                                                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                with open("economy.json", "w") as outfile:
+                                                    json.dump(economy, outfile, indent=4)
+                                            
+                                            redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+
                                     await sendEmbed(
                                         ctx,
-                                        "You have redeemed merch code: "
-                                        + arg
-                                        + " for reward: "
-                                        + codeInfo["Reward"] + extraString,
+                                        redeemed_string,
                                         1,
                                     )
                                     print(
@@ -315,7 +334,7 @@ if __name__ == "__main__":
                             else:
                                 userData[str(ctx.message.author.id)].append(arg)
                                 with open("users.json", "w") as outfile:
-                                    outfile.write(json.dumps(userData))
+                                    json.dump(userData, outfile, indent=4)
                                 
                                 extraString = ""
                                     
@@ -328,12 +347,31 @@ if __name__ == "__main__":
                                     except Exception as e:
                                         extraString = " | Role Added: (failed due to invalid permissions or error.)"
 
+                                redeemed_string = "You have redeemed perm code: " + arg + " for reward: " + codeInfo["Reward"] + extraString
+                                if economy["Enabled"]:
+                                    if codes[arg]["DisputesEconomyCash"] and testIfInt(amount):
+                                        userId = ctx.message.author.id
+                                        amount = codes[arg]["CashAmount"]
+                                        if testIfVariableExists(economy["UserData"], str(userId)):
+                                            economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                            with open("economy.json", "w") as outfile:
+                                                json.dump(economy, outfile, indent=4)
+                                        else:
+                                            economy["UserData"][str(userId)] = {
+                                                "Balance": 0,
+                                                "Inventory": [],
+                                                "LatestDate": 0,
+                                                "Cooldown": 0,
+                                            }
+                                            economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                            with open("economy.json", "w") as outfile:
+                                                json.dump(economy, outfile, indent=4)
+                                        
+                                        redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+
                                 await sendEmbed(
                                     ctx,
-                                    "You have redeemed perm code: "
-                                    + arg
-                                    + " for reward: "
-                                    + codeInfo["Reward"] + extraString,
+                                    redeemed_string,
                                     1,
                                 )
                                 print(
@@ -368,9 +406,9 @@ if __name__ == "__main__":
                                     userData[str(ctx.message.author.id)].append(arg)
                                     codes[arg]["Redeemed"] = True
                                     with open("codes.json", "w") as outfile:
-                                        outfile.write(json.dumps(codes))
+                                        json.dump(codes, outfile, indent=4)
                                     with open("users.json", "w") as outfile:
-                                        outfile.write(json.dumps(userData))
+                                        json.dump(userData, outfile, indent=4)
 
                                     extraString = ""
                                     
@@ -383,12 +421,31 @@ if __name__ == "__main__":
                                         except Exception as e:
                                             extraString = " | Role Added: (failed due to invalid permissions or error.)"
 
+                                    redeemed_string = "You have redeemed merch code: " + arg + " for reward: " + codeInfo["Reward"] + extraString
+                                    if economy["Enabled"]:
+                                        if codes[arg]["DisputesEconomyCash"] and testIfInt(amount):
+                                            userId = ctx.message.author.id
+                                            amount = codes[arg]["CashAmount"]
+                                            if testIfVariableExists(economy["UserData"], str(userId)):
+                                                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                with open("economy.json", "w") as outfile:
+                                                    json.dump(economy, outfile, indent=4)
+                                            else:
+                                                economy["UserData"][str(userId)] = {
+                                                    "Balance": 0,
+                                                    "Inventory": [],
+                                                    "LatestDate": 0,
+                                                    "Cooldown": 0,
+                                                }
+                                                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                with open("economy.json", "w") as outfile:
+                                                    json.dump(economy, outfile, indent=4)
+                                            
+                                            redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+
                                     await sendEmbed(
                                         ctx,
-                                        "You have redeemed merch code: "
-                                        + arg
-                                        + " for reward: "
-                                        + codeInfo["Reward"] + extraString,
+                                        redeemed_string,
                                         1,
                                     )
                                     print(
@@ -416,7 +473,7 @@ if __name__ == "__main__":
                             else:
                                 userData[str(ctx.message.author.id)].append(arg)
                                 with open("users.json", "w") as outfile:
-                                    outfile.write(json.dumps(userData))
+                                    json.dump(userData, outfile, indent=4)
 
                                 extraString = ""
                                     
@@ -429,12 +486,31 @@ if __name__ == "__main__":
                                     except Exception as e:
                                         extraString = " | Role Added: (failed due to invalid permissions or error.)"
 
+                                redeemed_string = "You have redeemed perm code: " + arg + " for reward: " + codeInfo["Reward"] + extraString
+                                if economy["Enabled"]:
+                                    if codes[arg]["DisputesEconomyCash"] and testIfInt(amount):
+                                        userId = ctx.message.author.id
+                                        amount = codes[arg]["CashAmount"]
+                                        if testIfVariableExists(economy["UserData"], str(userId)):
+                                            economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                            with open("economy.json", "w") as outfile:
+                                                json.dump(economy, outfile, indent=4)
+                                        else:
+                                            economy["UserData"][str(userId)] = {
+                                                "Balance": 0,
+                                                "Inventory": [],
+                                                "LatestDate": 0,
+                                                "Cooldown": 0,
+                                            }
+                                            economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                            with open("economy.json", "w") as outfile:
+                                                json.dump(economy, outfile, indent=4)
+                                        
+                                        redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+
                                 await sendEmbed(
                                     ctx,
-                                    "You have redeemed perm code: "
-                                    + arg
-                                    + " for reward: "
-                                    + codeInfo["Reward"] + extraString,
+                                    redeemed_string,
                                     1,
                                 )
                                 print(
@@ -466,7 +542,7 @@ if __name__ == "__main__":
             await sendEmbed(ctx, f"Pong! {round(bot.latency * 1000)}ms", 2)
 
         @bot.command()
-        async def createCode(ctx, args1, args2, args3, args4="0"):
+        async def createCode(ctx, args1, args2, args3, args4="0", args5="0"):
             if predicate(ctx) == False or blacklisted(ctx) == True:
                 printErrorMessage("User has no authorization, Access Denied")
                 await sendEmbed(ctx, "Access Denied", 3)
@@ -479,17 +555,21 @@ if __name__ == "__main__":
                         else:
                             if testIfInt(args4):
                                 if args3 == "true":
-                                    codes[args1] = {"Reward": args2, "OneUserOnly": False, "Role": int(args4)}
+                                    codes[args1] = {"Reward": args2, "OneUserOnly": False, "Role": int(args4), "DisputesEconomyCash": False}
                                 else:
-                                    codes[args1] = {"Reward": args2, "OneUserOnly": True, "Redeemed": False, "Role": int(args4)}
+                                    codes[args1] = {"Reward": args2, "OneUserOnly": True, "Redeemed": False, "Role": int(args4), "DisputesEconomyCash": False}
+
+                                if testIfInt(args5):
+                                    if int(args5) > 0:
+                                        codes[args1]["DisputesEconomyCash"] = True
+                                        codes[args1]["CashAmount"] = int(args5)
 
                                 with open("codes.json", "w") as outfile:
-                                    outfile.write(json.dumps(codes))
+                                    json.dump(codes, outfile, indent=4)
                                 await sendEmbed(ctx, "Created code: " + args1, 2)
                                 printSuccessMessage("Created code: " + args1)
                             else:
                                 await sendEmbed(ctx, "Invalid Role ID: " + args1, 3)
-                    
                     else:
                         await sendEmbed(ctx, "No reward Inputted in args2, not created", 3)
                         printErrorMessage("No reward Inputted in args2, not created")
@@ -498,7 +578,7 @@ if __name__ == "__main__":
                     printErrorMessage("No Code Inputted in args1, not created")
 
         @bot.command()
-        async def createRandomized(ctx, args1, args2, args3, args4="0"):
+        async def createRandomized(ctx, args1, args2, args3, args4="0", args5="0"):
             if predicate(ctx) == False or blacklisted(ctx) == True:
                 printErrorMessage("User has no authorization, Access Denied")
                 await sendEmbed(ctx, "Access Denied", 3)
@@ -514,12 +594,17 @@ if __name__ == "__main__":
                         else:
                             if testIfInt(args4):
                                 if args3 == "true":
-                                    codes[args1] = {"Reward": args2, "OneUserOnly": False, "Role": int(args4)}
+                                    codes[args1] = {"Reward": args2, "OneUserOnly": False, "Role": int(args4), "DisputesEconomyCash": False}
                                 else:
-                                    codes[args1] = {"Reward": args2, "OneUserOnly": True, "Redeemed": False, "Role": int(args4)}
+                                    codes[args1] = {"Reward": args2, "OneUserOnly": True, "Redeemed": False, "Role": int(args4), "DisputesEconomyCash": False}
+
+                                if testIfInt(args5):
+                                    if int(args5) > 0:
+                                        codes[args1]["DisputesEconomyCash"] = True
+                                        codes[args1]["CashAmount"] = int(args5)
 
                                 with open("codes.json", "w") as outfile:
-                                    outfile.write(json.dumps(codes))
+                                    json.dump(codes, outfile, indent=4)
                                 await sendEmbed(ctx, "Created code: " + args1, 2)
                                 printSuccessMessage("Created code: " + args1)
                             else:
@@ -553,7 +638,7 @@ if __name__ == "__main__":
                 await sendEmbed(ctx, "Access Denied", 3)
             else:
                 main_about_string = f"**Made by Efaz at [efaz.dev](https://www.efaz.dev)** \nScript Version: `v{version}` \nSystem OS: `{platform.system()}` "
-                main_about_string = main_about_string + "\n Admins: "
+                main_about_string = main_about_string + "\nAdmins: "
                 for admin in botToken["Admins"]:
                     main_about_string = main_about_string + "<@" + str(admin) + "> "
 
@@ -569,7 +654,7 @@ if __name__ == "__main__":
                 await sendEmbed(ctx, main_about_string, 2)
 
         @bot.command()
-        async def createMultipleRandomized(ctx, args1, args2, args3, args4, args5="0"):
+        async def createMultipleRandomized(ctx, args1, args2, args3, args4, args5="0", args6="0"):
             if args4 < 0:
                 args4 = args4 * -1
             if predicate(ctx) == False or blacklisted(ctx) == True:
@@ -593,12 +678,17 @@ if __name__ == "__main__":
                             else:
                                 if testIfInt(args5):
                                     if args3 == "true":
-                                        codes[args1] = {"Reward": args2, "OneUserOnly": False, "Role": int(args4)}
+                                        codes[args1] = {"Reward": args2, "OneUserOnly": False, "Role": int(args4), "DisputesEconomyCash": False}
                                     else:
-                                        codes[args1] = {"Reward": args2, "OneUserOnly": True, "Redeemed": False, "Role": int(args4)}
+                                        codes[args1] = {"Reward": args2, "OneUserOnly": True, "Redeemed": False, "Role": int(args4), "DisputesEconomyCash": False}
+
+                                    if testIfInt(args6):
+                                        if int(args6) > 0:
+                                            codes[args1]["DisputesEconomyCash"] = True
+                                            codes[args1]["CashAmount"] = int(args6)
 
                                     with open("codes.json", "w") as outfile:
-                                        outfile.write(json.dumps(codes))
+                                        json.dump(codes, outfile, indent=4)
                                     list.append(args1)
                                     printSuccessMessage("Created code: " + args1)
                                 else:
@@ -665,7 +755,7 @@ if __name__ == "__main__":
                             except Exception as e:
                                 printErrorMessage("Failed to remove code: " + str(e))
                 with open("codes.json", "w") as outfile:
-                    outfile.write(json.dumps(codes))
+                    json.dump(codes, outfile, indent=4)
                 await sendEmbed(ctx, listNotAvailable, 2)
 
         @bot.command()
@@ -678,7 +768,7 @@ if __name__ == "__main__":
                     if testIfVariableExists(codes, arg1):
                         codes.pop(arg1)
                         with open("codes.json", "w") as outfile:
-                            outfile.write(json.dumps(codes))
+                            json.dump(codes, outfile, indent=4)
                         await sendEmbed(ctx, "Code has been removed from the system", 2)
                     else:
                         await sendEmbed(ctx, "Code not found", 3)
@@ -698,7 +788,7 @@ if __name__ == "__main__":
                 else:
                     botToken["BlacklistedUsers"][id] = reason
                     with open("bot.json", "w") as outfile:
-                        outfile.write(json.dumps(botToken))
+                        json.dump(botToken, outfile, indent=4)
                     await sendEmbed(ctx, "User has been blacklisted from this bot. Any operations or actions to this bot from this user has been blocked.", 2)
 
         @bot.command()
@@ -712,7 +802,7 @@ if __name__ == "__main__":
                 if testIfVariableExists(blackListedUsers, id):
                     botToken["BlacklistedUsers"].pop(id)
                     with open("bot.json", "w") as outfile:
-                        outfile.write(json.dumps(botToken))
+                        json.dump(botToken, outfile, indent=4)
                     await sendEmbed(ctx, "User has been unblacklisted from the bot.", 2)
                 else:
                     await sendEmbed(ctx, "User is not blacklisted from the bot.", 3)
@@ -733,7 +823,7 @@ if __name__ == "__main__":
                 else:
                     botToken["BlacklistedUsers"][id] = reason + " (Used Blacklist Yourself Command)"
                     with open("bot.json", "w") as outfile:
-                        outfile.write(json.dumps(botToken))
+                        json.dump(botToken, outfile, indent=4)
                     await sendEmbed(ctx, "You're blacklisted from using the bot. Command operation is finished.", 2)
 
         @bot.command()
@@ -784,7 +874,7 @@ if __name__ == "__main__":
                     return
                 economy["UserData"][str(userId)]["Cooldown"] = datetime.now().timestamp() + 120
                 with open("economy.json", "w") as outfile:
-                    outfile.write(json.dumps(economy))
+                    json.dump(economy, outfile, indent=4)
             def checkCurrencyAmount(userId):
                 if testIfVariableExists(economy["UserData"], str(userId)):
                     return round(economy["UserData"][str(userId)]["Balance"])
@@ -797,7 +887,7 @@ if __name__ == "__main__":
                 if testIfVariableExists(economy["UserData"], str(userId)):
                     economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
                     with open("economy.json", "w") as outfile:
-                        outfile.write(json.dumps(economy))
+                        json.dump(economy, outfile, indent=4)
                     return True
                 else:
                     economy["UserData"][str(userId)] = {
@@ -808,7 +898,7 @@ if __name__ == "__main__":
                     }
                     economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
                     with open("economy.json", "w") as outfile:
-                        outfile.write(json.dumps(economy))
+                        json.dump(economy, outfile, indent=4)
                     return True
             
             def takeCurrency(userId, amount):
@@ -818,7 +908,7 @@ if __name__ == "__main__":
                     if testIfVariableExists(economy["UserData"], str(userId)):
                         economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] - amount)
                         with open("economy.json", "w") as outfile: 
-                            outfile.write(json.dumps(economy))
+                            json.dump(economy, outfile, indent=4)
                         return True
                     else:
                         return False
@@ -948,6 +1038,31 @@ if __name__ == "__main__":
                         await sendEmbed(ctx, "Failed to take money: Insufficent Balance", 3)
 
             @bot.command()
+            async def crypto(ctx, amount: int):
+                if cooldownCommand(ctx.user.id):
+                    await sendEmbedTree(ctx, "Access Denied: Still on 2 minute cooldown, try again later!", 3)
+                    return
+                else:
+                    setCooldown(ctx.user.id)
+                if amount < 0:
+                    amount = amount * -1
+                if blacklisted(ctx) == True:
+                    await sendEmbed(ctx, "Access Denied", 3)
+                else:
+                    if takeCurrency(ctx.user.id, amount):
+                        randomized = random.randint(1, 20)
+                        if randomized == 1:
+                            new_amount = amount * 20 * listOfMultipliers(ctx.user)["total"]
+                            await sendEmbed(ctx, f"Woah! You hit the big jackpot and reached {str(new_amount)}", 2)
+                            createCurrency(ctx.user.id, new_amount)
+                        else:
+                            new_amount = amount / 5
+                            await sendEmbed(ctx, f"RIP! The crypto currency you invested in crashed! You have {str(new_amount)} remaining from that!", 2)
+                            createCurrency(ctx.user.id, new_amount)
+                    else:
+                        await sendEmbed(ctx, "Failed to take money: Insufficent Balance", 3)
+
+            @bot.command()
             async def createcurrency(ctx, user: discord.Member, amount: int):
                 if amount < 0:
                     amount = amount * -1
@@ -1050,7 +1165,7 @@ if __name__ == "__main__":
                                 StoreItems[itemname]["stock"] = StoreItems[itemname]["stock"] - 1
                                 economy["UserData"][str(ctx.message.author.id)]["Inventory"].append(itemname)
                                 with open("economy.json", "w") as outfile:
-                                    outfile.write(json.dumps(economy))
+                                    json.dump(economy, outfile, indent=4)
                                 await sendEmbed(ctx, "Bought: " + itemname + "!", 2)
                             else:
                                 await sendEmbed(ctx, "Failed to take money: Insufficent Balance", 3)
@@ -1104,7 +1219,7 @@ if __name__ == "__main__":
                                 await ctx.message.author.add_roles(bot.get_guild(guildId).get_role(itemLookUp["role"]))
                         economy["UserData"][str(ctx.message.author.id)]["Inventory"].remove(itemFromInventory)
                         with open("economy.json", "w") as outfile:
-                            outfile.write(json.dumps(economy))
+                            json.dump(economy, outfile, indent=4)
 
                         decimal = 65280
                         embed = discord.Embed(
@@ -1150,7 +1265,7 @@ if __name__ == "__main__":
                         "role": roleId
                     }
                     with open("economy.json", "w") as outfile:
-                        outfile.write(json.dumps(economy))
+                        json.dump(economy, outfile, indent=4)
                     await sendEmbed(ctx, "Created item!", 2)
 
             @bot.command()
@@ -1377,7 +1492,7 @@ if __name__ == "__main__":
                                 # SAVE DATA
 
                                 with open("economy.json", "w") as outfile:
-                                    outfile.write(json.dumps(economy))
+                                    json.dump(economy, outfile, indent=4)
                                 printSuccessMessage("Saved Data")
                                 decimal = 65280
                                 embed = discord.Embed(
@@ -1484,7 +1599,7 @@ if __name__ == "__main__":
             guild=discord.Object(id=guildId),
         )
         async def createcode(
-            interaction: discord.Interaction, code: str, reward: str, permornot: bool, roleid: str="0"
+            interaction: discord.Interaction, code: str, reward: str, permornot: bool, roleid: str="0", cashamount: int=0
         ):
             ctx = interaction
             if predicate(ctx) == False or blacklisted(ctx) == True:
@@ -1497,12 +1612,17 @@ if __name__ == "__main__":
                         else:
                             if testIfInt(roleid):
                                 if permornot == False:
-                                    codes[code] = {"Reward": reward, "OneUserOnly": True, "Redeemed": False, "Role": int(roleid)}
+                                    codes[code] = {"Reward": reward, "OneUserOnly": True, "Redeemed": False, "Role": int(roleid), "DisputesEconomyCash": False}
                                 else:
-                                    codes[code] = {"Reward": reward, "OneUserOnly": False, "Role": int(roleid)}
+                                    codes[code] = {"Reward": reward, "OneUserOnly": False, "Role": int(roleid), "DisputesEconomyCash": False}
+
+                                if testIfInt(cashamount):
+                                    if int(cashamount) > 0:
+                                        codes[code]["DisputesEconomyCash"] = True
+                                        codes[code]["CashAmount"] = int(cashamount)
 
                                 with open("codes.json", "w") as outfile:
-                                    outfile.write(json.dumps(codes))
+                                    json.dump(codes, outfile, indent=4)
                                 await sendEmbedTree(ctx, "Created code: " + code, 2)
                                 printSuccessMessage("Created code: " + code)
                             else:
@@ -1522,7 +1642,7 @@ if __name__ == "__main__":
             guild=discord.Object(id=guildId),
         )
         async def createRandomized(
-            interaction: discord.Interaction, prefix: str, reward: str, permornot: bool, roleid: str="0"
+            interaction: discord.Interaction, prefix: str, reward: str, permornot: bool, roleid: str="0", cashamount: int=0
         ):
             ctx = interaction
             if predicate(ctx) == False or blacklisted(ctx) == True:
@@ -1537,12 +1657,17 @@ if __name__ == "__main__":
                         else:
                             if testIfInt(roleid):
                                 if permornot == False:
-                                    codes[code] = {"Reward": reward, "OneUserOnly": True, "Redeemed": False, "Role": int(roleid)}
+                                    codes[code] = {"Reward": reward, "OneUserOnly": True, "Redeemed": False, "Role": int(roleid), "DisputesEconomyCash": False}
                                 else:
-                                    codes[code] = {"Reward": reward, "OneUserOnly": False, "Role": int(roleid)}
+                                    codes[code] = {"Reward": reward, "OneUserOnly": False, "Role": int(roleid), "DisputesEconomyCash": False}
+
+                                if testIfInt(cashamount):
+                                    if int(cashamount) > 0:
+                                        codes[code]["DisputesEconomyCash"] = True
+                                        codes[code]["CashAmount"] = int(cashamount)
 
                                 with open("codes.json", "w") as outfile:
-                                    outfile.write(json.dumps(codes))
+                                    json.dump(codes, outfile, indent=4)
                                 await sendEmbedTree(ctx, "Created code: " + code, 2)
                                 printSuccessMessage("Created code: " + code)
                             else:
@@ -1632,7 +1757,7 @@ if __name__ == "__main__":
                             except Exception as e:
                                 printErrorMessage("Failed to remove code: " + str(e))
                 with open("codes.json", "w") as outfile:
-                    outfile.write(json.dumps(codes))
+                    json.dump(codes, outfile, indent=4)
                 await sendEmbedTree(ctx, listNotAvailable, 2)
 
         @tree.command(
@@ -1658,9 +1783,9 @@ if __name__ == "__main__":
                                         userData[str(ctx.user.id)].append(code)
                                         codes[code]["Redeemed"] = True
                                         with open("codes.json", "w") as outfile:
-                                            outfile.write(json.dumps(codes))
+                                            json.dump(codes, outfile, indent=4)
                                         with open("users.json", "w") as outfile:
-                                            outfile.write(json.dumps(userData))
+                                            json.dump(userData, outfile, indent=4)
 
                                         extraString = ""
                                     
@@ -1673,12 +1798,31 @@ if __name__ == "__main__":
                                             except Exception as e:
                                                 extraString = " | Role Added: (failed due to invalid permissions or error.)"
 
+                                        redeemed_string = "You have redeemed merch code: " + code + " for reward: " + codeInfo["Reward"] + extraString
+                                        if economy["Enabled"]:
+                                            if codes[code]["DisputesEconomyCash"] and testIfInt(amount):
+                                                userId = ctx.message.author.id
+                                                amount = codes[code]["CashAmount"]
+                                                if testIfVariableExists(economy["UserData"], str(userId)):
+                                                    economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                    with open("economy.json", "w") as outfile:
+                                                        json.dump(economy, outfile, indent=4)
+                                                else:
+                                                    economy["UserData"][str(userId)] = {
+                                                        "Balance": 0,
+                                                        "Inventory": [],
+                                                        "LatestDate": 0,
+                                                        "Cooldown": 0,
+                                                    }
+                                                    economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                    with open("economy.json", "w") as outfile:
+                                                        json.dump(economy, outfile, indent=4)
+                                                
+                                                redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+
                                         await sendEmbedTree(
                                             ctx,
-                                            "You have redeemed merch code: "
-                                            + code
-                                            + " for reward: "
-                                            + codeInfo["Reward"] + extraString,
+                                            redeemed_string,
                                             1,
                                         )
                                         print(
@@ -1706,7 +1850,7 @@ if __name__ == "__main__":
                                 else:
                                     userData[str(ctx.user.id)].append(code)
                                     with open("users.json", "w") as outfile:
-                                        outfile.write(json.dumps(userData))
+                                        json.dump(userData, outfile, indent=4)
                                     
                                     extraString = ""
                                     
@@ -1719,12 +1863,31 @@ if __name__ == "__main__":
                                         except Exception as e:
                                             extraString = " | Role Added: (failed due to invalid permissions or error.)"
 
+                                    redeemed_string = "You have redeemed perm code: " + code + " for reward: " + codeInfo["Reward"] + extraString
+                                    if economy["Enabled"]:
+                                        if codes[code]["DisputesEconomyCash"] and testIfInt(amount):
+                                            userId = ctx.message.author.id
+                                            amount = codes[code]["CashAmount"]
+                                            if testIfVariableExists(economy["UserData"], str(userId)):
+                                                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                with open("economy.json", "w") as outfile:
+                                                    json.dump(economy, outfile, indent=4)
+                                            else:
+                                                economy["UserData"][str(userId)] = {
+                                                    "Balance": 0,
+                                                    "Inventory": [],
+                                                    "LatestDate": 0,
+                                                    "Cooldown": 0,
+                                                }
+                                                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                with open("economy.json", "w") as outfile:
+                                                    json.dump(economy, outfile, indent=4)
+                                            
+                                            redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+
                                     await sendEmbedTree(
                                         ctx,
-                                        "You have redeemed perm code: "
-                                        + code
-                                        + " for reward: "
-                                        + codeInfo["Reward"] + extraString,
+                                        redeemed_string,
                                         1,
                                     )
                                     print(
@@ -1759,9 +1922,9 @@ if __name__ == "__main__":
                                         userData[str(ctx.user.id)].append(code)
                                         codes[code]["Redeemed"] = True
                                         with open("codes.json", "w") as outfile:
-                                            outfile.write(json.dumps(codes))
+                                            json.dump(codes, outfile, indent=4)
                                         with open("users.json", "w") as outfile:
-                                            outfile.write(json.dumps(userData))
+                                            json.dump(userData, outfile, indent=4)
 
                                         extraString = ""
                                     
@@ -1774,12 +1937,31 @@ if __name__ == "__main__":
                                             except Exception as e:
                                                 extraString = " | Role Added: (failed due to invalid permissions or error.)"
 
+                                        redeemed_string = "You have redeemed merch code: " + code + " for reward: " + codeInfo["Reward"] + extraString
+                                        if economy["Enabled"]:
+                                            if codes[code]["DisputesEconomyCash"] and testIfInt(amount):
+                                                userId = ctx.message.author.id
+                                                amount = codes[code]["CashAmount"]
+                                                if testIfVariableExists(economy["UserData"], str(userId)):
+                                                    economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                    with open("economy.json", "w") as outfile:
+                                                        json.dump(economy, outfile, indent=4)
+                                                else:
+                                                    economy["UserData"][str(userId)] = {
+                                                        "Balance": 0,
+                                                        "Inventory": [],
+                                                        "LatestDate": 0,
+                                                        "Cooldown": 0,
+                                                    }
+                                                    economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                    with open("economy.json", "w") as outfile:
+                                                        json.dump(economy, outfile, indent=4)
+                                                
+                                                redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+
                                         await sendEmbedTree(
                                             ctx,
-                                            "You have redeemed merch code: "
-                                            + code
-                                            + " for reward: "
-                                            + codeInfo["Reward"] + extraString,
+                                            redeemed_string,
                                             1,
                                         )
                                         print(
@@ -1807,7 +1989,7 @@ if __name__ == "__main__":
                                 else:
                                     userData[str(ctx.user.id)].append(code)
                                     with open("users.json", "w") as outfile:
-                                        outfile.write(json.dumps(userData))
+                                        json.dump(userData, outfile, indent=4)
 
                                     extraString = ""
                                     
@@ -1820,12 +2002,31 @@ if __name__ == "__main__":
                                         except Exception as e:
                                             extraString = " | Role Added: (failed due to invalid permissions or error.)"
 
+                                    redeemed_string = "You have redeemed perm code: " + code + " for reward: " + codeInfo["Reward"] + extraString
+                                    if economy["Enabled"]:
+                                        if codes[code]["DisputesEconomyCash"] and testIfInt(amount):
+                                            userId = ctx.message.author.id
+                                            amount = codes[code]["CashAmount"]
+                                            if testIfVariableExists(economy["UserData"], str(userId)):
+                                                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                with open("economy.json", "w") as outfile:
+                                                    json.dump(economy, outfile, indent=4)
+                                            else:
+                                                economy["UserData"][str(userId)] = {
+                                                    "Balance": 0,
+                                                    "Inventory": [],
+                                                    "LatestDate": 0,
+                                                    "Cooldown": 0,
+                                                }
+                                                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                with open("economy.json", "w") as outfile:
+                                                    json.dump(economy, outfile, indent=4)
+                                            
+                                            redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+
                                     await sendEmbedTree(
                                         ctx,
-                                        "You have redeemed perm code: "
-                                        + code
-                                        + " for reward: "
-                                        + codeInfo["Reward"] + extraString,
+                                        redeemed_string,
                                         1,
                                     )
                                     print(
@@ -1863,7 +2064,7 @@ if __name__ == "__main__":
                     if testIfVariableExists(codes, code):
                         codes.pop(code)
                         with open("codes.json", "w") as outfile:
-                            outfile.write(json.dumps(codes))
+                            json.dump(codes, outfile, indent=4)
                         await sendEmbedTree(ctx, "Code has been removed from the system", 2)
                     else:
                         await sendEmbedTree(ctx, "Code not found", 3)
@@ -1886,7 +2087,7 @@ if __name__ == "__main__":
             description="Create multiple randomized codes for the system.",
             guild=discord.Object(id=guildId),
         )
-        async def createMultipleRandomized(ctx, prefix: str, reward: str, permornot: bool, count: int, roleid: str="0"):
+        async def createMultipleRandomized(ctx, prefix: str, reward: str, permornot: bool, count: int, roleid: str="0", cashamount: int=0):
             if count < 0:
                 count = count * -1
             if predicate(ctx) == False or blacklisted(ctx) == True:
@@ -1908,11 +2109,17 @@ if __name__ == "__main__":
                             else:
                                 if testIfInt(roleid):
                                     if permornot == True:
-                                        codes[args1] = {"Reward": reward, "OneUserOnly": False, "Role": int(roleid)}
+                                        codes[args1] = {"Reward": reward, "OneUserOnly": False, "Role": int(roleid), "DisputesEconomyCash": False}
                                     else:
-                                        codes[args1] = {"Reward": reward, "OneUserOnly": True, "Redeemed": False, "Role": int(roleid)}
+                                        codes[args1] = {"Reward": reward, "OneUserOnly": True, "Redeemed": False, "Role": int(roleid), "DisputesEconomyCash": False}
+
+                                    if testIfInt(cashamount):
+                                        if int(cashamount) > 0:
+                                            codes[code]["DisputesEconomyCash"] = True
+                                            codes[code]["CashAmount"] = int(cashamount)
+
                                     with open("codes.json", "w") as outfile:
-                                        outfile.write(json.dumps(codes))
+                                        json.dump(codes, outfile, indent=4)
                                     list.append(args1)
                                     printSuccessMessage("Created code: " + args1)
                                 else:
@@ -1962,7 +2169,7 @@ if __name__ == "__main__":
                 else:
                     botToken["BlacklistedUsers"][id] = reason
                     with open("bot.json", "w") as outfile:
-                        outfile.write(json.dumps(botToken))
+                        json.dump(botToken, outfile, indent=4)
                     await sendEmbedTree(ctx, "User has been blacklisted from this bot. Any operations or actions to this bot from this user has been blocked.", 2)
 
         @tree.command(
@@ -1983,7 +2190,7 @@ if __name__ == "__main__":
                 else:
                     botToken["BlacklistedUsers"][id] = reason + " (Used Blacklist Yourself Command)"
                     with open("bot.json", "w") as outfile:
-                        outfile.write(json.dumps(botToken))
+                        json.dump(botToken, outfile, indent=4)
                     await sendEmbedTree(ctx, "You're blacklisted from using the bot. Command operation is finished.", 2)
 
         @tree.command(
@@ -2001,10 +2208,58 @@ if __name__ == "__main__":
                 if testIfVariableExists(blackListedUsers, id):
                     botToken["BlacklistedUsers"].pop(id)
                     with open("bot.json", "w") as outfile:
-                        outfile.write(json.dumps(botToken))
+                        json.dump(botToken, outfile, indent=4)
                     await sendEmbedTree(ctx, "User has been unblacklisted from the bot.", 2)
                 else:
                     await sendEmbedTree(ctx, "User is not blacklisted from the bot.", 3)
+
+        @tree.command(
+            name="formatjson",
+            description="Formats settings incase you didn't update your jsons.",
+            guild=discord.Object(id=guildId),
+        )
+        async def formatJSON(ctx):
+            if predicate(ctx) == False or blacklisted(ctx) == True:
+                printErrorMessage("User has no authorization, Access Denied")
+                await sendEmbedTree(ctx, "Access Denied", 3)
+            else:
+                try:
+                    # exchange conversion center
+
+                    # bot
+                    if testIfVariableExists(botToken, "MainChannelId"):
+                        botToken["NotificationChannelId"] = botToken["MainChannelId"]
+
+                    if testIfVariableExists(botToken, "OwnerId"):
+                        if isinstance(botToken["OwnerId"], int):
+                            botToken["Admins"] = [botToken["OwnerId"]]
+                        else:
+                            botToken["Admins"] = botToken["OwnerId"]
+
+                    # codes
+
+                    for code in codes.keys():
+                        real_code = codes[code]
+                        if not testIfVariableExists(real_code, "Role"):
+                            codes[code]["Role"] = 0
+                        if not testIfVariableExists(real_code, "DisputesEconomyCash"):
+                            codes[code]["DisputesEconomyCash"] = False
+                        if testIfVariableExists(real_code, "reward"):
+                            reward = codes[code]["reward"]
+                            codes[code].pop('reward', None)
+                            codes[code]["Reward"] = reward
+                    
+                    with open("bot.json", "w") as outfile:
+                        json.dump(botToken, outfile, indent=4)
+                    with open("users.json", "w") as outfile:
+                        json.dump(userData, outfile, indent=4)
+                    with open("codes.json", "w") as outfile:
+                        json.dump(codes, outfile, indent=4)
+                    with open("economy.json", "w") as outfile:
+                        json.dump(economy, outfile, indent=4)
+                    await sendEmbedTree(ctx, f"Successfully formatted all System JSONs!", 2)
+                except Exception as e:
+                    await sendEmbedTree(ctx, f"Error while formatting System JSONs: " + str(e), 3)
 
         @tree.command(
             name="viewblacklistreason",
@@ -2068,7 +2323,7 @@ if __name__ == "__main__":
                 if testIfVariableExists(economy["UserData"], str(userId)):
                     economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
                     with open("economy.json", "w") as outfile:
-                        outfile.write(json.dumps(economy))
+                        json.dump(economy, outfile, indent=4)
                     print(f"System created {str(amount)} {economy['EconomyName']} in {str(userId)}'s account.")
                     return True
                 else:
@@ -2080,7 +2335,7 @@ if __name__ == "__main__":
                     }
                     economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
                     with open("economy.json", "w") as outfile:
-                        outfile.write(json.dumps(economy))
+                        json.dump(economy, outfile, indent=4)
                     print(f"System created {str(amount)} {economy['EconomyName']} and generated {str(userId)}'s account.")
                     return True
                 
@@ -2091,7 +2346,7 @@ if __name__ == "__main__":
                     if testIfVariableExists(economy["UserData"], str(userId)):
                         economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] - amount)
                         with open("economy.json", "w") as outfile: 
-                            outfile.write(json.dumps(economy))
+                            json.dump(economy, outfile, indent=4)
                             print(f"System took out {str(amount)} {economy['EconomyName']} out of {str(userId)}'s account.")
                         return True
                     else:
@@ -2179,7 +2434,7 @@ if __name__ == "__main__":
                     return
                 economy["UserData"][str(userId)]["Cooldown"] = datetime.now().timestamp() + 120
                 with open("economy.json", "w") as outfile:
-                    outfile.write(json.dumps(economy))
+                    json.dump(economy, outfile, indent=4)
             @tree.command(
                 name="flipcoin",
                 description="Flip a coin. (2x winning)",
@@ -2239,6 +2494,35 @@ if __name__ == "__main__":
                             createCurrency(ctx.user.id, amount * max * listOfMultipliers(ctx.user)["total"])
                         else:
                             await sendEmbedTree(ctx, "Failed! R.I.P. Chances: " + str(round(1 / max * 100)) + "%", 2)
+                    else:
+                        await sendEmbedTree(ctx, "Failed to take money: Insufficent Balance", 3)
+
+            @tree.command(
+                name="crypto",
+                description="Invest in a currency and get a chance of big loss or big win!",
+                guild=discord.Object(id=guildId),
+            )
+            async def crypto(ctx, amount: int):
+                if cooldownCommand(ctx.user.id):
+                    await sendEmbedTree(ctx, "Access Denied: Still on 2 minute cooldown, try again later!", 3)
+                    return
+                else:
+                    setCooldown(ctx.user.id)
+                if amount < 0:
+                    amount = amount * -1
+                if blacklisted(ctx) == True:
+                    await sendEmbedTree(ctx, "Access Denied", 3)
+                else:
+                    if takeCurrency(ctx.user.id, amount):
+                        randomized = random.randint(1, 20)
+                        if randomized == 1:
+                            new_amount = amount * 20 * listOfMultipliers(ctx.user)["total"]
+                            await sendEmbedTree(ctx, f"Woah! You hit the big jackpot and reached {str(new_amount)}", 2)
+                            createCurrency(ctx.user.id, new_amount)
+                        else:
+                            new_amount = amount / 5
+                            await sendEmbedTree(ctx, f"RIP! The crypto currency you invested in crashed! You have {str(new_amount)} remaining from that!", 2)
+                            createCurrency(ctx.user.id, new_amount)
                     else:
                         await sendEmbedTree(ctx, "Failed to take money: Insufficent Balance", 3)
 
@@ -2364,7 +2648,7 @@ if __name__ == "__main__":
                                 economy["StoreInventory"][itemname]["stock"] = economy["StoreInventory"][itemname]["stock"] - 1
                                 economy["UserData"][str(ctx.user.id)]["Inventory"].append(itemname)
                                 with open("economy.json", "w") as outfile:
-                                    outfile.write(json.dumps(economy))
+                                    json.dump(economy, outfile, indent=4)
                                 await sendEmbedTree(ctx, "Bought: " + itemname + "!", 2)
                             else:
                                 await sendEmbedTree(ctx, "Failed to take money: Insufficent Balance", 3)
@@ -2426,7 +2710,7 @@ if __name__ == "__main__":
                                 await ctx.user.add_roles(bot.get_guild(guildId).get_role(itemLookUp["role"]))
                         economy["UserData"][str(ctx.user.id)]["Inventory"].remove(itemFromInventory)
                         with open("economy.json", "w") as outfile:
-                            outfile.write(json.dumps(economy))
+                            json.dump(economy, outfile, indent=4)
 
                         decimal = 65280
                         embed = discord.Embed(
@@ -2478,7 +2762,7 @@ if __name__ == "__main__":
                             "role": 0
                         }
                     with open("economy.json", "w") as outfile:
-                        outfile.write(json.dumps(economy))
+                        json.dump(economy, outfile, indent=4)
                     await sendEmbedTree(ctx, "Created item!", 2)
 
             @tree.command(
@@ -2614,7 +2898,7 @@ if __name__ == "__main__":
                     await sendEmbedTree(ctx, "Access Denied", 3)
                 else:
                     main_about_string = f"**Made by Efaz at [efaz.dev](https://www.efaz.dev)** \nScript Version: `v{version}` \nSystem OS: `{platform.system()}` "
-                    main_about_string = main_about_string + "\n Admins: "
+                    main_about_string = main_about_string + "\nAdmins: "
                     for admin in botToken["Admins"]:
                         main_about_string = main_about_string + "<@" + str(admin) + "> "
 
@@ -2693,6 +2977,7 @@ if __name__ == "__main__":
                     
                     await sendEmbedTree(ctx,  f"Multipliers applied on non-user involved commands: \n\n{generatedString}\nTotal: **{str(list['total'])}x**", 2)
 
+            
             if economy["GreatReset"]["Enabled"] == True:
                 greatResetCurrently = False
                 def checkIfCashKing(user):
@@ -2766,7 +3051,7 @@ if __name__ == "__main__":
                                 # SAVE DATA
 
                                 with open("economy.json", "w") as outfile:
-                                    outfile.write(json.dumps(economy))
+                                    json.dump(economy, outfile, indent=4)
                                 printSuccessMessage("Saved Data")
                                 decimal = 65280
                                 embed = discord.Embed(

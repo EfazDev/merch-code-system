@@ -16,79 +16,15 @@ elif (
 ):
     os.system("cls")
 
-
-def testIfVariableExists(tablee, variablee):
-    if variablee in tablee:
-        return True
-    else:
-        return False
-    
-def printSystemMessage(message):
-    print(f"\x1b[38;2;255;75;0m{message}\033[38;5;231m")
-
-def printMainMessage(mes):
-    print(f"\x1b[38;2;255;255;255m{mes}\033[38;5;231m")
-
-def printErrorMessage(mes):
-    print(f"\x1b[38;2;255;0;0m{mes}\033[38;5;231m")
-
-def printSuccessMessage(mes):
-    print(f"\x1b[38;2;0;255;0m{mes}\033[38;5;231m")
-
-printSystemMessage("")
-printSystemMessage("███████╗███████╗░█████╗░███████╗██╗░██████╗  ███╗░░░███╗███████╗██████╗░░█████╗░██╗░░██╗")
-printSystemMessage("██╔════╝██╔════╝██╔══██╗╚════██║╚█║██╔════╝  ████╗░████║██╔════╝██╔══██╗██╔══██╗██║░░██║")
-printSystemMessage("█████╗░░█████╗░░███████║░░███╔═╝░╚╝╚█████╗░  ██╔████╔██║█████╗░░██████╔╝██║░░╚═╝███████║")
-printSystemMessage("██╔══╝░░██╔══╝░░██╔══██║██╔══╝░░░░░░╚═══██╗  ██║╚██╔╝██║██╔══╝░░██╔══██╗██║░░██╗██╔══██║")
-printSystemMessage("███████╗██║░░░░░██║░░██║███████╗░░░██████╔╝  ██║░╚═╝░██║███████╗██║░░██║╚█████╔╝██║░░██║")
-printSystemMessage("╚══════╝╚═╝░░░░░╚═╝░░╚═╝╚══════╝░░░╚═════╝░  ╚═╝░░░░░╚═╝╚══════╝╚═╝░░╚═╝░╚════╝░╚═╝░░╚═╝")
-printSystemMessage("")
-printSystemMessage("░█████╗░░█████╗░██████╗░███████╗  ░██████╗██╗░░░██╗░██████╗████████╗███████╗███╗░░░███╗")
-printSystemMessage("██╔══██╗██╔══██╗██╔══██╗██╔════╝  ██╔════╝╚██╗░██╔╝██╔════╝╚══██╔══╝██╔════╝████╗░████║")
-printSystemMessage("██║░░╚═╝██║░░██║██║░░██║█████╗░░  ╚█████╗░░╚████╔╝░╚█████╗░░░░██║░░░█████╗░░██╔████╔██║")
-printSystemMessage("██║░░██╗██║░░██║██║░░██║██╔══╝░░  ░╚═══██╗░░╚██╔╝░░░╚═══██╗░░░██║░░░██╔══╝░░██║╚██╔╝██║")
-printSystemMessage("╚█████╔╝╚█████╔╝██████╔╝███████╗  ██████╔╝░░░██║░░░██████╔╝░░░██║░░░███████╗██║░╚═╝░██║")
-printSystemMessage("░╚════╝░░╚════╝░╚═════╝░╚══════╝  ╚═════╝░░░░╚═╝░░░╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░░░░╚═╝")
-printSystemMessage("")
-printSystemMessage("Welcome to Efaz's Discord Merch Code System Setup")
-printSystemMessage("To set up your JSONs, please continue from here.")
-
-checkpip = input("Do you want to install modules if haven't already? (y/n):")
-if checkpip.lower() == "y":
-    printMainMessage("Awaiting pip...")
-    time.sleep(2.1)
-    pip.main(['install', "discord.py"])
-    pip.main(['install', "asyncio"])
-    printSuccessMessage("Finished running pip, continuing setup..")
-
-alreadyexists = input(
-    "Do you have an existing Merch Code System installation or no? (y/n):"
-)
-if alreadyexists.lower() == "y":
-    directory = input("Enter the directory of the old installation: ")
-    newDirect = directory.replace("'", "")
-    if LocalMachineOS == "Darwin" or LocalMachineOS == "Linux":
-        if not newDirect.endswith("/"):
-            newDirect = newDirect + "/"
-    elif (
-        LocalMachineOS == "win32"
-        or LocalMachineOS == "win64"
-        or LocalMachineOS == "Windows"
-    ):
-        if not newDirect.endswith("\\"):
-            newDirect = newDirect + "\\"
-    printMainMessage("Reviewing Directory...")
-    printMainMessage("New directory:")
-    printMainMessage(newDirect)
-    confirm = input("Is this directory correct? (y/n): ")
-    if confirm.lower() == "y":
-        with open(newDirect + "codes.json") as f:
+def updateDirectory(dir):
+    try:
+        with open(dir + "codes.json") as f:
             codes = json.load(f)
-        with open(newDirect + "users.json") as f:
+        with open(dir + "users.json") as f:
             userData = json.load(f)
-        with open(newDirect + "bot.json") as f:
+        with open(dir + "bot.json") as f:
             botToken = json.load(f)
-        with open(newDirect + "economy.json") as f:
+        with open(dir + "economy.json") as f:
             economy = json.load(f)
         with open("codes.json") as f:
             codesNew = json.load(f)
@@ -138,6 +74,8 @@ if alreadyexists.lower() == "y":
             real_code = codes[code]
             if not testIfVariableExists(real_code, "Role"):
                 codes[code]["Role"] = 0
+            if not testIfVariableExists(real_code, "DisputesEconomyCash"):
+                codes[code]["DisputesEconomyCash"] = False
             if testIfVariableExists(real_code, "reward"):
                 reward = codes[code]["reward"]
                 codes[code].pop('reward', None)
@@ -176,190 +114,285 @@ if alreadyexists.lower() == "y":
         # end of conversion
 
         with open(newDirect + "bot.json", "w") as outfile:
-            outfile.write(json.dumps(botTokenNew))
+            json.dump(botTokenNew, outfile, indent=4)
         with open(newDirect + "users.json", "w") as outfile:
-            outfile.write(json.dumps(userDataNew))
+            json.dump(userDataNew, outfile, indent=4)
         with open(newDirect + "codes.json", "w") as outfile:
-            outfile.write(json.dumps(codesNew))
+            json.dump(codesNew, outfile, indent=4)
         with open(newDirect + "economy.json", "w") as outfile:
-            outfile.write(json.dumps(economyNew))
+            json.dump(economyNew, outfile, indent=4)
         with open(newDirect + "main.py", "w", encoding="utf8") as outfile:
             outfile.write(mainNew)
-        printSuccessMessage("Successfully updated Merch Code System Directory " + newDirect + "! You may use it!")
-        enter = input("Press Enter to finish setup: ")
+        return {
+            "success": True,
+            "message": "Successfully updated!"
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "message": str(e)
+        }
+
+if __name__ == "__main__":
+    def testIfVariableExists(tablee, variablee):
+        if variablee in tablee:
+            return True
+        else:
+            return False
+        
+    def printSystemMessage(message):
+        print(f"\x1b[38;2;255;75;0m{message}\033[38;5;231m")
+
+    def printMainMessage(mes):
+        print(f"\x1b[38;2;255;255;255m{mes}\033[38;5;231m")
+
+    def printErrorMessage(mes):
+        print(f"\x1b[38;2;255;0;0m{mes}\033[38;5;231m")
+
+    def printSuccessMessage(mes):
+        print(f"\x1b[38;2;0;255;0m{mes}\033[38;5;231m")
+
+    def argumentHandler(args):
+        mode = args[1]
+        if mode == "-directory":
+            dir = args[2]
+            res = updateDirectory(dir)
+            if res["success"]:
+                printSuccessMessage("Successfully updated Merch Code System Directory " + dir + "! You may use it!")
+            else:
+                printErrorMessage("Failed to update Merch Code System Directory: " + dir)
+
+    if len(sys.argv) > 2:
+        argumentHandler(sys.argv)
     else:
-        print("Ending process..")
-        exit()
-else:
-    printMainMessage("-- BOT SECTION --")
-    botInfo1 = input(
-        "Your Discord Bot token (Get from your Discord Developer Portal): "
-    )
-    botInfo2 = int(input("Your Owner ID (your user Id): "))
-    botInfo3 = int(
-        input(
-            "Your Main Channel (the channel id you would like messages to be sent to for messages from bot): "
+        printSystemMessage("")
+        printSystemMessage("███████╗███████╗░█████╗░███████╗██╗░██████╗  ███╗░░░███╗███████╗██████╗░░█████╗░██╗░░██╗")
+        printSystemMessage("██╔════╝██╔════╝██╔══██╗╚════██║╚█║██╔════╝  ████╗░████║██╔════╝██╔══██╗██╔══██╗██║░░██║")
+        printSystemMessage("█████╗░░█████╗░░███████║░░███╔═╝░╚╝╚█████╗░  ██╔████╔██║█████╗░░██████╔╝██║░░╚═╝███████║")
+        printSystemMessage("██╔══╝░░██╔══╝░░██╔══██║██╔══╝░░░░░░╚═══██╗  ██║╚██╔╝██║██╔══╝░░██╔══██╗██║░░██╗██╔══██║")
+        printSystemMessage("███████╗██║░░░░░██║░░██║███████╗░░░██████╔╝  ██║░╚═╝░██║███████╗██║░░██║╚█████╔╝██║░░██║")
+        printSystemMessage("╚══════╝╚═╝░░░░░╚═╝░░╚═╝╚══════╝░░░╚═════╝░  ╚═╝░░░░░╚═╝╚══════╝╚═╝░░╚═╝░╚════╝░╚═╝░░╚═╝")
+        printSystemMessage("")
+        printSystemMessage("░█████╗░░█████╗░██████╗░███████╗  ░██████╗██╗░░░██╗░██████╗████████╗███████╗███╗░░░███╗")
+        printSystemMessage("██╔══██╗██╔══██╗██╔══██╗██╔════╝  ██╔════╝╚██╗░██╔╝██╔════╝╚══██╔══╝██╔════╝████╗░████║")
+        printSystemMessage("██║░░╚═╝██║░░██║██║░░██║█████╗░░  ╚█████╗░░╚████╔╝░╚█████╗░░░░██║░░░█████╗░░██╔████╔██║")
+        printSystemMessage("██║░░██╗██║░░██║██║░░██║██╔══╝░░  ░╚═══██╗░░╚██╔╝░░░╚═══██╗░░░██║░░░██╔══╝░░██║╚██╔╝██║")
+        printSystemMessage("╚█████╔╝╚█████╔╝██████╔╝███████╗  ██████╔╝░░░██║░░░██████╔╝░░░██║░░░███████╗██║░╚═╝░██║")
+        printSystemMessage("░╚════╝░░╚════╝░╚═════╝░╚══════╝  ╚═════╝░░░░╚═╝░░░╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░░░░╚═╝")
+        printSystemMessage("")
+        printSystemMessage("Welcome to Efaz's Discord Merch Code System Setup")
+        printSystemMessage("To set up your JSONs, please continue from here.")
+        printSystemMessage("Script Version v1.7.0")
+
+        checkpip = input("Do you want to install modules if haven't already? (y/n):")
+        if checkpip.lower() == "y":
+            printMainMessage("Awaiting pip...")
+            time.sleep(2.1)
+            pip.main(['install', "discord.py"])
+            pip.main(['install', "asyncio"])
+            printSuccessMessage("Finished running pip, continuing setup..")
+
+        alreadyexists = input(
+            "Do you have an existing Merch Code System installation or no? (y/n):"
         )
-    )
-    botInfo4 = int(input("Your Guild or Discord Server ID: "))
-    botInfo5 = input("Slash Commands Only? (y/n)")
-    if botInfo5.lower() == "y":
-        botInfo5 = True
-    else:
-        botInfo5 = False
-    botInfo6 = input("Disable Discord Bot Logging? (y/n)")
-    if botInfo6.lower() == "y":
-        botInfo6 = True
-    else:
-        botInfo6 = False
-    printMainMessage("-- CODES SECTION --")
-    codeInfo1 = input("Would you like to add an perm code? (Optional) (y/n)")
-    codeInfo2 = None
-    if codeInfo1.lower() == "y":
-        codeInfo2 = input("Code?")
-        codeInfo3 = input("Reward?")
-
-    printMainMessage("-- ECONOMY SECTION --")
-    economy1 = input("Do you want to enable economy commands? (y/n):")
-    if economy1.lower() == "y":
-        economy1 = True
-        economy2 = input("Economy Name?")
-        economy3 = input("Success Rate? (1 / <what number your put here>): ")
-        if int(economy3):
-            economy3 = int(economy3)
-        else:
-            economy3 = 4
-        economy4 = input("Daily Amount?")
-        if int(economy4):
-            economy4 = int(economy4)
-        else:
-            economy4 = 100
-        economy5 = input("Inventory Limit?")
-        if int(economy5):
-            economy5 = int(economy5)
-        else:
-            economy5 = 20
-
-        if input("Do you want to enable Great Reset and Season commands? (y/n): ").lower() == "y":
-            economy6 = True
-            economy7 = input("Cash King Role ID? (): ")
-            if int(economy7):
-                economy7 = int(economy7)
-            else:
-                economy7 = 0
-
-            economy8 = input("Reset Cash when the great reset starts? (y/n): ")
-            if economy8.lower() == "y":
-                economy8 = True
-            else:
-                economy8 = False
-            economy9 = input("Reset Items when the great reset starts? (y/n): ")
-            if economy9.lower() == "y":
-                economy9 = True
-            else:
-                economy9 = False
-            economy10 = input("Reset Roles with multipilers when the great reset starts? (y/n): ")
-            if economy10.lower() == "y":
-                economy10 = True
-                economy11 = input("One role to reset when great reset? (): ")
-                if int(economy11):
-                    economy11 = int(economy11)
+        if alreadyexists.lower() == "y":
+            directory = input("Enter the directory of the old installation: ")
+            newDirect = directory.replace("'", "")
+            if LocalMachineOS == "Darwin" or LocalMachineOS == "Linux":
+                if not newDirect.endswith("/"):
+                    newDirect = newDirect + "/"
+            elif (
+                LocalMachineOS == "win32"
+                or LocalMachineOS == "win64"
+                or LocalMachineOS == "Windows"
+            ):
+                if not newDirect.endswith("\\"):
+                    newDirect = newDirect + "\\"
+            printMainMessage("Reviewing Directory...")
+            printMainMessage("New directory:")
+            printMainMessage(newDirect)
+            confirm = input("Is this directory correct? (y/n): ")
+            if confirm.lower() == "y":
+                res = updateDirectory(newDirect)
+                if res["success"]:
+                    printSuccessMessage("Successfully updated Merch Code System Directory " + newDirect + "! You may use it!")
                 else:
+                    printErrorMessage("Failed to update Merch Code System Directory: " + newDirect)
+                enter = input("Press Enter to finish setup: ")
+            else:
+                print("Ending process..")
+                exit()
+        else:
+            printMainMessage("-- BOT SECTION --")
+            botInfo1 = input(
+                "Your Discord Bot token (Get from your Discord Developer Portal): "
+            )
+            botInfo2 = int(input("Your Owner ID (your user Id): "))
+            botInfo3 = int(
+                input(
+                    "Your Main Channel (the channel id you would like messages to be sent to for messages from bot): "
+                )
+            )
+            botInfo4 = int(input("Your Guild or Discord Server ID: "))
+            botInfo5 = input("Slash Commands Only? (y/n)")
+            if botInfo5.lower() == "y":
+                botInfo5 = True
+            else:
+                botInfo5 = False
+            botInfo6 = input("Disable Discord Bot Logging? (y/n)")
+            if botInfo6.lower() == "y":
+                botInfo6 = True
+            else:
+                botInfo6 = False
+            printMainMessage("-- CODES SECTION --")
+            codeInfo1 = input("Would you like to add an perm code? (Optional) (y/n)")
+            codeInfo2 = None
+            if codeInfo1.lower() == "y":
+                codeInfo2 = input("Code?")
+                codeInfo3 = input("Reward?")
+
+            printMainMessage("-- ECONOMY SECTION --")
+            economy1 = input("Do you want to enable economy commands? (y/n):")
+            if economy1.lower() == "y":
+                economy1 = True
+                economy2 = input("Economy Name?")
+                economy3 = input("Success Rate? (1 / <what number your put here>): ")
+                if int(economy3):
+                    economy3 = int(economy3)
+                else:
+                    economy3 = 4
+                economy4 = input("Daily Amount?")
+                if int(economy4):
+                    economy4 = int(economy4)
+                else:
+                    economy4 = 100
+                economy5 = input("Inventory Limit?")
+                if int(economy5):
+                    economy5 = int(economy5)
+                else:
+                    economy5 = 20
+
+                if input("Do you want to enable Great Reset and Season commands? (y/n): ").lower() == "y":
+                    economy6 = True
+                    economy7 = input("Cash King Role ID? (): ")
+                    if int(economy7):
+                        economy7 = int(economy7)
+                    else:
+                        economy7 = 0
+
+                    economy8 = input("Reset Cash when the great reset starts? (y/n): ")
+                    if economy8.lower() == "y":
+                        economy8 = True
+                    else:
+                        economy8 = False
+                    economy9 = input("Reset Items when the great reset starts? (y/n): ")
+                    if economy9.lower() == "y":
+                        economy9 = True
+                    else:
+                        economy9 = False
+                    economy10 = input("Reset Roles with multipilers when the great reset starts? (y/n): ")
+                    if economy10.lower() == "y":
+                        economy10 = True
+                        economy11 = input("One role to reset when great reset? (): ")
+                        if int(economy11):
+                            economy11 = int(economy11)
+                        else:
+                            economy11 = 0
+                    else:
+                        economy10 = False
+                        economy11 = 0
+                else:
+                    economy6 = False
+                    economy7 = 0
+                    economy8 = False
+                    economy9 = False
+                    economy10 = False
                     economy11 = 0
             else:
-                economy10 = False
-                economy11 = 0
-        else:
-            economy6 = False
-            economy7 = 0
-            economy8 = False
-            economy9 = False
-            economy10 = False
-            economy11 = 0
-    else:
-        economy1 = False
+                economy1 = False
 
-    printMainMessage("-- Finished Questions --")
-    printMainMessage("Preparing to generate JSONs")
-    botJSON = {
-        "Token": botInfo1,
-        "Admins": [botInfo2],
-        "NotificationChannelId": botInfo3,
-        "ServerID": botInfo4,
-        "SlashCommandsOnly": botInfo5,
-        "BlacklistedUsers": {},
-        "DisableDiscordLogging": botInfo6
-    }
-    if economy1 == True:
-        economyJSON = {
-            "Enabled": True,
-            "UserData": {},
-            "StoreInventory": {},
-            "EconomyName": economy2,
-            "Commands": {
-                "Daily": economy4
-            },
-            "SuccessRate": economy3,
-            "JobList": [
-                {
-                    "name": "Mayor",
-                    "amount": 5000
-                },
-                {
-                    "name": "District Worker",
-                    "amount": 1000
-                },
-                {
-                    "name": "Principal",
-                    "amount": 500
-                },
-                {
-                    "name": "Teacher",
-                    "amount": 100
-                }
-            ],
-            "GreatReset": {
-                "Enabled": economy6,
-                "RolesToReset": [economy11],
-                "SeasonNumber": 1,
-                "DataToReset": {
-                    "Cash": economy8,
-                    "Roles": economy9,
-                    "Items": economy10
-                },
-                "CashKingRoleID": economy7,
-                "ItemDataWhenRestock": [
-                    {
-                        "stock": 1,
-                        "price": 10000000,
-                        "name": "Cash King",
-                        "role": economy7,
-                        "multiplierEnabled": True
-                    }
-                ]
-            },
-            "AllowedMultipliers": {
-                "Weekends": True,
-                "Roles": True,
-                "Seasons": True
-            },
-            "RoleMultiplier": [],
-            "InventoryLimit": economy5
-        }
-        with open("economy.json", "w") as outfile:
-            outfile.write(json.dumps(economyJSON))
-    if codeInfo1.lower() == "y":
-        codeJSON = {
-            codeInfo2: {
-                "Reward": codeInfo3,
-                "OneUserOnly": False,
-                "Role": 0
+            printMainMessage("-- Finished Questions --")
+            printMainMessage("Preparing to generate JSONs")
+            botJSON = {
+                "Token": botInfo1,
+                "Admins": [botInfo2],
+                "NotificationChannelId": botInfo3,
+                "ServerID": botInfo4,
+                "SlashCommandsOnly": botInfo5,
+                "BlacklistedUsers": {},
+                "DisableDiscordLogging": botInfo6
             }
-        }
-        with open("codes.json", "w") as outfile:
-            outfile.write(json.dumps(codeJSON))
-    printSuccessMessage("JSONs Ready")
-    enter = input("Press Enter to finish setup: ")
-    with open("bot.json", "w") as outfile:
-        outfile.write(json.dumps(botJSON))
-printSuccessMessage("Setup is finished!")
+            if economy1 == True:
+                economyJSON = {
+                    "Enabled": True,
+                    "UserData": {},
+                    "StoreInventory": {},
+                    "EconomyName": economy2,
+                    "Commands": {
+                        "Daily": economy4
+                    },
+                    "SuccessRate": economy3,
+                    "JobList": [
+                        {
+                            "name": "Mayor",
+                            "amount": 5000
+                        },
+                        {
+                            "name": "District Worker",
+                            "amount": 1000
+                        },
+                        {
+                            "name": "Principal",
+                            "amount": 500
+                        },
+                        {
+                            "name": "Teacher",
+                            "amount": 100
+                        }
+                    ],
+                    "GreatReset": {
+                        "Enabled": economy6,
+                        "RolesToReset": [economy11],
+                        "SeasonNumber": 1,
+                        "DataToReset": {
+                            "Cash": economy8,
+                            "Roles": economy9,
+                            "Items": economy10
+                        },
+                        "CashKingRoleID": economy7,
+                        "ItemDataWhenRestock": [
+                            {
+                                "stock": 1,
+                                "price": 10000000,
+                                "name": "Cash King",
+                                "role": economy7,
+                                "multiplierEnabled": True
+                            }
+                        ]
+                    },
+                    "AllowedMultipliers": {
+                        "Weekends": True,
+                        "Roles": True,
+                        "Seasons": True
+                    },
+                    "RoleMultiplier": [],
+                    "InventoryLimit": economy5
+                }
+                with open("economy.json", "w") as outfile:
+                    json.dump(economyJSON, outfile, indent=4)
+            if codeInfo1.lower() == "y":
+                codeJSON = {
+                    codeInfo2: {
+                        "Reward": codeInfo3,
+                        "OneUserOnly": False,
+                        "Role": 0,
+                        "DisputesEconomyCash": False
+                    }
+                }
+                with open("codes.json", "w") as outfile:
+                    json.dump(codeJSON, outfile, indent=4)
+            printSuccessMessage("JSONs Ready")
+            enter = input("Press Enter to finish setup: ")
+            with open("bot.json", "w") as outfile:
+                json.dump(botJSON, outfile, indent=4)
+    printSuccessMessage("Setup is finished!")
