@@ -39,7 +39,7 @@ except Exception as e:
 
 LocalMachineOS = platform.system()
 pythonVersion = sys.version_info
-version = "1.7.1"
+version = "1.7.5"
 for _ in range(50):
     print()
 
@@ -128,6 +128,12 @@ def testIfInt(a):
         return True
     except Exception as e:
         return False
+    
+def addCommasToNumber(a):
+    if isinstance(a, int):
+        return '{:,}'.format(a)
+    else:
+        return '{:,.2f}'.format(a)
 
 if __name__ == "__main__":
     if not botToken["SlashCommandsOnly"]:
@@ -1046,10 +1052,10 @@ if __name__ == "__main__":
                     if takeCurrency(ctx.message.author.id, amount):
                         randomized = random.randint(1, max)
                         if randomized == estimate:
-                            await sendEmbed(ctx, "Success! You got it! Chances: " + str(round(1 / max * 100)) + "%", 2)
+                            await sendEmbed(ctx, "Success! You got it! Chances: " + addCommasToNumber(round(1 / max * 100)) + "%", 2)
                             createCurrency(ctx.message.author.id, amount * max)
                         else:
-                            await sendEmbed(ctx, "Failed! R.I.P. Chances: " + str(round(1 / max * 100)) + "%", 2)
+                            await sendEmbed(ctx, "Failed! R.I.P. Chances: " + addCommasToNumber(round(1 / max * 100)) + "%", 2)
                     else:
                         await sendEmbed(ctx, "Failed to take money: Insufficent Balance", 3)
 
@@ -1069,11 +1075,11 @@ if __name__ == "__main__":
                         randomized = random.randint(1, 20)
                         if randomized == 1:
                             new_amount = amount * 20 * listOfMultipliers(ctx.user)["total"]
-                            await sendEmbed(ctx, f"Woah! You hit the big jackpot and reached {str(new_amount)}", 2)
+                            await sendEmbed(ctx, f"Woah! You hit the big jackpot and reached {addCommasToNumber(new_amount)}!", 2)
                             createCurrency(ctx.user.id, new_amount)
                         else:
                             new_amount = amount / 5
-                            await sendEmbed(ctx, f"RIP! The crypto currency you invested in crashed! You have {str(new_amount)} remaining from that!", 2)
+                            await sendEmbed(ctx, f"RIP! The crypto currency you invested in crashed! You have {addCommasToNumber(new_amount)} remaining from that!", 2)
                             createCurrency(ctx.user.id, new_amount)
                     else:
                         await sendEmbed(ctx, "Failed to take money: Insufficent Balance", 3)
@@ -1099,7 +1105,7 @@ if __name__ == "__main__":
                         }
                     response = createCurrency(user.id, amount)
                     if response == True:
-                        await sendEmbed(ctx, "Gave " + str(amount) + " currency to " + user.name + "!", 2)
+                        await sendEmbed(ctx, "Gave " + addCommasToNumber(amount) + " currency to " + user.name + "!", 2)
                     else:
                         await sendEmbed(ctx, "Failed! Issue while giving user money.", 2)
             @bot.command()
@@ -1123,7 +1129,7 @@ if __name__ == "__main__":
                         }
                     response = takeCurrency(user.id, amount)
                     if response == True:
-                        await sendEmbed(ctx, "Gave " + str(amount) + " currency to " + user.name + "!", 2)
+                        await sendEmbed(ctx, "Gave " + addCommasToNumber(amount) + " currency to " + user.name + "!", 2)
                     else:
                         await sendEmbed(ctx, "Failed to take money: Insufficent Balance", 3)
 
@@ -1133,7 +1139,7 @@ if __name__ == "__main__":
                     await sendEmbed(ctx, "Access Denied", 3)
                 else:
                     response = checkCurrencyAmount(user.id)
-                    await sendEmbed(ctx, user.name + "'s Balance: \n" + str(response) + " " + economy["EconomyName"], 2)
+                    await sendEmbed(ctx, user.name + "'s Balance: \n" + addCommasToNumber(response) + " " + economy["EconomyName"], 2)
 
             @bot.command()
             async def daily(ctx):
@@ -1154,7 +1160,7 @@ if __name__ == "__main__":
                         economy["UserData"][str(ctx.message.author.id)]["LatestDate"] = datetime.now().timestamp() + 86400
                         response = createCurrency(ctx.message.author.id, economy["Commands"]["Daily"] * listOfMultipliers(ctx.message.author)["total"])
                         if response == True:
-                            await sendEmbed(ctx, "You've received " + str(economy["Commands"]["Daily"] * listOfMultipliers(ctx.message.author)["total"]) + " " + economy["EconomyName"] + "! Come back in 24 hours!", 2)
+                            await sendEmbed(ctx, "You've received " + addCommasToNumber(economy["Commands"]["Daily"] * listOfMultipliers(ctx.message.author)["total"]) + " " + economy["EconomyName"] + "! Come back in 24 hours!", 2)
                     else:
                         await sendEmbed(ctx, "Time is still remaining. Please wait!", 3)
 
@@ -1298,9 +1304,9 @@ if __name__ == "__main__":
                     for i in economy["StoreInventory"].keys():
                         item = economy["StoreInventory"][i]
                         if item["stock"] > 0:
-                            instock = instock + "`" + item["name"] + "` | Price: `" + str(item["price"]) + "` | Stock: `" + str(item["stock"]) + "` \n"
+                            instock = instock + "`" + item["name"] + "` | Price: `" + addCommasToNumber(item["price"]) + "` | Stock: `" + addCommasToNumber(item["stock"]) + "` \n"
                         else:
-                            outstock = outstock + "`" + item["name"] + "` | Price: `" + str(item["price"]) + "` \n"
+                            outstock = outstock + "`" + item["name"] + "` | Price: `" + addCommasToNumber(item["price"]) + "` \n"
 
                     if instock == "** In Stock ** \n":
                         instock = "** In Stock ** \n No items available \n"
@@ -1328,13 +1334,13 @@ if __name__ == "__main__":
                             amount = checkCurrencyAmount(user.id) * 0.5
                             response = takeCurrency(user.id, amount)
                             response2 = createCurrency(ctx.message.author.id, amount)
-                            await sendEmbed(ctx, "Robbing Success! You have earned " + str(amount) + " " + economy["EconomyName"] + "!", 2)
+                            await sendEmbed(ctx, "Robbing Success! You have earned " + addCommasToNumber(amount) + " " + economy["EconomyName"] + "!", 2)
                         else:
                             amount = checkCurrencyAmount(ctx.message.author.id) * 0.5
                             response = takeCurrency(ctx.message.author.id, amount)
-                            await sendEmbed(ctx, "Robbing Failed! You have been charged " + str(amount) + " " + economy["EconomyName"] + "!", 3)
+                            await sendEmbed(ctx, "Robbing Failed! You have been charged " + addCommasToNumber(amount) + " " + economy["EconomyName"] + "!", 3)
                     else:
-                        await sendEmbed(ctx, f"Robbing Failed! You need {str(needed_requirement)} {economy['EconomyName']} to use for this command!", 3)
+                        await sendEmbed(ctx, f"Robbing Failed! You need {addCommasToNumber(needed_requirement)} {economy['EconomyName']} to use for this command!", 3)
 
             @bot.command()
             async def sendMoney(ctx, user: discord.Member, amount: int):
@@ -1351,7 +1357,7 @@ if __name__ == "__main__":
                     if checkCurrencyAmount(ctx.message.author.id) >= amount:
                         response = takeCurrency(ctx.message.author.id, amount)
                         response2 = createCurrency(user.id, amount)
-                        await sendEmbed(ctx, "You have gave " + str(amount) + " " + economy["EconomyName"] + " to " + user.name + "!", 2)
+                        await sendEmbed(ctx, "You have gave " + addCommasToNumber(amount) + " " + economy["EconomyName"] + " to " + user.name + "!", 2)
                     else:
                         await sendEmbed(ctx, "Not enough funds!", 3)
             
@@ -1368,7 +1374,7 @@ if __name__ == "__main__":
                     jobList = economy["JobList"]
                     randomizedJob = jobList[random.randint(0, len(jobList) - 1)]
                     response = createCurrency(ctx.message.author.id, randomizedJob["amount"] * listOfMultipliers(ctx.message.author)["total"])
-                    await sendEmbed(ctx, "You have earned " + str(randomizedJob["amount"] * listOfMultipliers(ctx.message.author)["total"]) + " from working as a " + randomizedJob["name"] + "!", 2)
+                    await sendEmbed(ctx, "You have earned " + addCommasToNumber(randomizedJob["amount"] * listOfMultipliers(ctx.message.author)["total"]) + " from working as a " + randomizedJob["name"] + "!", 2)
 
             @bot.command()
             async def cooldownCheck(ctx):
@@ -1378,35 +1384,40 @@ if __name__ == "__main__":
                     await sendEmbed(ctx, "Cooldown ends <t:" + str(round(economy["UserData"][str(ctx.message.author.id)]["Cooldown"])) + ":R>", 2)
 
             @bot.command()
-            async def topleaderboard(ctx):
+            async def topleaderboard(ctx, typeofboard: str):
                 if blacklisted(ctx) == True:
                     await sendEmbed(ctx, "Access Denied", 3)
                 else:
                     lbList = economy["UserData"]
                     lbList = dict(sorted(lbList.items(), reverse=True, key=lambda x:x[1]["Balance"]))
 
-                    message = "Top **10** Leaderboard! \n ** " + economy["EconomyName"] + " ** \n"
+                    message = "Top **10** Leaderboard! \n"
 
-                    if len(lbList) < 10:
-                        keys = lbList.keys()
-                        for i in keys:
-                            message = message + "<@" + str(i) + "> | " + str(economy["UserData"][i]["Balance"]) + " \n"
+                    if typeofboard == "Cash":
+                        message = message + f"** " + economy["EconomyName"] + " ** \n"
+
+                        if len(lbList) < 10:
+                            keys = lbList.keys()
+                            for i in keys:
+                                message = message + "<@" + str(i) + "> | " + addCommasToNumber(economy["UserData"][i]["Balance"]) + " \n"
+                        else:
+                            keys = list(lbList.keys())
+                            for i in range(10):
+                                message = message + "<@" + str(keys[i]) + "> | " + addCommasToNumber(economy["UserData"][keys[i]]["Balance"]) + " \n"
+                    elif typeofboard == "Items":
+                        message = message + "** Number of Items ** \n"
+                        lbList = dict(sorted(lbList.items(), reverse=True, key=lambda x:len(x[1]["Inventory"])))
+
+                        if len(lbList) < 10:
+                            keys = lbList.keys()
+                            for i in keys:
+                                message = message + "<@" + str(i) + "> | " + addCommasToNumber(len(economy["UserData"][i]["Inventory"])) + " \n"
+                        else:
+                            keys = list(lbList.keys())
+                            for i in range(10):
+                                message = message + "<@" + str(keys[i]) + "> | " + addCommasToNumber(len(economy["UserData"][keys[i]]["Inventory"])) + " \n"
                     else:
-                        keys = list(lbList.keys())
-                        for i in range(10):
-                            message = message + "<@" + str(keys[i]) + "> | " + str(economy["UserData"][keys[i]]["Balance"]) + " \n"
-
-                    message = message + " ** Number of Items ** \n"
-                    lbList = dict(sorted(lbList.items(), reverse=True, key=lambda x:len(x[1]["Inventory"])))
-
-                    if len(lbList) < 10:
-                        keys = lbList.keys()
-                        for i in keys:
-                            message = message + "<@" + str(i) + "> | " + str(len(economy["UserData"][i]["Inventory"])) + " \n"
-                    else:
-                        keys = list(lbList.keys())
-                        for i in range(10):
-                            message = message + "<@" + str(keys[i]) + "> | " + str(len(economy["UserData"][keys[i]]["Inventory"])) + " \n"
+                        message = "Failed to get leaderboard: This leaderboard doesn't exist. Please enter either: `Cash` or `Items`."
 
 
                     await sendEmbed(ctx, message, 2)
@@ -1421,9 +1432,9 @@ if __name__ == "__main__":
                     generatedString = ""
 
                     for data in list["data"]:
-                        generatedString = generatedString + f"**{str(data['name'])}:** `{str(data['multiplier'])}x` ({str(data['description'])}) \n"
+                        generatedString = generatedString + f"**{str(data['name'])}:** `{addCommasToNumber(data['multiplier'])}x` ({str(data['description'])}) \n"
                     
-                    await sendEmbed(ctx,  f"Multipliers applied on non-user involved commands: \n\n{generatedString}\nTotal: **{str(list['total'])}x**", 2)
+                    await sendEmbed(ctx,  f"Multipliers applied on non-user involved commands: \n\n{generatedString}\nTotal: **{addCommasToNumber(list['total'])}x**", 2)
 
             @bot.command()
             async def endItemListing(ctx, item: str):
@@ -1595,7 +1606,14 @@ if __name__ == "__main__":
                 text="Made by Efaz from efaz.dev - v" + version,
                 icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
             )
-            await ctx.response.send_message(embed=embed)
+            if botToken["ShowMessageGlobal"]:
+                await ctx.response.send_message(embed=embed)
+            else:
+                await ctx.response.send_message(embed=embed, ephemeral=True)
+
+        @bot.event
+        async def on_app_command_completion(interaction, command):
+            printMainMessage("Command ran: " + command.name)
 
         def predicate(ctx):
             if ctx.user.id in botToken["Admins"]:
@@ -1836,7 +1854,7 @@ if __name__ == "__main__":
                                                             with open("economy.json", "w") as outfile:
                                                                 json.dump(economy, outfile, indent=4)
                                                         
-                                                        redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+                                                        redeemed_string = redeemed_string + f". You were also given {addCommasToNumber(amount)} {economy['EconomyName']}!"
                                         except Exception as e:
                                             redeemed_string = redeemed_string + f". Error while giving cash: ({str(e)})"
 
@@ -1905,7 +1923,7 @@ if __name__ == "__main__":
                                                         with open("economy.json", "w") as outfile:
                                                             json.dump(economy, outfile, indent=4)
                                                     
-                                                    redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+                                                    redeemed_string = redeemed_string + f". You were also given {addCommasToNumber(amount)} {economy['EconomyName']}!"
                                     except Exception as e:
                                         redeemed_string = redeemed_string + f". Error while giving cash: ({str(e)})"
                                     
@@ -1983,7 +2001,7 @@ if __name__ == "__main__":
                                                             with open("economy.json", "w") as outfile:
                                                                 json.dump(economy, outfile, indent=4)
                                                         
-                                                        redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+                                                        redeemed_string = redeemed_string + f". You were also given {addCommasToNumber(amount)} {economy['EconomyName']}!"
                                         except Exception as e:
                                             redeemed_string = redeemed_string + f". Error while giving cash: ({str(e)})"
 
@@ -2052,7 +2070,7 @@ if __name__ == "__main__":
                                                         with open("economy.json", "w") as outfile:
                                                             json.dump(economy, outfile, indent=4)
                                                     
-                                                    redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+                                                    redeemed_string = redeemed_string + f". You were also given {addCommasToNumber(amount)} {economy['EconomyName']}!"
                                     except Exception as e:
                                         redeemed_string = redeemed_string + f". Error while giving cash: ({str(e)})"
 
@@ -2112,7 +2130,7 @@ if __name__ == "__main__":
             if blacklisted(ctx) == True:
                 await sendEmbedTree(ctx, "Access Denied", 3)
                 return
-            await sendEmbedTree(ctx, f"Pong! {round(bot.latency * 1000)}ms", 2)
+            await sendEmbedTree(ctx, f"Pong! {addCommasToNumber(round(bot.latency * 1000))}ms", 2)
 
         @tree.command(
             name="createmultiplerandomized",
@@ -2261,6 +2279,8 @@ if __name__ == "__main__":
                     # bot
                     if testIfVariableExists(botToken, "MainChannelId"):
                         botToken["NotificationChannelId"] = botToken["MainChannelId"]
+                    if not botToken.get("ShowMessageGlobal"):
+                        botToken["ShowMessageGlobal"] = True
 
                     if testIfVariableExists(botToken, "OwnerId"):
                         if isinstance(botToken["OwnerId"], int):
@@ -2356,7 +2376,7 @@ if __name__ == "__main__":
                     economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
                     with open("economy.json", "w") as outfile:
                         json.dump(economy, outfile, indent=4)
-                    print(f"System created {str(amount)} {economy['EconomyName']} in {str(userId)}'s account.")
+                    print(f"System created {addCommasToNumber(amount)} {economy['EconomyName']} in {str(userId)}'s account.")
                     return True
                 else:
                     economy["UserData"][str(userId)] = {
@@ -2368,7 +2388,7 @@ if __name__ == "__main__":
                     economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
                     with open("economy.json", "w") as outfile:
                         json.dump(economy, outfile, indent=4)
-                    print(f"System created {str(amount)} {economy['EconomyName']} and generated {str(userId)}'s account.")
+                    print(f"System created {addCommasToNumber(amount)} {economy['EconomyName']} and generated {str(userId)}'s account.")
                     return True
                 
             def takeCurrency(userId, amount):
@@ -2379,7 +2399,7 @@ if __name__ == "__main__":
                         economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] - amount)
                         with open("economy.json", "w") as outfile: 
                             json.dump(economy, outfile, indent=4)
-                            print(f"System took out {str(amount)} {economy['EconomyName']} out of {str(userId)}'s account.")
+                            print(f"System took out {addCommasToNumber(amount)} {economy['EconomyName']} out of {str(userId)}'s account.")
                         return True
                     else:
                         return False
@@ -2522,10 +2542,10 @@ if __name__ == "__main__":
                     if takeCurrency(ctx.user.id, amount):
                         randomized = random.randint(1, max)
                         if randomized == estimate:
-                            await sendEmbedTree(ctx, "Success! You got it! Chances: " + str(round(1 / max * 100)) + "%", 2)
+                            await sendEmbedTree(ctx, "Success! You got it! Chances: " + addCommasToNumber(round(1 / max * 100)) + "%", 2)
                             createCurrency(ctx.user.id, amount * max * listOfMultipliers(ctx.user)["total"])
                         else:
-                            await sendEmbedTree(ctx, "Failed! R.I.P. Chances: " + str(round(1 / max * 100)) + "%", 2)
+                            await sendEmbedTree(ctx, "Failed! R.I.P. Chances: " + addCommasToNumber(round(1 / max * 100)) + "%", 2)
                     else:
                         await sendEmbedTree(ctx, "Failed to take money: Insufficent Balance", 3)
 
@@ -2549,11 +2569,11 @@ if __name__ == "__main__":
                         randomized = random.randint(1, 20)
                         if randomized == 1:
                             new_amount = amount * 20 * listOfMultipliers(ctx.user)["total"]
-                            await sendEmbedTree(ctx, f"Woah! You hit the big jackpot and reached {str(new_amount)}", 2)
+                            await sendEmbedTree(ctx, f"Woah! You hit the big jackpot and reached {addCommasToNumber(new_amount)}", 2)
                             createCurrency(ctx.user.id, new_amount)
                         else:
                             new_amount = amount / 5
-                            await sendEmbedTree(ctx, f"RIP! The crypto currency you invested in crashed! You have {str(new_amount)} remaining from that!", 2)
+                            await sendEmbedTree(ctx, f"RIP! The crypto currency you invested in crashed! You have {addCommasToNumber(new_amount)} remaining from that!", 2)
                             createCurrency(ctx.user.id, new_amount)
                     else:
                         await sendEmbedTree(ctx, "Failed to take money: Insufficent Balance", 3)
@@ -2583,7 +2603,7 @@ if __name__ == "__main__":
                         }
                     response = createCurrency(user.id, amount)
                     if response == True:
-                        await sendEmbedTree(ctx, "Gave " + str(amount) + " currency to " + user.name + "!", 2)
+                        await sendEmbedTree(ctx, "Gave " + addCommasToNumber(amount) + " currency to " + user.name + "!", 2)
                     else:
                         await sendEmbedTree(ctx, "Failed! Issue while giving user money.", 2)
             
@@ -2612,7 +2632,7 @@ if __name__ == "__main__":
                         }
                     response = takeCurrency(user.id, amount)
                     if response == True:
-                        await sendEmbedTree(ctx, "Removed " + str(amount) + " currency from " + user.name + "!", 2)
+                        await sendEmbedTree(ctx, "Removed " + addCommasToNumber(amount) + " currency from " + user.name + "!", 2)
                     else:
                         await sendEmbedTree(ctx, "Failed to take money: Insufficent Balance", 3)
 
@@ -2626,7 +2646,7 @@ if __name__ == "__main__":
                     await sendEmbedTree(ctx, "Access Denied", 3)
                 else:
                     response = checkCurrencyAmount(user.id)
-                    await sendEmbedTree(ctx, user.name + "'s Balance: \n" + str(response) + " " + economy["EconomyName"], 2)
+                    await sendEmbedTree(ctx, user.name + "'s Balance: \n" + addCommasToNumber(response) + " " + economy["EconomyName"], 2)
 
             @tree.command(
                 name="daily",
@@ -2651,7 +2671,7 @@ if __name__ == "__main__":
                         economy["UserData"][str(ctx.user.id)]["LatestDate"] = datetime.now().timestamp() + 86400
                         response = createCurrency(ctx.user.id, economy["Commands"]["Daily"] * listOfMultipliers(ctx.user)["total"])
                         if response == True:
-                            await sendEmbedTree(ctx, "You've received " + str(economy["Commands"]["Daily"] * listOfMultipliers(ctx.user)["total"]) + " " + economy["EconomyName"] + "! Come back in 24 hours!", 2)
+                            await sendEmbedTree(ctx, "You've received " + addCommasToNumber(economy["Commands"]["Daily"] * listOfMultipliers(ctx.user)["total"]) + " " + economy["EconomyName"] + "! Come back in 24 hours!", 2)
                     else:
                         await sendEmbedTree(ctx, "Time is still remaining. Please wait!", 3)
 
@@ -2833,9 +2853,9 @@ if __name__ == "__main__":
                     for i in economy["StoreInventory"].keys():
                         item = economy["StoreInventory"][i]
                         if item["stock"] > 0:
-                            instock = instock + "`" + item["name"] + "` | Price: `" + str(item["price"]) + "` | Stock: `" + str(item["stock"]) + "` \n"
+                            instock = instock + "`" + item["name"] + "` | Price: `" + addCommasToNumber(item["price"]) + "` | Stock: `" + addCommasToNumber(item["stock"]) + "` \n"
                         else:
-                            outstock = outstock + "`" + item["name"] + "` | Price: `" + str(item["price"]) + "` \n"
+                            outstock = outstock + "`" + item["name"] + "` | Price: `" + addCommasToNumber(item["price"]) + "` \n"
 
                     if instock == "** In Stock ** \n":
                         instock = "** In Stock ** \n No items available \n"
@@ -2870,13 +2890,13 @@ if __name__ == "__main__":
                             amount = checkCurrencyAmount(user.id) * 0.5
                             response = takeCurrency(user.id, amount)
                             response2 = createCurrency(ctx.user.id, amount)
-                            await sendEmbedTree(ctx, "Robbing Success! You have earned " + str(amount) + " " + economy["EconomyName"] + "!", 2)
+                            await sendEmbedTree(ctx, "Robbing Success! You have earned " + addCommasToNumber(amount) + " " + economy["EconomyName"] + "!", 2)
                         else:
                             amount = checkCurrencyAmount(ctx.user.id) * 0.5
                             response = takeCurrency(ctx.user.id, amount)
-                            await sendEmbedTree(ctx, "Robbing Failed! You have been charged " + str(amount) + " " + economy["EconomyName"] + "!", 3)
+                            await sendEmbedTree(ctx, "Robbing Failed! You have been charged " + addCommasToNumber(amount) + " " + economy["EconomyName"] + "!", 3)
                     else:
-                        await sendEmbedTree(ctx, f"Robbing Failed! You need {str(needed_requirement)} {economy['EconomyName']} to use for this command!", 3)
+                        await sendEmbedTree(ctx, f"Robbing Failed! You need {addCommasToNumber(needed_requirement)} {economy['EconomyName']} to use for this command!", 3)
 
             @tree.command(
                 name="sendmoney",
@@ -2897,7 +2917,7 @@ if __name__ == "__main__":
                     if checkCurrencyAmount(ctx.user.id) >= amount:
                         response = takeCurrency(ctx.user.id, amount)
                         response2 = createCurrency(user.id, amount)
-                        await sendEmbedTree(ctx, "You have gave " + str(amount) + " " + economy["EconomyName"] + " to " + user.name + "!", 2)
+                        await sendEmbedTree(ctx, "You have gave " + addCommasToNumber(amount) + " " + economy["EconomyName"] + " to " + user.name + "!", 2)
                     else:
                         await sendEmbedTree(ctx, "Not enough funds!", 3)  
 
@@ -2918,7 +2938,7 @@ if __name__ == "__main__":
                     jobList = economy["JobList"]
                     randomizedJob = jobList[random.randint(0, len(jobList) - 1)]
                     response = createCurrency(ctx.user.id, randomizedJob["amount"] * listOfMultipliers(ctx.user)["total"])
-                    await sendEmbedTree(ctx, "You have earned " + str(randomizedJob["amount"] * listOfMultipliers(ctx.user)["total"]) + " from working as a " + randomizedJob["name"] + "!", 2)
+                    await sendEmbedTree(ctx, "You have earned " + addCommasToNumber(randomizedJob["amount"] * listOfMultipliers(ctx.user)["total"]) + " from working as a " + randomizedJob["name"] + "!", 2)
 
             @tree.command(
                 name="about",
@@ -2937,7 +2957,7 @@ if __name__ == "__main__":
                     if economy['Enabled'] == True:
                         main_about_string = main_about_string + f"\n\n**Economy** \nEnabled: `{str(economy['Enabled'])}` \nCurrency Name: `{economy['EconomyName']}` "
                         if economy["GreatReset"]["Enabled"] == True:
-                            main_about_string = main_about_string + f"\nGreat Resets Enabled: `{str(economy['GreatReset']['Enabled'])}` \nSeason Number: `{str(economy['GreatReset']['SeasonNumber'])}` "
+                            main_about_string = main_about_string + f"\nGreat Resets Enabled: `{str(economy['GreatReset']['Enabled'])}` \nSeason Number: `{addCommasToNumber(economy['GreatReset']['SeasonNumber'])}` "
                         else:
                             main_about_string = main_about_string + f"\nGreat Resets Enabled: `{str(economy['GreatReset']['Enabled'])}` "
                     else:
@@ -2956,39 +2976,44 @@ if __name__ == "__main__":
                 else:
                     await sendEmbedTree(ctx, "Cooldown ends <t:" + str(round(economy["UserData"][str(ctx.user.id)]["Cooldown"])) + ":R>", 2)
             @tree.command(
-                name="top10lb",
-                description="Check the top 10 leaderboard on cash!",
+                name="leaderboard",
+                description="Check the top 10 leaderboard!",
                 guild=discord.Object(id=guildId),
             )
-            async def topleaderboard(ctx):
+            async def topleaderboard(ctx, typeofboard: str):
                 if blacklisted(ctx) == True:
                     await sendEmbedTree(ctx, "Access Denied", 3)
                 else:
                     lbList = economy["UserData"]
                     lbList = dict(sorted(lbList.items(), reverse=True, key=lambda x:x[1]["Balance"]))
 
-                    message = "Top **10** Leaderboard! \n ** " + economy["EconomyName"] + " ** \n"
+                    message = "Top **10** Leaderboard! \n"
 
-                    if len(lbList) < 10:
-                        keys = lbList.keys()
-                        for i in keys:
-                            message = message + "<@" + str(i) + "> | " + str(economy["UserData"][i]["Balance"]) + " \n"
+                    if typeofboard == "Cash":
+                        message = message + f"** " + economy["EconomyName"] + " ** \n"
+
+                        if len(lbList) < 10:
+                            keys = lbList.keys()
+                            for i in keys:
+                                message = message + "<@" + str(i) + "> | " + addCommasToNumber(economy["UserData"][i]["Balance"]) + " \n"
+                        else:
+                            keys = list(lbList.keys())
+                            for i in range(10):
+                                message = message + "<@" + str(keys[i]) + "> | " + addCommasToNumber(economy["UserData"][keys[i]]["Balance"]) + " \n"
+                    elif typeofboard == "Items":
+                        message = message + "** Number of Items ** \n"
+                        lbList = dict(sorted(lbList.items(), reverse=True, key=lambda x:len(x[1]["Inventory"])))
+
+                        if len(lbList) < 10:
+                            keys = lbList.keys()
+                            for i in keys:
+                                message = message + "<@" + str(i) + "> | " + addCommasToNumber(len(economy["UserData"][i]["Inventory"])) + " \n"
+                        else:
+                            keys = list(lbList.keys())
+                            for i in range(10):
+                                message = message + "<@" + str(keys[i]) + "> | " + addCommasToNumber(len(economy["UserData"][keys[i]]["Inventory"])) + " \n"
                     else:
-                        keys = list(lbList.keys())
-                        for i in range(10):
-                            message = message + "<@" + str(keys[i]) + "> | " + str(economy["UserData"][keys[i]]["Balance"]) + " \n"
-
-                    message = message + " ** Number of Items ** \n"
-                    lbList = dict(sorted(lbList.items(), reverse=True, key=lambda x:len(x[1]["Inventory"])))
-
-                    if len(lbList) < 10:
-                        keys = lbList.keys()
-                        for i in keys:
-                            message = message + "<@" + str(i) + "> | " + str(len(economy["UserData"][i]["Inventory"])) + " \n"
-                    else:
-                        keys = list(lbList.keys())
-                        for i in range(10):
-                            message = message + "<@" + str(keys[i]) + "> | " + str(len(economy["UserData"][keys[i]]["Inventory"])) + " \n"
+                        message = "Failed to get leaderboard: This leaderboard doesn't exist. Please enter either: `Cash` or `Items`."
 
                     await sendEmbedTree(ctx, message, 2)
             @tree.command(
@@ -3005,9 +3030,9 @@ if __name__ == "__main__":
                     generatedString = ""
 
                     for data in list["data"]:
-                        generatedString = generatedString + f"**{str(data['name'])}:** `{str(data['multiplier'])}x` ({str(data['description'])}) \n"
+                        generatedString = generatedString + f"**{str(data['name'])}:** `{addCommasToNumber(data['multiplier'])}x` ({str(data['description'])}) \n"
                     
-                    await sendEmbedTree(ctx,  f"Multipliers applied on non-user involved commands: \n\n{generatedString}\nTotal: **{str(list['total'])}x**", 2)
+                    await sendEmbedTree(ctx,  f"Multipliers applied on non-user involved commands: \n\n{generatedString}\nTotal: **{addCommasToNumber(list['total'])}x**", 2)
 
             
             if economy["GreatReset"]["Enabled"] == True:

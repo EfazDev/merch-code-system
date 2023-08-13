@@ -63,6 +63,8 @@ def updateDirectory(dir):
             botTokenNew["ServerID"] = botToken["ServerID"]
         if testIfVariableExists(botToken, "DisableDiscordLogging"):
             botTokenNew["DisableDiscordLogging"] = botToken["DisableDiscordLogging"]
+        if testIfVariableExists(botToken, "ShowMessageGlobal"):
+            botTokenNew["ShowMessageGlobal"] = botToken["ShowMessageGlobal"]
         if testIfVariableExists(botToken, "SlashCommandsOnly"):
             botTokenNew["SlashCommandsOnly"] = botToken["SlashCommandsOnly"]
         if testIfVariableExists(botToken, "BlacklistedUsers"):
@@ -320,7 +322,8 @@ if __name__ == "__main__":
                 "ServerID": botInfo4,
                 "SlashCommandsOnly": botInfo5,
                 "BlacklistedUsers": {},
-                "DisableDiscordLogging": botInfo6
+                "DisableDiscordLogging": botInfo6,
+                "ShowMessageGlobal": True
             }
             if economy1 == True:
                 economyJSON = {

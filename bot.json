@@ -5,5 +5,6 @@
     "ServerID": 0,
     "SlashCommandsOnly": true,
     "BlacklistedUsers": {},
-    "DisableDiscordLogging": true
+    "DisableDiscordLogging": true,
+    "ShowMessageGlobal": true
 }
