@@ -39,7 +39,7 @@ except Exception as e:
 
 LocalMachineOS = platform.system()
 pythonVersion = sys.version_info
-version = "1.7.0"
+version = "1.7.1"
 for _ in range(50):
     print()
 
@@ -283,26 +283,30 @@ if __name__ == "__main__":
                                             extraString = " | Role Added: (failed due to invalid permissions or error.)"
 
                                     redeemed_string = "You have redeemed merch code: " + arg + " for reward: " + codeInfo["Reward"] + extraString
-                                    if economy["Enabled"]:
-                                        if codes[arg]["DisputesEconomyCash"] and testIfInt(amount):
-                                            userId = ctx.message.author.id
-                                            amount = codes[arg]["CashAmount"]
-                                            if testIfVariableExists(economy["UserData"], str(userId)):
-                                                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
-                                                with open("economy.json", "w") as outfile:
-                                                    json.dump(economy, outfile, indent=4)
-                                            else:
-                                                economy["UserData"][str(userId)] = {
-                                                    "Balance": 0,
-                                                    "Inventory": [],
-                                                    "LatestDate": 0,
-                                                    "Cooldown": 0,
-                                                }
-                                                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
-                                                with open("economy.json", "w") as outfile:
-                                                    json.dump(economy, outfile, indent=4)
-                                            
-                                            redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+                                    try:
+                                        if economy["Enabled"]:
+                                            if codes[arg]["DisputesEconomyCash"]:
+                                                userId = userId = ctx.user.id
+                                                amount = codes[arg]["CashAmount"]
+                                                if testIfInt(amount):
+                                                    if testIfVariableExists(economy["UserData"], str(userId)):
+                                                        economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                        with open("economy.json", "w") as outfile:
+                                                            json.dump(economy, outfile, indent=4)
+                                                    else:
+                                                        economy["UserData"][str(userId)] = {
+                                                            "Balance": 0,
+                                                            "Inventory": [],
+                                                            "LatestDate": 0,
+                                                            "Cooldown": 0,
+                                                        }
+                                                        economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                        with open("economy.json", "w") as outfile:
+                                                            json.dump(economy, outfile, indent=4)
+                                                    
+                                                    redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+                                    except Exception as e:
+                                        redeemed_string = redeemed_string + f". Error while giving cash: ({str(e)})"
 
                                     await sendEmbed(
                                         ctx,
@@ -348,26 +352,30 @@ if __name__ == "__main__":
                                         extraString = " | Role Added: (failed due to invalid permissions or error.)"
 
                                 redeemed_string = "You have redeemed perm code: " + arg + " for reward: " + codeInfo["Reward"] + extraString
-                                if economy["Enabled"]:
-                                    if codes[arg]["DisputesEconomyCash"] and testIfInt(amount):
-                                        userId = ctx.message.author.id
-                                        amount = codes[arg]["CashAmount"]
-                                        if testIfVariableExists(economy["UserData"], str(userId)):
-                                            economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
-                                            with open("economy.json", "w") as outfile:
-                                                json.dump(economy, outfile, indent=4)
-                                        else:
-                                            economy["UserData"][str(userId)] = {
-                                                "Balance": 0,
-                                                "Inventory": [],
-                                                "LatestDate": 0,
-                                                "Cooldown": 0,
-                                            }
-                                            economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
-                                            with open("economy.json", "w") as outfile:
-                                                json.dump(economy, outfile, indent=4)
-                                        
-                                        redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+                                try:
+                                    if economy["Enabled"]:
+                                        if codes[arg]["DisputesEconomyCash"]:
+                                            userId = userId = ctx.user.id
+                                            amount = codes[arg]["CashAmount"]
+                                            if testIfInt(amount):
+                                                if testIfVariableExists(economy["UserData"], str(userId)):
+                                                    economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                    with open("economy.json", "w") as outfile:
+                                                        json.dump(economy, outfile, indent=4)
+                                                else:
+                                                    economy["UserData"][str(userId)] = {
+                                                        "Balance": 0,
+                                                        "Inventory": [],
+                                                        "LatestDate": 0,
+                                                        "Cooldown": 0,
+                                                    }
+                                                    economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                    with open("economy.json", "w") as outfile:
+                                                        json.dump(economy, outfile, indent=4)
+                                                
+                                                redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+                                except Exception as e:
+                                    redeemed_string = redeemed_string + f". Error while giving cash: ({str(e)})"
 
                                 await sendEmbed(
                                     ctx,
@@ -422,26 +430,30 @@ if __name__ == "__main__":
                                             extraString = " | Role Added: (failed due to invalid permissions or error.)"
 
                                     redeemed_string = "You have redeemed merch code: " + arg + " for reward: " + codeInfo["Reward"] + extraString
-                                    if economy["Enabled"]:
-                                        if codes[arg]["DisputesEconomyCash"] and testIfInt(amount):
-                                            userId = ctx.message.author.id
-                                            amount = codes[arg]["CashAmount"]
-                                            if testIfVariableExists(economy["UserData"], str(userId)):
-                                                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
-                                                with open("economy.json", "w") as outfile:
-                                                    json.dump(economy, outfile, indent=4)
-                                            else:
-                                                economy["UserData"][str(userId)] = {
-                                                    "Balance": 0,
-                                                    "Inventory": [],
-                                                    "LatestDate": 0,
-                                                    "Cooldown": 0,
-                                                }
-                                                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
-                                                with open("economy.json", "w") as outfile:
-                                                    json.dump(economy, outfile, indent=4)
-                                            
-                                            redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+                                    try:
+                                        if economy["Enabled"]:
+                                            if codes[arg]["DisputesEconomyCash"]:
+                                                userId = userId = ctx.user.id
+                                                amount = codes[arg]["CashAmount"]
+                                                if testIfInt(amount):
+                                                    if testIfVariableExists(economy["UserData"], str(userId)):
+                                                        economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                        with open("economy.json", "w") as outfile:
+                                                            json.dump(economy, outfile, indent=4)
+                                                    else:
+                                                        economy["UserData"][str(userId)] = {
+                                                            "Balance": 0,
+                                                            "Inventory": [],
+                                                            "LatestDate": 0,
+                                                            "Cooldown": 0,
+                                                        }
+                                                        economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                        with open("economy.json", "w") as outfile:
+                                                            json.dump(economy, outfile, indent=4)
+                                                    
+                                                    redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+                                    except Exception as e:
+                                        redeemed_string = redeemed_string + f". Error while giving cash: ({str(e)})"
 
                                     await sendEmbed(
                                         ctx,
@@ -487,26 +499,30 @@ if __name__ == "__main__":
                                         extraString = " | Role Added: (failed due to invalid permissions or error.)"
 
                                 redeemed_string = "You have redeemed perm code: " + arg + " for reward: " + codeInfo["Reward"] + extraString
-                                if economy["Enabled"]:
-                                    if codes[arg]["DisputesEconomyCash"] and testIfInt(amount):
-                                        userId = ctx.message.author.id
-                                        amount = codes[arg]["CashAmount"]
-                                        if testIfVariableExists(economy["UserData"], str(userId)):
-                                            economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
-                                            with open("economy.json", "w") as outfile:
-                                                json.dump(economy, outfile, indent=4)
-                                        else:
-                                            economy["UserData"][str(userId)] = {
-                                                "Balance": 0,
-                                                "Inventory": [],
-                                                "LatestDate": 0,
-                                                "Cooldown": 0,
-                                            }
-                                            economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
-                                            with open("economy.json", "w") as outfile:
-                                                json.dump(economy, outfile, indent=4)
-                                        
-                                        redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+                                try:
+                                    if economy["Enabled"]:
+                                        if codes[arg]["DisputesEconomyCash"]:
+                                            userId = userId = ctx.user.id
+                                            amount = codes[arg]["CashAmount"]
+                                            if testIfInt(amount):
+                                                if testIfVariableExists(economy["UserData"], str(userId)):
+                                                    economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                    with open("economy.json", "w") as outfile:
+                                                        json.dump(economy, outfile, indent=4)
+                                                else:
+                                                    economy["UserData"][str(userId)] = {
+                                                        "Balance": 0,
+                                                        "Inventory": [],
+                                                        "LatestDate": 0,
+                                                        "Cooldown": 0,
+                                                    }
+                                                    economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                    with open("economy.json", "w") as outfile:
+                                                        json.dump(economy, outfile, indent=4)
+                                                
+                                                redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+                                except Exception as e:
+                                    redeemed_string = redeemed_string + f". Error while giving cash: ({str(e)})"
 
                                 await sendEmbed(
                                     ctx,
@@ -1799,26 +1815,30 @@ if __name__ == "__main__":
                                                 extraString = " | Role Added: (failed due to invalid permissions or error.)"
 
                                         redeemed_string = "You have redeemed merch code: " + code + " for reward: " + codeInfo["Reward"] + extraString
-                                        if economy["Enabled"]:
-                                            if codes[code]["DisputesEconomyCash"] and testIfInt(amount):
-                                                userId = ctx.message.author.id
-                                                amount = codes[code]["CashAmount"]
-                                                if testIfVariableExists(economy["UserData"], str(userId)):
-                                                    economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
-                                                    with open("economy.json", "w") as outfile:
-                                                        json.dump(economy, outfile, indent=4)
-                                                else:
-                                                    economy["UserData"][str(userId)] = {
-                                                        "Balance": 0,
-                                                        "Inventory": [],
-                                                        "LatestDate": 0,
-                                                        "Cooldown": 0,
-                                                    }
-                                                    economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
-                                                    with open("economy.json", "w") as outfile:
-                                                        json.dump(economy, outfile, indent=4)
-                                                
-                                                redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+                                        try:
+                                            if economy["Enabled"]:
+                                                if codes[code]["DisputesEconomyCash"]:
+                                                    userId = userId = ctx.user.id
+                                                    amount = codes[code]["CashAmount"]
+                                                    if testIfInt(amount):
+                                                        if testIfVariableExists(economy["UserData"], str(userId)):
+                                                            economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                            with open("economy.json", "w") as outfile:
+                                                                json.dump(economy, outfile, indent=4)
+                                                        else:
+                                                            economy["UserData"][str(userId)] = {
+                                                                "Balance": 0,
+                                                                "Inventory": [],
+                                                                "LatestDate": 0,
+                                                                "Cooldown": 0,
+                                                            }
+                                                            economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                            with open("economy.json", "w") as outfile:
+                                                                json.dump(economy, outfile, indent=4)
+                                                        
+                                                        redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+                                        except Exception as e:
+                                            redeemed_string = redeemed_string + f". Error while giving cash: ({str(e)})"
 
                                         await sendEmbedTree(
                                             ctx,
@@ -1864,27 +1884,31 @@ if __name__ == "__main__":
                                             extraString = " | Role Added: (failed due to invalid permissions or error.)"
 
                                     redeemed_string = "You have redeemed perm code: " + code + " for reward: " + codeInfo["Reward"] + extraString
-                                    if economy["Enabled"]:
-                                        if codes[code]["DisputesEconomyCash"] and testIfInt(amount):
-                                            userId = ctx.message.author.id
-                                            amount = codes[code]["CashAmount"]
-                                            if testIfVariableExists(economy["UserData"], str(userId)):
-                                                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
-                                                with open("economy.json", "w") as outfile:
-                                                    json.dump(economy, outfile, indent=4)
-                                            else:
-                                                economy["UserData"][str(userId)] = {
-                                                    "Balance": 0,
-                                                    "Inventory": [],
-                                                    "LatestDate": 0,
-                                                    "Cooldown": 0,
-                                                }
-                                                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
-                                                with open("economy.json", "w") as outfile:
-                                                    json.dump(economy, outfile, indent=4)
-                                            
-                                            redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
-
+                                    try:
+                                        if economy["Enabled"]:
+                                            if codes[code]["DisputesEconomyCash"]:
+                                                userId = userId = ctx.user.id
+                                                amount = codes[code]["CashAmount"]
+                                                if testIfInt(amount):
+                                                    if testIfVariableExists(economy["UserData"], str(userId)):
+                                                        economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                        with open("economy.json", "w") as outfile:
+                                                            json.dump(economy, outfile, indent=4)
+                                                    else:
+                                                        economy["UserData"][str(userId)] = {
+                                                            "Balance": 0,
+                                                            "Inventory": [],
+                                                            "LatestDate": 0,
+                                                            "Cooldown": 0,
+                                                        }
+                                                        economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                        with open("economy.json", "w") as outfile:
+                                                            json.dump(economy, outfile, indent=4)
+                                                    
+                                                    redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+                                    except Exception as e:
+                                        redeemed_string = redeemed_string + f". Error while giving cash: ({str(e)})"
+                                    
                                     await sendEmbedTree(
                                         ctx,
                                         redeemed_string,
@@ -1938,26 +1962,30 @@ if __name__ == "__main__":
                                                 extraString = " | Role Added: (failed due to invalid permissions or error.)"
 
                                         redeemed_string = "You have redeemed merch code: " + code + " for reward: " + codeInfo["Reward"] + extraString
-                                        if economy["Enabled"]:
-                                            if codes[code]["DisputesEconomyCash"] and testIfInt(amount):
-                                                userId = ctx.message.author.id
-                                                amount = codes[code]["CashAmount"]
-                                                if testIfVariableExists(economy["UserData"], str(userId)):
-                                                    economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
-                                                    with open("economy.json", "w") as outfile:
-                                                        json.dump(economy, outfile, indent=4)
-                                                else:
-                                                    economy["UserData"][str(userId)] = {
-                                                        "Balance": 0,
-                                                        "Inventory": [],
-                                                        "LatestDate": 0,
-                                                        "Cooldown": 0,
-                                                    }
-                                                    economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
-                                                    with open("economy.json", "w") as outfile:
-                                                        json.dump(economy, outfile, indent=4)
-                                                
-                                                redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+                                        try:
+                                            if economy["Enabled"]:
+                                                if codes[code]["DisputesEconomyCash"]:
+                                                    userId = userId = ctx.user.id
+                                                    amount = codes[code]["CashAmount"]
+                                                    if testIfInt(amount):
+                                                        if testIfVariableExists(economy["UserData"], str(userId)):
+                                                            economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                            with open("economy.json", "w") as outfile:
+                                                                json.dump(economy, outfile, indent=4)
+                                                        else:
+                                                            economy["UserData"][str(userId)] = {
+                                                                "Balance": 0,
+                                                                "Inventory": [],
+                                                                "LatestDate": 0,
+                                                                "Cooldown": 0,
+                                                            }
+                                                            economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                            with open("economy.json", "w") as outfile:
+                                                                json.dump(economy, outfile, indent=4)
+                                                        
+                                                        redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+                                        except Exception as e:
+                                            redeemed_string = redeemed_string + f". Error while giving cash: ({str(e)})"
 
                                         await sendEmbedTree(
                                             ctx,
@@ -2003,26 +2031,30 @@ if __name__ == "__main__":
                                             extraString = " | Role Added: (failed due to invalid permissions or error.)"
 
                                     redeemed_string = "You have redeemed perm code: " + code + " for reward: " + codeInfo["Reward"] + extraString
-                                    if economy["Enabled"]:
-                                        if codes[code]["DisputesEconomyCash"] and testIfInt(amount):
-                                            userId = ctx.message.author.id
-                                            amount = codes[code]["CashAmount"]
-                                            if testIfVariableExists(economy["UserData"], str(userId)):
-                                                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
-                                                with open("economy.json", "w") as outfile:
-                                                    json.dump(economy, outfile, indent=4)
-                                            else:
-                                                economy["UserData"][str(userId)] = {
-                                                    "Balance": 0,
-                                                    "Inventory": [],
-                                                    "LatestDate": 0,
-                                                    "Cooldown": 0,
-                                                }
-                                                economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
-                                                with open("economy.json", "w") as outfile:
-                                                    json.dump(economy, outfile, indent=4)
-                                            
-                                            redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+                                    try:
+                                        if economy["Enabled"]:
+                                            if codes[code]["DisputesEconomyCash"]:
+                                                userId = userId = ctx.user.id
+                                                amount = codes[code]["CashAmount"]
+                                                if testIfInt(amount):
+                                                    if testIfVariableExists(economy["UserData"], str(userId)):
+                                                        economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                        with open("economy.json", "w") as outfile:
+                                                            json.dump(economy, outfile, indent=4)
+                                                    else:
+                                                        economy["UserData"][str(userId)] = {
+                                                            "Balance": 0,
+                                                            "Inventory": [],
+                                                            "LatestDate": 0,
+                                                            "Cooldown": 0,
+                                                        }
+                                                        economy["UserData"][str(userId)]["Balance"] = round(economy["UserData"][str(userId)]["Balance"] + amount)
+                                                        with open("economy.json", "w") as outfile:
+                                                            json.dump(economy, outfile, indent=4)
+                                                    
+                                                    redeemed_string = redeemed_string + f". You were also given {str(amount)} {economy['EconomyName']}!"
+                                    except Exception as e:
+                                        redeemed_string = redeemed_string + f". Error while giving cash: ({str(e)})"
 
                                     await sendEmbedTree(
                                         ctx,
@@ -2240,11 +2272,11 @@ if __name__ == "__main__":
 
                     for code in codes.keys():
                         real_code = codes[code]
-                        if not testIfVariableExists(real_code, "Role"):
+                        if not real_code.get("Role"):
                             codes[code]["Role"] = 0
-                        if not testIfVariableExists(real_code, "DisputesEconomyCash"):
+                        if not real_code.get("DisputesEconomyCash"):
                             codes[code]["DisputesEconomyCash"] = False
-                        if testIfVariableExists(real_code, "reward"):
+                        if real_code.get("reward"):
                             reward = codes[code]["reward"]
                             codes[code].pop('reward', None)
                             codes[code]["Reward"] = reward

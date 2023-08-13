@@ -72,11 +72,11 @@ def updateDirectory(dir):
 
         for code in codes.keys():
             real_code = codes[code]
-            if not testIfVariableExists(real_code, "Role"):
+            if not real_code.get("Role"):
                 codes[code]["Role"] = 0
-            if not testIfVariableExists(real_code, "DisputesEconomyCash"):
+            if not real_code.get("DisputesEconomyCash"):
                 codes[code]["DisputesEconomyCash"] = False
-            if testIfVariableExists(real_code, "reward"):
+            if real_code.get("reward"):
                 reward = codes[code]["reward"]
                 codes[code].pop('reward', None)
                 codes[code]["Reward"] = reward
