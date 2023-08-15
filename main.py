@@ -2165,8 +2165,8 @@ if __name__ == "__main__":
 
                                     if testIfInt(cashamount):
                                         if int(cashamount) > 0:
-                                            codes[code]["DisputesEconomyCash"] = True
-                                            codes[code]["CashAmount"] = int(cashamount)
+                                            codes[args1]["DisputesEconomyCash"] = True
+                                            codes[args1]["CashAmount"] = int(cashamount)
 
                                     with open("codes.json", "w") as outfile:
                                         json.dump(codes, outfile, indent=4)
