@@ -39,7 +39,7 @@ except Exception as e:
 
 LocalMachineOS = platform.system()
 pythonVersion = sys.version_info
-version = "1.7.5"
+version = "1.8.0"
 for _ in range(50):
     print()
 
@@ -1324,9 +1324,27 @@ if __name__ == "__main__":
                 if blacklisted(ctx) == True:
                     await sendEmbed(ctx, "Access Denied", 3)
                 else:
+                    if testIfVariableExists(economy["UserData"], ctx.message.author.id) == False:
+                        await sendEmbed(ctx, "You don't have set Economy balance! ", 3)
+                        return
+                    elif testIfVariableExists(economy["UserData"], user.id) == False:
+                        await sendEmbed(ctx, "This user doesn't have set Economy balance! ", 3)
+                        return
+                    
                     if user.id in botToken["Admins"]:
                         await sendEmbed(ctx, "Failed! You can't rob the admins of this bot!", 3)
                         return
+                    elif user.id == bot.user.id:
+                        await sendEmbed(ctx, "Failed! You can't rob the bot!", 3)
+                        return
+                    
+                    if economy["AllowUsersToDisableRobbing"]:
+                        if economy["UserData"][ctx.message.author.id]["DisableRobbing"] == True:
+                            await sendEmbed(ctx, "You disabled your robbing! Meaning, you can't rob anyone else.", 3)
+                            return
+                        elif economy["UserData"][user.id]["DisableRobbing"] == True:
+                            await sendEmbed(ctx, "Target user has disabled their robbing!", 3)
+                            return
                     randomized = random.randint(1, economy["SuccessRate"])
                     needed_requirement = round(listOfMultipliers(ctx.user)["total"] / economy["SuccessRate"])
                     if checkCurrencyAmount(ctx.message.author.id) >= needed_requirement:
@@ -1341,6 +1359,27 @@ if __name__ == "__main__":
                             await sendEmbed(ctx, "Robbing Failed! You have been charged " + addCommasToNumber(amount) + " " + economy["EconomyName"] + "!", 3)
                     else:
                         await sendEmbed(ctx, f"Robbing Failed! You need {addCommasToNumber(needed_requirement)} {economy['EconomyName']} to use for this command!", 3)
+
+            if economy["AllowUsersToDisableRobbing"]:
+                @bot.command()
+                async def disablerobbing(ctx, toggle: bool):
+                    if cooldownCommand(ctx.message.author.id):
+                        await sendEmbedTree(ctx, "Access Denied: Still on 2 minute cooldown, try again later!", 3)
+                        return
+                    else:
+                        setCooldown(ctx.message.author.id)
+                    if blacklisted(ctx) == True:
+                        await sendEmbedTree(ctx, "Access Denied", 3)
+                    else:
+                        if testIfVariableExists(economy["UserData"], ctx.message.author.id) == False:
+                            await sendEmbedTree(ctx, "You don't have set Economy balance!", 3)
+                            return
+                        
+                        economy["UserData"][ctx.message.author.id]["DisableRobbing"] = toggle
+                        if toggle == True:
+                            await sendEmbedTree(ctx, "You have disabled robbing on this Discord account! However, if you try to rob anyone else, you can't rob them. Enjoy farming!", 2)
+                        else:
+                            await sendEmbedTree(ctx, "You have enabled robbing on this Discord account! You can rob other people now!", 2)
 
             @bot.command()
             async def sendMoney(ctx, user: discord.Member, amount: int):
@@ -2877,12 +2916,27 @@ if __name__ == "__main__":
                 if blacklisted(ctx) == True:
                     await sendEmbedTree(ctx, "Access Denied", 3)
                 else:
+                    if testIfVariableExists(economy["UserData"], ctx.user.id) == False:
+                        await sendEmbedTree(ctx, "You don't have set Economy balance!", 3)
+                        return
+                    elif testIfVariableExists(economy["UserData"], user.id) == False:
+                        await sendEmbedTree(ctx, "This user doesn't have set Economy balance!", 3)
+                        return
+                    
                     if user.id in botToken["Admins"]:
                         await sendEmbedTree(ctx, "Failed! You can't rob the admins of this bot!", 3)
                         return
                     elif user.id == bot.user.id:
                         await sendEmbedTree(ctx, "Failed! You can't rob the bot!", 3)
                         return
+                    
+                    if economy["AllowUsersToDisableRobbing"]:
+                        if economy["UserData"][ctx.user.id]["DisableRobbing"] == True:
+                            await sendEmbedTree(ctx, "You disabled your robbing! Meaning, you can't rob anyone else.", 3)
+                            return
+                        elif economy["UserData"][user.id]["DisableRobbing"] == True:
+                            await sendEmbedTree(ctx, "Target user has disabled their robbing!", 3)
+                            return
                     randomized = random.randint(1, economy["SuccessRate"])
                     needed_requirement = round(listOfMultipliers(ctx.user)["total"] / economy["SuccessRate"])
                     if checkCurrencyAmount(ctx.user.id) >= needed_requirement:
@@ -2939,6 +2993,31 @@ if __name__ == "__main__":
                     randomizedJob = jobList[random.randint(0, len(jobList) - 1)]
                     response = createCurrency(ctx.user.id, randomizedJob["amount"] * listOfMultipliers(ctx.user)["total"])
                     await sendEmbedTree(ctx, "You have earned " + addCommasToNumber(randomizedJob["amount"] * listOfMultipliers(ctx.user)["total"]) + " from working as a " + randomizedJob["name"] + "!", 2)
+
+            if economy["AllowUsersToDisableRobbing"]:
+                @tree.command(
+                    name="disablerobbing",
+                    description="Toggle if you want to disable robbing or not!",
+                    guild=discord.Object(id=guildId),
+                )
+                async def disablerobbing(ctx, toggle: bool):
+                    if cooldownCommand(ctx.user.id):
+                        await sendEmbedTree(ctx, "Access Denied: Still on 2 minute cooldown, try again later!", 3)
+                        return
+                    else:
+                        setCooldown(ctx.user.id)
+                    if blacklisted(ctx) == True:
+                        await sendEmbedTree(ctx, "Access Denied", 3)
+                    else:
+                        if testIfVariableExists(economy["UserData"], ctx.user.id) == False:
+                            await sendEmbedTree(ctx, "You don't have set Economy balance!", 3)
+                            return
+                        
+                        economy["UserData"][ctx.user.id]["DisableRobbing"] = toggle
+                        if toggle == True:
+                            await sendEmbedTree(ctx, "You have disabled robbing on this Discord account! However, if you try to rob anyone else, you can't rob them. Enjoy farming!", 2)
+                        else:
+                            await sendEmbedTree(ctx, "You have enabled robbing on this Discord account! You can rob other people now!", 2)
 
             @tree.command(
                 name="about",

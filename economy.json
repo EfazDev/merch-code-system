@@ -45,6 +45,7 @@
             }
         ]
     },
+    "AllowUsersToDisableRobbing": false,
     "AllowedMultipliers": {
         "Weekends": true,
         "Roles": true,
