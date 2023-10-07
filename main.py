@@ -1364,22 +1364,34 @@ if __name__ == "__main__":
                 @bot.command()
                 async def disablerobbing(ctx, toggle: bool):
                     if cooldownCommand(ctx.message.author.id):
-                        await sendEmbedTree(ctx, "Access Denied: Still on 2 minute cooldown, try again later!", 3)
+                        await sendEmbed(ctx, "Access Denied: Still on 2 minute cooldown, try again later!", 3)
                         return
                     else:
                         setCooldown(ctx.message.author.id)
                     if blacklisted(ctx) == True:
-                        await sendEmbedTree(ctx, "Access Denied", 3)
+                        await sendEmbed(ctx, "Access Denied", 3)
                     else:
                         if testIfVariableExists(economy["UserData"], ctx.message.author.id) == False:
-                            await sendEmbedTree(ctx, "You don't have set Economy balance!", 3)
+                            await sendEmbed(ctx, "You don't have set Economy balance!", 3)
                             return
                         
                         economy["UserData"][ctx.message.author.id]["DisableRobbing"] = toggle
                         if toggle == True:
-                            await sendEmbedTree(ctx, "You have disabled robbing on this Discord account! However, if you try to rob anyone else, you can't rob them. Enjoy farming!", 2)
+                            await sendEmbed(ctx, "You have disabled robbing on this Discord account! However, if you try to rob anyone else, you can't rob them. Enjoy farming!", 2)
                         else:
-                            await sendEmbedTree(ctx, "You have enabled robbing on this Discord account! You can rob other people now!", 2)
+                            await sendEmbed(ctx, "You have enabled robbing on this Discord account! You can rob other people now!", 2)
+
+            @bot.command()
+            async def allowdisableuserrobbing(ctx, toggle: bool):
+                if predicate(ctx) == False or blacklisted(ctx) == True:
+                    await sendEmbed(ctx, "Access Denied", 3)
+                else:
+                    economy["AllowUsersToDisableRobbing"] = toggle
+                    with open("economy.json", "w") as outfile: 
+                        json.dump(economy, outfile, indent=4)
+                    await sendEmbed(ctx, "Restarting bot!", 2)
+                    os.system(sys.executable + " main.py")
+                    exit()
 
             @bot.command()
             async def sendMoney(ctx, user: discord.Member, amount: int):
@@ -3018,6 +3030,23 @@ if __name__ == "__main__":
                             await sendEmbedTree(ctx, "You have disabled robbing on this Discord account! However, if you try to rob anyone else, you can't rob them. Enjoy farming!", 2)
                         else:
                             await sendEmbedTree(ctx, "You have enabled robbing on this Discord account! You can rob other people now!", 2)
+
+            @tree.command(
+                name="allowdisableuserrobbing",
+                description="Toggle if you want users to disable robbing or not!",
+                guild=discord.Object(id=guildId),
+            )
+            async def allowdisableuserrobbing(ctx, toggle: bool):
+                if predicate(ctx) == False or blacklisted(ctx) == True:
+                    await sendEmbedTree(ctx, "Access Denied", 3)
+                else:
+                    economy["AllowUsersToDisableRobbing"] = toggle
+                    with open("economy.json", "w") as outfile: 
+                        json.dump(economy, outfile, indent=4)
+                    await sendEmbedTree(ctx, "Restarting bot!", 2)
+                    os.system(sys.executable + " main.py")
+                    exit()
+
 
             @tree.command(
                 name="about",
