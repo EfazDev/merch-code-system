@@ -150,7 +150,7 @@ if __name__ == "__main__":
             )
             embed.set_footer(
                 text="Made by Efaz from efaz.dev - v" + version,
-                icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
+                icon_url="https://cdn.efaz.dev/cdn/png/logo.png",
             )
             printMainMessage("User " + ctx.message.author.name + " used command: " + ctx.message.content)
             await ctx.reply(embed=embed)
@@ -173,7 +173,7 @@ if __name__ == "__main__":
             )
             embed.set_footer(
                 text="Made by Efaz from efaz.dev - v" + version,
-                icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
+                icon_url="https://cdn.efaz.dev/cdn/png/logo.png",
             )
             channel = bot.get_channel(botToken["NotificationChannelId"])
             await channel.send(embed=embed)
@@ -331,7 +331,7 @@ if __name__ == "__main__":
                                     )
                                     embed.set_footer(
                                         text="Made by Efaz from efaz.dev - v" + version,
-                                        icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
+                                        icon_url="https://cdn.efaz.dev/cdn/png/logo.png",
                                     )
                                     channel = bot.get_channel(botToken["NotificationChannelId"])
                                     await channel.send(embed=embed)
@@ -400,7 +400,7 @@ if __name__ == "__main__":
                                 )
                                 embed.set_footer(
                                     text="Made by Efaz from efaz.dev - v" + version,
-                                    icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
+                                    icon_url="https://cdn.efaz.dev/cdn/png/logo.png",
                                 )
                                 channel = bot.get_channel(botToken["NotificationChannelId"])
                                 await channel.send(embed=embed)
@@ -478,7 +478,7 @@ if __name__ == "__main__":
                                     )
                                     embed.set_footer(
                                         text="Made by Efaz from efaz.dev - v" + version,
-                                        icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
+                                        icon_url="https://cdn.efaz.dev/cdn/png/logo.png",
                                     )
                                     channel = bot.get_channel(botToken["NotificationChannelId"])
                                     await channel.send(embed=embed)
@@ -547,7 +547,7 @@ if __name__ == "__main__":
                                 )
                                 embed.set_footer(
                                     text="Made by Efaz from efaz.dev - v" + version,
-                                    icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
+                                    icon_url="https://cdn.efaz.dev/cdn/png/logo.png",
                                 )
                                 channel = bot.get_channel(botToken["NotificationChannelId"])
                                 await channel.send(embed=embed)
@@ -1251,7 +1251,7 @@ if __name__ == "__main__":
                         )
                         embed.set_footer(
                             text="Made by Efaz from efaz.dev - v" + version,
-                            icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
+                            icon_url="https://cdn.efaz.dev/cdn/png/logo.png",
                         )
                         channel = bot.get_channel(botToken["NotificationChannelId"])
                         await channel.send(embed=embed)
@@ -1589,7 +1589,7 @@ if __name__ == "__main__":
                                 )
                                 embed.set_footer(
                                     text="Made by Efaz from efaz.dev",
-                                    icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
+                                    icon_url="https://cdn.efaz.dev/cdn/png/logo.png",
                                 )
                                 channel = bot.get_channel(botToken["NotificationChannelId"])
                                 await channel.send(embed=embed)
@@ -1623,7 +1623,7 @@ if __name__ == "__main__":
             )
             embed.set_footer(
                 text="Made by Efaz from efaz.dev - v" + version,
-                icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
+                icon_url="https://cdn.efaz.dev/cdn/png/logo.png",
             )
             channel = bot.get_channel(botToken["NotificationChannelId"])
             await channel.send(embed=embed)
@@ -1664,7 +1664,7 @@ if __name__ == "__main__":
             )
             embed.set_footer(
                 text="Made by Efaz from efaz.dev - v" + version,
-                icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
+                icon_url="https://cdn.efaz.dev/cdn/png/logo.png",
             )
             if botToken["ShowMessageGlobal"]:
                 await ctx.response.send_message(embed=embed)
@@ -1935,7 +1935,7 @@ if __name__ == "__main__":
                                         )
                                         embed.set_footer(
                                             text="Made by Efaz from efaz.dev - v" + version,
-                                            icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
+                                            icon_url="https://cdn.efaz.dev/cdn/png/logo.png",
                                         )
                                         channel = bot.get_channel(botToken["NotificationChannelId"])
                                         await channel.send(embed=embed)
@@ -2004,7 +2004,7 @@ if __name__ == "__main__":
                                     )
                                     embed.set_footer(
                                         text="Made by Efaz from efaz.dev - v" + version,
-                                        icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
+                                        icon_url="https://cdn.efaz.dev/cdn/png/logo.png",
                                     )
                                     channel = bot.get_channel(botToken["NotificationChannelId"])
                                     await channel.send(embed=embed)
@@ -2082,7 +2082,7 @@ if __name__ == "__main__":
                                         )
                                         embed.set_footer(
                                             text="Made by Efaz from efaz.dev - v" + version,
-                                            icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
+                                            icon_url="https://cdn.efaz.dev/cdn/png/logo.png",
                                         )
                                         channel = bot.get_channel(botToken["NotificationChannelId"])
                                         await channel.send(embed=embed)
@@ -2151,7 +2151,7 @@ if __name__ == "__main__":
                                     )
                                     embed.set_footer(
                                         text="Made by Efaz from efaz.dev - v" + version,
-                                        icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
+                                        icon_url="https://cdn.efaz.dev/cdn/png/logo.png",
                                     )
                                     channel = bot.get_channel(botToken["NotificationChannelId"])
                                     await channel.send(embed=embed)
@@ -2832,7 +2832,7 @@ if __name__ == "__main__":
                         )
                         embed.set_footer(
                             text="Made by Efaz from efaz.dev - v" + version,
-                            icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
+                            icon_url="https://cdn.efaz.dev/cdn/png/logo.png",
                         )
                         channel = bot.get_channel(botToken["NotificationChannelId"])
                         await channel.send(embed=embed)
@@ -3244,7 +3244,7 @@ if __name__ == "__main__":
                                 )
                                 embed.set_footer(
                                     text="Made by Efaz from efaz.dev",
-                                    icon_url="https://cdn.discordapp.com/attachments/1099414684286861332/1112068066319270019/1W.png",
+                                    icon_url="https://cdn.efaz.dev/cdn/png/logo.png",
                                 )
                                 channel = bot.get_channel(botToken["NotificationChannelId"])
                                 await channel.send(embed=embed)
