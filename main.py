@@ -39,7 +39,7 @@ except Exception as e:
 
 LocalMachineOS = platform.system()
 pythonVersion = sys.version_info
-version = "1.8.0"
+version = "1.8.1"
 for _ in range(50):
     print()
 
@@ -1538,11 +1538,20 @@ if __name__ == "__main__":
                                 # Restock Items
                                 if economy["GreatReset"]["DataToReset"]["Items"] == True:
                                     for item in economy["GreatReset"]["ItemDataWhenRestock"]:
-                                        economy["StoreInventory"][item["name"]] = item
+                                        economy["StoreInventory"][item["name"]] = {
+                                            "stock": item["stock"],
+                                            "price": item["price"],
+                                            "name": item["name"],
+                                            "role": item["role"]
+                                        }
 
                                         if economy["StoreInventory"][item["name"]].get("multiplierEnabled"):
                                             # Multiply Price
                                             if economy["StoreInventory"][item["name"]]["multiplierEnabled"] == True:
+                                                economy["StoreInventory"][item["name"]]["price"] = economy["StoreInventory"][item["name"]]["price"] * getSeasonMultiplier()
+                                        elif item.get("multiplierEnabled"):
+                                            # Multiply Price
+                                            if item["multiplierEnabled"] == True:
                                                 economy["StoreInventory"][item["name"]]["price"] = economy["StoreInventory"][item["name"]]["price"] * getSeasonMultiplier()
 
                                         global StoreItems
@@ -3184,13 +3193,22 @@ if __name__ == "__main__":
                                 # Restock Items
                                 if economy["GreatReset"]["DataToReset"]["Items"] == True:
                                     for item in economy["GreatReset"]["ItemDataWhenRestock"]:
-                                        economy["StoreInventory"][item["name"]] = item
+                                        economy["StoreInventory"][item["name"]] = {
+                                            "stock": item["stock"],
+                                            "price": item["price"],
+                                            "name": item["name"],
+                                            "role": item["role"]
+                                        }
 
                                         if economy["StoreInventory"][item["name"]].get("multiplierEnabled"):
                                             # Multiply Price
                                             if economy["StoreInventory"][item["name"]]["multiplierEnabled"] == True:
                                                 economy["StoreInventory"][item["name"]]["price"] = economy["StoreInventory"][item["name"]]["price"] * getSeasonMultiplier()
-
+                                        elif item.get("multiplierEnabled"):
+                                            # Multiply Price
+                                            if item["multiplierEnabled"] == True:
+                                                economy["StoreInventory"][item["name"]]["price"] = economy["StoreInventory"][item["name"]]["price"] * getSeasonMultiplier()
+                                        
                                         global StoreItems
                                         StoreItems = economy["StoreInventory"]
 
